@@ -1,0 +1,59 @@
+<style>
+
+</style>
+<div class="container row main-body">
+    <div class="col-sm-12 col-md-6"></div>
+    <div class="col-sm-12 col-md-6">
+        <div class="content-section-form">
+            <div class="">
+                <h4>Register</h4>
+            </div>
+            <hr>
+            <div class="">
+                {{#if message}}
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                {{message}}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+                {{/if}}
+                <form id="reg_form" action="/register" method="post">
+                    <div class="form-group">
+                        <label for="username">Username</label>
+                        <input id="uzanem" class="form-control" placeholder="akiliforum7" maxlength="21" value="{{this.username}}" type="text" name="username"/>
+                    </div>
+                    <div class="form-group">
+                        <label for="phone_number">Phone number</label>
+                        <input class="form-control" placeholder="0xxxxxxxxx" maxlength="10" minlength="10" value="{{this.phone_number}}" type="text" name="phone_number"/>
+                    </div>    
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input class="form-control" minlength="4" value="{{this.password}}" type="password" name="password"/>
+                    </div>
+                    <div class="d-flex form-group mt-2 justify-content-between">
+                        <input class="btn btn-secondary" type="button" id="signup-btn" value="Sign Up"/>
+                        <a href="/login">Login Hapa</a>
+                    </div>
+                </form> 
+            </div>
+        </div>                 
+    </div>
+             
+</div>
+
+<script>
+    $(document).on('click', '#signup-btn', function() {
+
+        var usernameRegex = /^[a-zA-Z0-9]+$/
+        const username = $('#uzanem').val()
+        //alert(username)
+        //var validUsername = username.match(usernameRegex)
+        var validUsername = usernameRegex.test(username)
+
+        if(validUsername){
+            $("#reg_form").submit()
+        }else{
+            alert('Tumia herufi na namba bilakuacha nafasi wala _ underscore')
+        }
+        
+    })
+</script>

@@ -1,0 +1,59 @@
+<div class="content-wrapper">
+    <div class="row mb-3">
+        <div class="col-md-12">
+            <div class="row">
+                <div class="col-12 col-xl-8 mb-4 mb-xl-0">
+                    <h3 class="font-weight-bold">Customers & Events</h3>
+                </div>
+                <div class="col-12 col-xl-4">
+
+                </div>
+            </div>
+        </div>
+    </div>
+     <div class="space-y"></div>
+
+    <div class="row">
+        <div class="col-12">
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>No#</th>
+                            <th>Fullname</th>
+                            <th>Phone number</th>
+                            <th>Events</th>
+                            <th>Created by</th>
+                            <th>Action</th>
+
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {{#each customers}}
+                        <tr>
+                            <td>{{index_plas @index 1}}</td>
+                            <td>{{this.fulname}}</td>
+                            <td>{{this.phone_no}}</td>
+                            <td class="text-center">{{this.invorved}}</td>
+                            <td>{{this.username}}</td>
+                            <td>
+                                <a href="/customer/{{this.phone_no}}" type="button" class="btn btn-primary">
+                                    Events
+                                </a>
+                                
+                            </td>
+
+
+                        </tr>
+                        {{/each}}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $('#customers').attr('class', 'nav-item active');
+</script>

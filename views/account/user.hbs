@@ -1,0 +1,231 @@
+<div class="main-page">
+    {{>dashbord_menu }}
+    <div class="container">
+        <div class="card mt-3">
+            <div class="card-header">
+                <div class="d-flex justify-content-between">
+                    <h3>User's</h3>
+                    <button type="submit" class="btn-og btn-success" data-toggle="modal" data-target="#demoModal">
+                        add user
+                    </button> 
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                        <thead>
+                            <tr>
+                                <th>Fulname</th>
+                                <th>Role</th>
+                                <th>Company - Position</th>
+                                <th>Status</th>
+                                <th>Contacts</th>
+                                <th>Actions</th>
+
+                            </tr>
+                        </thead>
+                        <tfoot>
+                            <tr>
+                                <th>Fulname</th>
+                                <th>Role</th>
+                                <th>Company - Position</th>
+                                <th>Status</th>
+                                <th>Contacts</th>
+                                <th>Actions</th>
+
+                            </tr>
+                        </tfoot>
+                        <tbody>
+                            {{#each users }}
+
+                            <tr>
+                                <td>{{ this.fulname }}</td>
+                                <td>{{ this.role }}</td>
+                                <td>{{ this.company}} - {{this.position }}</td>
+                                <td>{{ this.status }}</td>
+                                <td>{{this.contacts}}</td>
+                                <td>
+                                    <button user-id="{{ this.id}}" class="btn-og btn-sm btn-success edit-post">
+                                        <i class="fa fa-edit"></i>
+                                    </button>
+                                    <span> </span>
+                                    <button user-id="{{ this.id}}" class="btn-og btn-sm btn-danger delete-post">
+                                        <i class="fa fa-times"></i>
+                                    </button>
+                                </td>
+
+                            </tr>
+                            {{/each }}
+
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal -->
+<div class="modal fade auto-off hide" data-backdrop="static" data-keyboard="false" id="demoModal" tabindex="-1" role="dialog" aria-labelledby="demoModal" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+
+            <div class="container-fluid">
+                <div class="card mt-3">
+                    <div class="card-header">
+                        <h5 id="form-head">Add new User</h5>
+                    </div>
+                    <div class="card-body">
+                        <div id="form-info" class="alert alert-info">
+                            <p >Email is used for authentication, default password is 1234567890. user must change it after login</p>
+                        </div>
+                        <form id="user-form" action="/account/user" method="post">
+                        <div class="form-group">
+                            <label for="fulname">Fulname</label>
+                            <input type="text" id="fulname" name="fulname" class="form-control" required="true" placeholder="full name">
+                            <input type="hidden" id="user" name="user">
+                        </div>
+                        <div id="hide-email" class="form-group">
+                            <label for="email">Email</label>
+                            <input type="text" id="email" name="email" class="form-control" required="true" placeholder="user email">
+                           
+                        </div>
+                        <div class="form-group">
+                            <label for="position">Position</label>
+                            <input type="text" id="position" name="position" class="form-control" required="true" placeholder="position">
+                        </div>
+                        <div class="form-group">
+                            <label for="company">Company</label>
+                            <input type="text" id="company" name="company" class="form-control" required="true" placeholder="company name">
+                        </div>
+                        <div class="form-group">
+                            <label for="contacts">Contacts (comma separeted)</label>
+                            <input type="text" id="contacts" name="contacts" class="form-control" required="true" placeholder="contacts">
+                        </div>
+                       
+                        <div class="row">
+                            <div class="col-sm-12 col-md-6">
+                            <div class="form-group">
+                                <label for="status">Role</label>
+                                <select class="form-control" id="role" name="role">
+                                    <option value="1">Author</option>
+                                    <option value="2">Admin</option>
+                                </select>
+                            </div>
+                            </div>
+                            <div class="col-sm-12 col-md-6">
+                                <div class="form-group">
+                                        <label for="status">Status</label>
+                                        <select class="form-control" id="status" name="status">
+                                            <option value="1">Active</option>
+                                            <option value="0">Inactive</option>
+                                        </select>
+                                    </div>  
+                            </div>
+                        </div>
+                        
+                        
+                        <button id="submit" type="submit" class="btn-og btn-success">
+                            Create
+                        </button>
+                        <span class="ml-3"></span>
+                        <button type="button" class="btn-og btn-danger" data-dismiss="modal" aria-label="Close">
+                            Close
+                        </button>
+                    </form>
+                    </div>
+                </div>
+                
+            </div>
+            
+        </div>
+    </div>
+</div>
+<!-- Modal Ends -->
+<script>
+    $('#a_user').attr('class','nav-link active');
+</script>
+
+<script>
+///delete post
+    $(document).on('click', '.delete-post', function() {
+
+    const id = $(this).attr('user-id');
+   
+       if (confirm('Are you shure, want to delete this User')) {
+            $.ajax({
+            url: '/delete-user',
+            method: 'POST',
+            data: {
+                id
+            }
+            })
+            .then((response) =>{
+                if(response.status){
+                    alert(response.message)
+                    location.reload();
+                }else{
+                    alert(response.message)
+                    console.log(response.error)
+                }
+            
+            })
+            .catch(error => {
+                console.log(error)
+            })
+        } else {
+        // Do nothing!
+        }
+    })
+
+////get edit post
+    $(document).on('click', '.edit-post', function() {
+    const id = $(this).attr('user-id');
+       
+        $.ajax({
+        url: '/get-edit-user',
+        method: 'POST',
+        data: {
+            id:id
+        }
+    })
+    .then((response) =>{
+        $('#fulname').val(response[0].fulname)
+        //CKEDITOR.instances['description'].setData(response[0].description);
+        $('#email').val(response[0].email)
+        $('#role').val(response[0].role)
+        $('#status').val(response[0].status)
+        $('#position').val(response[0].position)
+        $('#company').val(response[0].company)
+        $('#contacts').val(response[0].contacts)
+        $('#user').val(response[0].id)
+       
+       
+        $('#user-form').attr('action','/update/user')
+
+        $('#form-info').hide()
+        $('#hide-email').hide()
+
+        $('#submit').html('Update')
+        $('#form-head').html("Update User")
+
+        $('#demoModal').modal('show')
+        
+    })
+    .catch((error) =>{
+        console.log(error)
+    });
+
+    });
+
+    var loadFile = function(event) {
+        var output = document.getElementById('output');
+        output.src = URL.createObjectURL(event.target.files[0]);
+        console.log(output.src)
+       
+        output.onload = function() {
+            URL.revokeObjectURL(output.src) // free memory
+        }
+    };
+
+</script>

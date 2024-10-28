@@ -1,0 +1,231 @@
+<style>
+    .first {
+        float: left;
+        margin-right: 1em;
+    }
+
+    .price {
+        float: right;
+        margin-left: 1em;
+    }
+
+    .list:after {
+        content: '';
+        border-bottom: dotted;
+        display: block;
+        overflow: hidden;
+        height: 0.6em;
+    }
+
+    #invoice-POS {
+        box-shadow: 0 0 1in -0.25in rgba(0, 0, 0, 0.5);
+        padding: 2mm;
+        margin: 0 auto;
+        width: 80mm;
+        background: #FFF;
+
+    }
+
+    h1 {
+        font-size: 1.5em;
+        color: #222;
+    }
+
+    h2 {
+        font-size: .9em;
+    }
+
+    h3 {
+        font-size: 1.2em;
+        font-weight: 300;
+        line-height: 2em;
+    }
+
+    p {
+        font-size: 13px;
+        color: #666;
+        font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+        /*font-family: 'JuneBug';*/
+        /*line-height: 1.2em;*/
+    }
+
+    #top,
+    #mid,
+    #bot {
+        /* Targets all id with 'col-' */
+        border-bottom: 1px solid #EEE;
+    }
+
+    #top {
+        min-height: 100px;
+    }
+
+    #mid {
+        min-height: 80px;
+    }
+
+    #bot {
+        min-height: 50px;
+    }
+
+    .info {
+        display: block;
+        float: left;
+        margin-left: 0;
+    }
+
+    .title {
+        float: right;
+    }
+
+    .title p {
+        text-align: right;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    td {
+        padding: 5px 0 5px 15px;
+        border: 1px solid #EEE
+    }
+
+    .tabletitle {
+        padding: 5px;
+        font-size: .5em;
+        background: #EEE;
+    }
+
+    .service {
+        border-bottom: 1px solid #EEE;
+    }
+
+    .item {
+        width: 24mm;
+    }
+
+    .itemtext {
+        font-size: .5em;
+    }
+
+    #legalcopy {
+        margin-top: 5mm;
+    }
+
+    .hh_p {
+        font-size: 14px !important;
+    }
+</style>
+
+<div class="content-wrapper">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="row">
+                <div class="col-12 col-xl-8 mb-4 mb-xl-0">
+                </div>
+                <div class="col-12 col-xl-4">
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row mt-3">
+        <div class="col-md-4 col-sm-4 col-12 grid-margin stretch-card">
+
+        </div>
+
+        <div class="col-md-4 col-sm-4 col-12">
+            <div class="">
+                <div class="" id="printThis">
+
+
+                    <div class="pb-5" id="invoice-POS">
+                        <center>
+                            <img src="/images/new_logo.png" width="250px" alt="logo">
+                            <h5>TRUST FIRST</h5>
+                        </center>
+                        <div>
+                            <p id="pp">Cargo Receipt</br>
+                            Booking Id :USIRI2907319</br>
+                            Brand name :Usiri Transportation Services
+                            </br></br>
+                            Journey route :DAR ES SALAAM - DODOMA</br>
+                            Shiping date :2024-10-24
+                            </br><br>
+                            Paid amount :TSH 2,000.00
+                            <br><br>
+                            Sender details<br>
+                            Sender name :Bob rich<br>
+                            Sender phone :0768448525<br>
+                            Receiver name :Babu mkali<br>
+                            Receiver phone :0614928525<br>
+                            Cargo name :Kitu poaa<br>
+                            Cargo weight :0.5kg<br>
+                            Cargo value :TSH 50000
+                            <br><br>
+                            Agent name :Anna Usiri<br>
+                            Agent phone :0768448525<br>
+                            Bus company :Usiri Transportation Services<br>
+                            Company phone :0768448525<br>
+                            CUSTOMER SERVICES :0768448525<br>
+                            DSM URAFIKI :0768448525<br>
+                            DODOMA :0768448525<br>
+                            MAKUMBUSHO :0768448525<br>
+                            <img id="codebar-img"
+                                    src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAARIAAAB6CAYAAABz59ygAAAABmJLR0QA/wD/AP+gvaeTAAANc0lEQVR4nO3ce2xTZR8H8G/brd1kY4z7AIFtyDaQMhAwwBjJuIgmAgFJ5OIgG1TZgBkkoi5gjAETxkVRJyGgSCQqGFAZlxjk2gWGCYRbhIiTaRAGFIRt3Nbxff94s76UtlvhwfCSfD9J/+B3fuc5zzmkX855TtVCkhARMWB91BMQkcefgkREjClIRMSYgkREjClIRMSYgkREjClIRMSYgkREjClIRMRYRLiNFovF78/1P4itr9/7A9nG6qHGud/6/R73/22ej2r8hzWfh3U9H1b/o/p7/7fn829f53DroeiORESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMWUjyUU9CRB5vuiMREWMKEhExpiAREWMKEhExpiAREWMKEhExpiAREWMKkgd04cIFzJ07F5mZmWjXrh2ioqKQlJSEkSNHYufOnUH38Xq9WLp0Kfr164eWLVsiLi4OTqcTCxcuxLVr1/x6Z8+eDYvF0uBn2rRpvv558+Y12j9hwgS/Y/Ts2TNkb0FBQcD86+rq8NFHH6Fnz56Ijo5GTEwMnn32Waxduxbh/Bxp3759sNlssFgsWL16dcD2pUuXYtSoUUhMTER0dDTatm2LjIwMFBcXw+v1Bh3z/PnzyM3NRUJCAhwOB1JTU7FkyRLU1dUF9LrdbuTl5cHpdCI2NhZt2rTBoEGDUFxcHLRfwhfxqCfwuCovL8eiRYuQnJyMHj16IC4uDufPn8eWLVtQUlKC4uJivPbaa377TJo0Cd9++y2SkpIwceJEWK1W/PzzzygsLMT69etx4MABREVFAQD69++PmpqaoMfeuXMnTp8+jaysLF+tT58+cLlcQfv37t2LkydP+vXXs1qtmDp1akB9wIABAbWcnBysXbsW7dq1wyuvvAKLxYKSkhJMnjwZv//+O957772Q1+v69evIyclBZGQkbt26FbRnwYIFsNlsSEtLwzPPPIMbN27A7XYjPz8fP/30EzZt2gSLxeLr93g8GDhwIMrLyzF8+HCkpaVh27ZtmDNnDo4fP44vvvjC13v79m0MGjQIAJCcnIzMzEzU1tbC7XbD7XZj+/bt+P7772G16t/WB0J5IFevXuXZs2cD6mVlZXQ4HIyJiWFNTY2vfuTIEQJgYmIiq6urffXa2lr26dOHALh+/fpGj3vr1i22adOGLVq04M2bNxvt93q97NSpE2NjY1lVVeW3zel00m63NzoGSR48eJAA2L59e3o8Hl/d4/EwKSmJERERPH36dMj9Z82axc6dO3PKlCkEwFWrVgX0nDx5knfu3PGrXb58mU8//TQBcNu2bX7bCgoKCICzZ8/21aqrq339u3fv9tVv377N3NxcHj161G+M8vJytm3blgD4zTffhHUtJJDi9wE1bdoU7dq1C6j369cP3bp1Q3V1NcrLy331iooKAEDfvn3RpEkTXz0iIgKZmZkAgEuXLjV63I0bN6KyshLZ2dlwOByN9m/duhUVFRUYP348YmJiGu0PZceOHQCA7OxsNG/e3Fdv3rw5ZsyYAa/Xi/Xr1wfdd8+ePfjkk09QXFzsd+73SklJ8bvjAID4+HiMHDkSAHDs2DFf3ev14quvvoLFYsEbb7zhqzdp0gR5eXkA4HdHEhkZiVWrVqFHjx5+4ycmJiI3NxfAfx+95MHo0eYhO3LkCH799VdERUWhY8eOvnpaWhqsVisOHjyI6upq35fa6/Viz549iIyMDProca8VK1YAQNDHkYb6715PududO3ewcOFClJeXw+FwoH///hg7diyio6P9+i5fvgwAQcOzc+fOAICDBw8GbKupqUFubi7GjRuH559/Hlu2bAlr3vWqqqqwdetWAMBTTz3lq586dQoejwdOpzNgTiNGjAAAlJaWhnWM+nCLjY29r7nJ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"
+                                    alt="" srcset="">
+                                    <br>
+                            </p>
+                            <center>
+                            <i>----------------------------</i>
+                            <p>Asante kwa kutuchagua<br>
+                            TRUST FIRST
+                            </p>
+                           
+                            <i>----------------------------</i>
+                             <br>
+                            </center>
+                            
+                        </div>
+
+                    </div><!--End Invoice-->
+
+                </div>
+
+                <button id="on_print" class="btn btn-primary b-5">Print now</button>
+            </div>
+        </div>
+
+        <div class="col-md-4 col-sm-4 col-12 grid-margin stretch-card">
+
+        </div>
+
+    </div>
+</div>
+
+<script>
+    $('#profiles').attr('class', 'nav-item active');
+</script>
+
+<!-- main-panel ends -->
+
+<script>
+
+    $(document).on('click', '#on_print', function () {
+        //alert('Richard')
+        printJS({
+            printable: 'printThis',
+            type: 'html',
+            targetStyle: ['*'],
+            //style: `@import url('https://fonts.googleapis.com/css?family=Annie+Use+Your+Telescope');`,
+           // font: 'Annie Use Your Telescope'
+            //header: 'Hello am printing', tahoma
+            style: `#invoice-POS{width:80mm} #pp {font-family:rockwell;} @page { margin: 0mm; size: 80m 80m; } @media print { body { margin: 2mm; width: 80mm; height:auto;font_size:20px } }`,
+            //font:'tahoma'
+        })
+
+    })
+
+</script>

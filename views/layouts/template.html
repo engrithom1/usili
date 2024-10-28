@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>usiri pdf exports</title>
+    <!--link rel="stylesheet" href="../../public/css/style.css" integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous"-->
+  <style>
+ .w-50{
+  width:45%;
+ }
+ .row{
+  width:100%;
+  display: flex;
+ }
+  </style>
+  </head>
+  <body>
+    <!--div id="barcode-list" class="row">
+
+      {{#each codebars}}
+      <div class="col-sm-6 col-md-4 w-50">
+          <img class="mb-3" id="barcode-img" src="{{this.code_data}}" />
+      </div>
+      {{/each}}
+  </div-->
+  <table>
+    {{#each codebars}}
+    <tr>
+     <td>
+        <img class="" width="auto" height="auto" id="barcode-img" src="{{this.code_data}}" />
+    </td>
+     <td>
+        <img class="" width="auto" height="auto" id="barcode-img" src="{{this.code_data}}" />
+      </td>
+    </tr>
+    {{/each}}
+  </table>
+  </body>
+</html>

@@ -1,0 +1,35 @@
+<div class="table-responsive">
+    <table class="table table-striped mt-3">
+        <thead>
+            <tr class="thead-style">
+                <th>No</th>
+                <th> Branch name</th>
+                <th> Packages </th>
+                <th> Ave/pack </th>
+                <th> Total rev </th>
+
+            </tr>
+        </thead>
+        <tbody id="branch-list">
+
+            {{#each packages}}
+            <tr id="package_{{this.id}}">
+                <td>{{index_plas @index 1}}</td>
+                <td class="text-capitalize">{{this.name}}</td>
+                <td class="text-capitalize"> {{this.packages}} </td>
+                <td><label class="badge badge-success">Tsh {{price this.average}}</label></td>
+                <td><label class="badge badge-primary">Tsh {{price this.revenue}}</label></td>
+            </tr>
+            {{/each}}
+
+
+        </tbody>
+    </table>
+</div>
+
+<div class="mt-4">
+    <h4><u>Summary</u></h4>
+</div>
+<h5>Total Packages : {{price packs}}</h5>
+<h5>Average price/pack Tsh: {{price avg}}/=</h5>
+<h5>Total Income Tsh: {{price rev}}/=</h5>

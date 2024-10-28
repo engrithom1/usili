@@ -1,0 +1,214 @@
+<style>
+    .loading-hiden {
+        display: none;
+    }
+
+    .loading-show {
+        display: contents;
+    }
+</style>
+
+<div class="content-wrapper">
+    <div class="row mb-3">
+        <div class="col-md-12">
+            <div class="row">
+                <div class="col-12 col-xl-8 mb-4 mb-xl-0">
+                    <h3 class="font-weight-bold">Barcode Generator</h3>
+                </div>
+                <div class="col-12 col-xl-4">
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="mb-5">
+        <form class="row gx-3 gy-2">
+
+            <div class="col-md-2 col-6">
+                <select class="form-select w-100" id="formats">
+                    <!--option disabled selected>Choose format</option-->
+                    <option value="code128" selected>Code128</option>
+                    <option disabled value="codabar">Codabar</option>
+                    <option disabled value="msi">MSI</option>
+                </select>
+            </div>
+
+            <div class="col-md-2 col-6">
+                <select class="form-select w-100" id="quantity">
+                    <option disabled selected>Choose quantity</option>
+                    <option value="20">20 Barcodes</option>
+                    <option value="30">30 Barcodes</option>
+                    <option value="50">50 Barcodes</option>
+                </select>
+            </div>
+            <div class="col-md-2 col-6">
+                <select class="form-select w-100" id="texts">
+                    <option disabled selected>Show text</option>
+                    <option value="true">Yes</option>
+                    <option value="false">No</option>
+                </select>
+            </div>
+            <div class="col-md-2 col-6">
+                <button type="button" id="generate-code" class="btn btn-primary w-100">Generate Codes</button>
+            </div>
+            <div class="col-md-2 col-6">
+                <button type="button" id="save-code" disabled="true" save="0"
+                    class="btn btn-success w-100 text-white">Save Codes</button>
+            </div>
+            <div class="col-md-2 col-6">
+                <button type="button" id="remove-code" disabled="true" save="0"
+                    class="btn btn-danger w-100 text-white">Remove Codes</button>
+            </div>
+        </form>
+    </div>
+    <div id="loading" class="loading-hiden">
+        <img class="center-block" width="500" src="/images/bar_gif.gif" alt="#" />
+    </div>
+    <div id="loading-normal" class="loading-hiden">
+        <img class="center-block" width="500" src="/images/cupertino.gif" alt="#" />
+    </div>
+    <div id="barcode-list" class="row">
+
+    </div>
+</div>
+
+<script>
+    function validateFormat(format) {
+
+        if (format == '' || format == null) {
+            alert('Format is required')
+            return false;
+        } else {
+            return true;
+        }
+
+    }
+
+    function validateQuantity(quantity) {
+
+        if (quantity == '' || quantity == null) {
+            alert('Quantity is required')
+            return false;
+        } else {
+            return true;
+        }
+
+    }
+
+    function validateText(text) {
+
+        if (text == '' || text == null) {
+            alert('Text is required')
+            return false;
+        } else {
+            return true;
+        }
+
+    }
+
+    $('#generate_code').attr('class', 'nav-item active');
+
+    ///this is now used to make payment not sending codes
+    $(document).on('click', '#generate-code', function () {
+
+        const quantity = $('#quantity').val();
+        const texts = $('#texts').val();
+        const formats = $('#formats').val();
+
+        if (validateFormat(formats) && validateQuantity(quantity) && validateText(texts)) {
+            $('#loading').attr('class', 'loading-show')
+
+            $.ajax({
+                url: '/code-generator',
+                method: 'POST',
+                data: {
+                    quantity, texts, formats
+                }
+            })
+                .then((response) => {
+                    $('#loading').attr('class', 'loading-hiden')
+
+                    $('#barcode-list').html(response);
+                    $('#save-code').removeAttr('disabled')
+                    $('#save-code').attr('save', '1')
+                    $('#remove-code').removeAttr('disabled')
+                    $('#remove-code').attr('save', '1')
+                })
+                .catch((error) => {
+                    console.log(error)
+                    $('#loading').attr('class', 'loading-hiden')
+                    alert('Check internet, try again')
+                });
+        }
+    })
+
+    $(document).on('click', '#save-code', function () {
+        var save = $(this).attr('save');
+
+        if (save == 1) {
+            if (confirm('Are you sure want to save this barcodes')) {
+                $('#loading-normal').attr('class', 'loading-show')
+                $.ajax({
+                    url: '/save-barcodes',
+                    method: 'POST',
+                    data: {
+
+                    }
+                })
+                    .then((response) => {
+                        $('#loading-normal').attr('class', 'loading-hiden')
+                        if (response.status == 'good') {
+                            $('#barcode-list').html("<h3 class='text-info text-center'>Barcodes saved successfuly</h3>");
+                        } else {
+                            alert(response.msg)
+                        }
+
+                    })
+                    .catch((error) => {
+                        console.log(error)
+                        $('#loading-normal').attr('class', 'loading-hiden')
+                        alert('Check internet, try again')
+                    });
+
+            }
+        } else {
+            alert('Nothing to save')
+        }
+    })
+
+    $(document).on('click', '#remove-code', function () {
+        var save = $(this).attr('save');
+
+        if (save == 1) {
+           if (confirm('Are you sure want to remove this barcodes')) {
+                $('#loading-normal').attr('class', 'loading-show')
+                $.ajax({
+                    url: '/remove-barcodes',
+                    method: 'POST',
+                    data: {
+
+                    }
+                })
+                    .then((response) => {
+                        $('#loading-normal').attr('class', 'loading-hiden')
+                        if (response.status == 'good') {
+                                $('#barcode-list').html("<h3 class='text-info text-center'>Barcodes removed successfuly</h3>");
+                        } else {
+                            alert(response.msg)
+                        }
+
+                    })
+                    .catch((error) => {
+                        console.log(error)
+                        $('#loading-normal').attr('class', 'loading-hiden')
+                        alert('Check internet, try again')
+                    });
+
+            }
+        } else {
+            alert('Nothing to remove')
+        }
+    })
+
+</script>

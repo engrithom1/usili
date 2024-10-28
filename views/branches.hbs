@@ -1,0 +1,415 @@
+<div class="content-wrapper">
+    <div class="row mb-3">
+        <div class="col-md-12">
+            <div class="row">
+                <div class="col-12 d-flex justify-content-between">
+                    <h3 class="font-weight-bold">Destination Branches</h3>
+                    {{#if (if_equal userInfo.user.role 3)}}
+                    <button type="button" data-bs-toggle="modal" data-bs-target="#createModal"
+                        class="btn btn-primary me-2">Add Destination</button>
+                    {{/if}}
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <div class="space-y"></div>
+    <div class="row">
+        {{#each branches}}
+        <div id="branch_{{this.id}}" class="col-sm-6 col-md-4 grid-margin stretch-card">
+            <div class="card tale-bg">
+                <div class="card-people mt-auto">
+                    <img class="package-branch-img" src="/images/{{this.thumbnail}}" height="100%" alt="{{this.name}}">
+                    <div class="weather-info">
+                        <div class="d-flex">
+                            <div class="ms-2">
+                                <h3 class="location font-weight-normal">{{this.name}}</h3>
+                                <h4 class="font-weight-normal">{{this.region}}</h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="m-2">
+                    <button type="button" branch-id="{{this.id}}" class="btn view_btn btn-info btn-icon">
+                        <i class="ti-eye"></i>
+                    </button>
+                    <button type="button" branch-id="{{this.id}}" class="edit_btn btn btn-success btn-icon">
+                        <i class="fa fa-edit"></i>
+                    </button>
+                    <button type="button" branch-image="{{this.thumbnail}}" branch-id="{{this.id}}"
+                        class="delete_btn btn btn-danger btn-icon">
+                        <i class="fa fa-times"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        {{/each}}
+    </div>
+</div>
+
+
+<!-- create Modal -->
+<div class="modal fade mobile-full-width" id="createModal" tabindex="-1" data-bs-backdrop="static"
+    data-bs-keyboard="false" role="dialog" aria-labelledby="createModal" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="font-weight-bold">Create Branches</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                </button>
+            </div>
+            <div class="container mt-3 mb-3">
+                <form action="/create-branch" method="post" enctype="multipart/form-data">
+                    <div class="create-post-body">
+                        <div class="row">
+                            <div class="col-sm-12 col-md-8">
+                                <div class="row">
+                                    <div class="col-sm-6 col-md-6">
+                                        <div class="form-group">
+                                            <label class="">Region *</label>
+                                            <select name="region" class="form-select form-control">
+                                                <option value="Arusha">Arusha</option>
+                                                <option value="Dar es Salaam"> Dar es Salaam</option>
+                                                <option value="Dodoma">Dodoma</option>
+                                                <option value="Geita">Geita</option>
+                                                <option value="Iringa">Iringa</option>
+                                                <option value="Kagera">Kagera</option>
+                                                <option value="Katavi">Katavi</option>
+                                                <option value="Kigoma">Kigoma</option>
+                                                <option value="Kilimanjaro">Kilimanjaro</option>
+                                                <option value="Lindi">Lindi</option>
+                                                <option value="Manyara">Manyara</option>
+                                                <option value="Mara">Mara</option>
+                                                <option value="Mbeya">Mbeya</option>
+                                                <option value="Morogoro">Morogoro</option>
+                                                <option value="Mtwara">Mtwara</option>
+                                                <option value="Mwanza">Mwanza</option>
+                                                <option value="Njombe">Njombe</option>
+                                                <option value="Pemba">Pemba</option>
+                                                <option value="Pwani">Pwani</option>
+                                                <option value="Rukwa">Rukwa</option>
+                                                <option value="Ruvuma">Ruvuma</option>
+                                                <option value="Shinyanga">Shinyanga</option>
+                                                <option value="Simiyu">Simiyu</option>
+                                                <option value="Singida">Singida</option>
+                                                <option value="Tabora">Tabora</option>
+                                                <option value="Tanga">Tanga</option>
+                                                <option value="Zanzibar">Zanzibar</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="">District *</label>
+                                            <input name="district" class="form-control" maxlength="25" required
+                                                type="text" placeholder="Temeke">
+
+                                        </div>
+                                    </div>
+
+                                    <div class="col-sm-6 col-md-6">
+                                        <div class="form-group">
+                                            <label class="form-label">Location *</label>
+                                            <input name="location" class="form-control" maxlength="60" required
+                                                type="text" placeholder="Ward or street">
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="form-label">Branch name *</label>
+                                            <input name="name" class="form-control" maxlength="25" required type="text"
+                                                placeholder="any name eg Shekilango">
+                                        </div>
+                                    </div>
+
+
+                                    <div class="col-sm-12 col-md-12">
+                                        <div class="form-group mt_2">
+                                            <label class="form-label">Description*</label>
+                                            <textarea name="description" class="form-control" rows="5"
+                                                style="width: 100% !important;"
+                                                placeholder="Any additional details…"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-6 col-md-4 mb-3">
+
+                                <div class="w-100">
+                                    <label class="form-label">Choose branch Image or leave a default image (width 400px
+                                        height 250px)*</label>
+                                    <img id="output" width="300px" height="180px" src="/images/branch.png"
+                                        class="user-profile-img" alt="">
+                                </div>
+                                <div class="drag-file-area">
+                                    <label class="label"><span class="browse-files"> <input name="thumbnail" type="file"
+                                                accept="image/*"
+                                                onchange="document.getElementById('output').src = window.URL.createObjectURL(this.files[0])"
+                                                class="default-file-input" /> <span class="browse-files-text">browse
+                                                file</span></span> </label>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="create-post-bottom">
+                        <button class="btn btn-primary" type="submit">Create Branch</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- edit modal-->
+<div class="modal fade mobile-full-width" id="editModal" tabindex="-1" data-bs-backdrop="static"
+    data-bs-keyboard="false" role="dialog" aria-labelledby="editModal" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="font-weight-bold">Edit Branches Info</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                </button>
+            </div>
+            <div class="container mt-3 mb-3">
+                <form id="edit_form" action="/update-branch" method="post" enctype="multipart/form-data">
+                    <div class="edit-post-body">
+                        <div class="row">
+                            <div class="col-sm-12 col-md-8">
+                                <div class="row">
+                                    <div class="col-sm-6 col-md-6">
+                                        <div class="form-group">
+                                            <label class="">Region *</label>
+                                            <select id="region" name="region" class="form-select form-control">
+                                                <option value="Arusha">Arusha</option>
+                                                <option value="Dar es Salaam"> Dar es Salaam</option>
+                                                <option value="Dodoma">Dodoma</option>
+                                                <option value="Geita">Geita</option>
+                                                <option value="Iringa">Iringa</option>
+                                                <option value="Kagera">Kagera</option>
+                                                <option value="Katavi">Katavi</option>
+                                                <option value="Kigoma">Kigoma</option>
+                                                <option value="Kilimanjaro">Kilimanjaro</option>
+                                                <option value="Lindi">Lindi</option>
+                                                <option value="Manyara">Manyara</option>
+                                                <option value="Mara">Mara</option>
+                                                <option value="Mbeya">Mbeya</option>
+                                                <option value="Morogoro">Morogoro</option>
+                                                <option value="Mtwara">Mtwara</option>
+                                                <option value="Mwanza">Mwanza</option>
+                                                <option value="Njombe">Njombe</option>
+                                                <option value="Pemba">Pemba</option>
+                                                <option value="Pwani">Pwani</option>
+                                                <option value="Rukwa">Rukwa</option>
+                                                <option value="Ruvuma">Ruvuma</option>
+                                                <option value="Shinyanga">Shinyanga</option>
+                                                <option value="Simiyu">Simiyu</option>
+                                                <option value="Singida">Singida</option>
+                                                <option value="Tabora">Tabora</option>
+                                                <option value="Tanga">Tanga</option>
+                                                <option value="Zanzibar">Zanzibar</option>
+                                            </select>
+                                            <input type="hidden" id="branch_id" name="branch_id" />
+                                            <input type="hidden" id="og_filename" name="og_filename" />
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="">District *</label>
+                                            <input name="district" id="district" class="form-control" maxlength="25"
+                                                required type="text" placeholder="Temeke">
+                                        </div>
+                                    </div>
+
+                                    <div class="col-sm-6 col-md-6">
+                                        <div class="form-group">
+                                            <label class="form-label">Location *</label>
+                                            <input name="location" id="location" class="form-control" maxlength="60"
+                                                required type="text" placeholder="Ward or street">
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="form-label">Branch name *</label>
+                                            <input name="name" id="name" class="form-control" maxlength="15" required
+                                                type="text" placeholder="any name eg Shekilango">
+                                        </div>
+                                    </div>
+
+                                    <div class="col-sm-12 col-md-12">
+                                        <div class="form-group mt_2">
+                                            <label class="form-label">Description*</label>
+                                            <textarea name="description" id="description" class="form-control" rows="5"
+                                                style="width: 100% !important;"
+                                                placeholder="Any additional details…"></textarea>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            <div class="col-sm-6 col-md-4 mb-3">
+
+                                <div class="form-group">
+                                    <div class="form-group">
+                                        <label class="">Status *</label>
+                                        <select id="status" name="status" class="form-select form-control">
+                                            <option value="1">Active</option>
+                                            <option value="0">Inactive</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="w-100">
+                                    <label class="form-label">Choose branch Image or leave a default image (width 400px
+                                        height 250px)*</label>
+                                    <img id="thumb_edit" width="300px" height="180px" src="" class="user-profile-img"
+                                        alt="">
+                                </div>
+                                <div class="drag-file-area">
+                                    <label class="label"><span class="browse-files"> <input name="thumbnail" type="file"
+                                                accept="image/*"
+                                                onchange="document.getElementById('thumb_edit').src = window.URL.createObjectURL(this.files[0])"
+                                                class="default-file-input" /> <span class="browse-files-text">browse
+                                                file</span></span> </label>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="create-post-bottom">
+                        <button class="btn btn-primary" type="submit">Edit Branch</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- view modal-->
+<div class="modal fade mobile-full-width" id="viewModal" tabindex="-1" data-bs-backdrop="static"
+    data-bs-keyboard="false" role="dialog" aria-labelledby="viewModal" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="font-weight-bold">Branch Info</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                </button>
+            </div>
+            <div id="branch-content" class="container mt-3 mb-3 ">
+                
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $('#branches').attr('class', 'nav-item active');
+
+    ////user infoooo
+    $(document).on('click', '.edit_btn', function () {
+
+        var branch_id = $(this).attr('branch-id');
+
+        $.ajax({
+            url: '/get-edit-branch',
+            method: 'POST',
+            data: {
+                branch_id
+            }
+        })
+            .then((response) => {
+
+                console.log(response)
+                if (response.status == 'good') {
+
+                    $('#name').val(response.data.name)
+                    $('#region').val(response.data.region)
+                    $('#district').val(response.data.district)
+                    $('#location').val(response.data.location)
+                    $('#description').val(response.data.description)
+                    $('#status').val(response.data.status)
+                    $('#og_filename').val(response.data.thumbnail)
+                    $('#branch_id').val(response.data.id)
+                    $('#thumb_edit').attr('src', '/images/' + response.data.thumbnail)
+
+                    $('#editModal').modal('show')
+                } else {
+                    alert(response.msg)
+                }
+
+            })
+            .catch((error) => {
+                console.log('error')
+            });
+
+    })
+
+    $(document).on('click', '.view_btn', function () {
+
+        var branch_id = $(this).attr('branch-id');
+
+        $.ajax({
+            url: '/get-view-branch',
+            method: 'POST',
+            data: {
+                branch_id
+            }
+        })
+            .then((response) => {
+
+
+                    $('#viewModal').modal('show')
+                    $('#branch-content').html(response)
+
+                    /*$('#view-name').val(response.data.name)
+                    $('#view-region').val(response.data.region+", "+response.data.district)
+                
+                    $('#location').val(response.data.location)
+                    $('#view-description').text(response.data.description)
+                    $('#status').val(response.data.status)
+                    $('#view-img').attr('src', '/images/' + response.data.thumbnail)
+*/
+               
+
+            })
+            .catch((error) => {
+                console.log('error')
+            });
+
+    })
+
+    $(document).on('click', '.delete_btn', function () {
+
+        var branch_id = $(this).attr('branch-id');
+        var branch_image = $(this).attr('branch-image');
+        if (confirm('Are you sure want to delete this Branch')) {
+
+            $.ajax({
+                url: '/delete-branch',
+                method: 'POST',
+                data: {
+                    branch_id, branch_image
+                }
+            })
+                .then((response) => {
+
+                    console.log(response)
+                    if (response.status == 'good') {
+                        alert(response.msg)
+                        document.getElementById('branch_' + branch_id).remove()
+                    } else {
+                        alert(response.msg)
+                    }
+
+                })
+                .catch((error) => {
+                    console.log('error')
+                });
+
+        } else {
+
+        }
+
+    })
+
+    /*$(document).on('click', '#submit_edit_form', function() { 
+        $('#edit_form').submit();
+    })*/
+</script>

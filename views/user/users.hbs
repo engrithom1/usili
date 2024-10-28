@@ -1,0 +1,196 @@
+<style>
+   .divider {
+      background-color: #42b983
+   }
+   .role1{
+    background: #438b96;;
+    color: #fff;
+   }
+   .role2{
+    background: #20c997;
+    color: #fff;
+   }
+   #user-profile{
+    width:150px;
+   }
+   .info-box{
+    border: 1px #20c997 solid;
+    border-radius: 10px;
+    padding:5px
+   }
+</style>
+<div class="container main-page">
+   {{>dashbord_menu }}
+
+    <div class="row mt-3">
+        <div class="col-md-2 col-sm-4 col-6">
+            <div class="info-box text-center">
+                <h6>All Users</h6>
+                <h4>{{ users_no }}</h4>
+            </div>
+        </div>
+        <div class="col-md-2 col-sm-4 col-6">
+            <a href="/user/experts">
+            <div class="info-box text-center">
+                <h6>Experts</h6>
+                <h4>{{ expert_no }}</h4>
+            </div>
+            </a>
+        </div>
+        <!--div class="col-md-2 col-sm-4 col-6">
+            <div class="info-box text-center">
+                <h6>Last 28 days</h6>
+                <h4>{{ last_no }}</h4>
+            </div>
+        </div-->
+    </div>
+
+   <div class="card mt-3">
+      <div class="card-header">
+         <div class="d-flex justify-content-between">
+            <h5></h5>
+            <form method="post" action="" class="d-flex justify-content-between">
+                <input type="text" name="this_user" class="form-control" placeholder="username / phone no">
+                <input type="submit" value="Search" class="btn btn-secondary">
+            </form>
+         </div>
+      </div>
+      <div class="card-body">
+          <div class="table-responsive">
+            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Phone number</th>
+                        <th>Role</th>
+                        <th>Status</th>
+                        <th>Join</th>
+                        <th>Action</th>
+
+                    </tr>
+                </thead>
+                <tfoot>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Phone number</th>
+                        <th>Role</th>
+                        <th>Status</th>
+                        <th>Join</th>
+                        <th>Action</th>
+                    </tr>
+                </tfoot>
+                <tbody>
+                   {{#each users }}
+                    
+                    <tr class="role{{this.role_id}}">
+                        <td>{{ this.id }}</td>
+                        <td>{{ this.username }}</td>
+                        <td>{{ this.phone_number }}</td>
+                        <td>{{ this.role }}</td>
+                        <td>{{ this.status }}</td>
+                        <td>{{subdate this.created_at}}</td>
+                        <td>
+                            <button user-id="{{ this.user_id}}" status="{{ this.status}}" avator="{{ this.avator}}" role_id="{{ this.role_id}}" role="{{ this.role}}" phone_number="{{ this.phone_number}}" username="{{ this.username}}" user-profile="{{ this.avator}}" class="btn btn-success user-info">
+                                <i class="fa fa-edit"></i>
+                            </button>
+                            <!--a href="/account/video-list/{{this.user_id}}" class="btn btn-info">
+                                <i class="fa fa-eye"></i>
+                            </a-->
+                            
+                        </td>
+
+                    </tr>
+                   {{/each }}
+
+                </tbody>
+            </table>
+
+        </div>
+      </div>
+   </div>
+</div>   
+
+<div class="modal fade auto-off" id="userModal" tabindex="-1" role="dialog" aria-labelledby="userModal" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content content-section-form">
+
+            <div class="">
+                <div class="mt-3">
+                    <div class="d-flex justify-content-between">
+                        <h5 id="form-head">User Infomartion</h5>
+                        <button type="button" class="btn btn-danger cancel" data-dismiss="modal" aria-label="Close">X</button>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="d-flex justify-content-between col-sm-12">
+                           <img id="user-profile" src="" alt="">
+                           <div class="ml-2 text-right">
+                              <p id="username"></p>
+                              <p id="phone_number"></p>
+                              <p id="role"></p>
+                              <p id="status"></p>
+                             
+                           </div>
+                        </div>
+                        <div class="col-sm-12 mt-3">
+                        <form action="/update-user" method="post">
+                            <div class="form-group">
+                                <label for="status">Status</label>
+                                <input type="hidden" name="username" id="username_u">
+                                 <select class="form-control" name="status">
+                                    <option value="active">Active</option>
+                                    <option value="inactive">Inactive</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="role">User role</label>
+                                <select class="form-control" name="role">
+                                    {{#each roles }}
+                                    <option value="{{this.role_id}}">{{this.role}}</option>
+                                    {{/each  }}
+                                </select>
+                            </div>    
+                            <div class="d-flex form-group mt-2 justify-content-between">
+                                <i></i>
+                                <div>
+                                    <input class="btn btn-secondary" type="submit" value="Update"/>
+                                </div>
+                                
+                            </div>
+                        </form>
+                    </div>
+                    </div>
+                </div>
+                
+            </div>
+            
+        </div>
+    </div>
+</div>
+
+<script>
+$(document).on('click', '.user-info', function() { 
+
+    var username = $(this).attr('username');
+    var avator = $(this).attr('avator');
+    var phone_number = $(this).attr('phone_number');
+    var role = $(this).attr('role');
+    var role_id = $(this).attr('role_id');
+    var status = $(this).attr('status');
+
+    if(role_id == 1){
+        alert('To change Admin, Contact to Adminstrator')
+    }else{
+        $('#user-profile').attr('src','/images/'+avator)
+        $('#username').text(username)
+        $('#phone_number').text(phone_number)
+        $('#role').text(role)
+        $('#status').text(status)
+        $('#username_u').val(username)
+
+        $('#userModal').modal('show')
+    }
+})    
+</script>

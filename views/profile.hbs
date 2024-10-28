@@ -1,0 +1,231 @@
+<style>
+  #invoice-POS {
+    box-shadow: 0 0 1in -0.25in rgba(0, 0, 0, 0.5);
+    padding: 2mm;
+    margin: 0 auto;
+    width: 80mm;
+    background: #FFF;
+
+
+    ::selection {
+      background: #f31544;
+      color: #FFF;
+    }
+
+    ::moz-selection {
+      background: #f31544;
+      color: #FFF;
+    }
+
+    h1 {
+      font-size: 1.5em;
+      color: #222;
+    }
+
+    h2 {
+      font-size: .9em;
+    }
+
+    h3 {
+      font-size: 1.2em;
+      font-weight: 300;
+      line-height: 2em;
+    }
+
+    p {
+      font-size: .7em;
+      color: #666;
+      line-height: 1.2em;
+    }
+
+    #top,
+    #mid,
+    #bot {
+      /* Targets all id with 'col-' */
+      border-bottom: 1px solid #EEE;
+    }
+
+    #top {
+      min-height: 100px;
+    }
+
+    #mid {
+      min-height: 80px;
+    }
+
+    #bot {
+      min-height: 50px;
+    }
+
+    #top .logo {
+      //float: left;
+      height: 60px;
+      width: 60px;
+      background: url(http://michaeltruong.ca/images/logo1.png) no-repeat;
+      background-size: 60px 60px;
+    }
+
+    .clientlogo {
+      float: left;
+      height: 60px;
+      width: 60px;
+      background: url(http://michaeltruong.ca/images/client.jpg) no-repeat;
+      background-size: 60px 60px;
+      border-radius: 50px;
+    }
+
+    .info {
+      display: block;
+      //float:left;
+      margin-left: 0;
+    }
+
+    .title {
+      float: right;
+    }
+
+    .title p {
+      text-align: right;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    td {
+      //padding: 5px 0 5px 15px;
+      //border: 1px solid #EEE
+    }
+
+    .tabletitle {
+      //padding: 5px;
+      font-size: .5em;
+      background: #EEE;
+    }
+
+    .service {
+      border-bottom: 1px solid #EEE;
+    }
+
+    .item {
+      width: 24mm;
+    }
+
+    .itemtext {
+      font-size: .5em;
+    }
+
+    #legalcopy {
+      margin-top: 5mm;
+    }
+
+    .hh_p {
+      font-size: 10px !important;
+    }
+
+  }
+</style>
+
+<div class="content-wrapper">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="row">
+        <div class="col-12 col-xl-8 mb-4 mb-xl-0">
+          <h3 class="font-weight-bold">Welcome <span class="text-primary">{{userInfo.user.fulname}}</span></h3>
+        </div>
+        <div class="col-12 col-xl-4">
+
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row mt-3">
+
+    <div class="col-md-6 col-sm-6 col-12 grid-margin stretch-card">
+      <div class="card">
+        <div class="card-body" id="">
+
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-6 col-sm-6 col-12 grid-margin stretch-card">
+      <div class="card">
+        <div class="card-body">
+
+          <h4 class="card-title">Change Password</h4>
+
+          <div class="mt-3">
+
+            <div>
+              <div class="form-group">
+                <label for="cpassword">Current Password</label>
+                <input class="form-control" type="password" id="cpassword" name="cpassword" />
+                <input type="hidden" class="form-control" value="{{userInfo.user.email}}" id="cp_username">
+              </div>
+
+              <div class="form-group">
+                <label for="npassword">New Password</label>
+                <input class="form-control" type="password" id="npassword" name="npassword" />
+              </div>
+
+              <div class="form-group">
+                <label for="cmpassword">Confirm Password</label>
+                <input class="form-control" type="password" id="cmpassword" name="cmpassword" />
+              </div>
+              <button id="change_password" class="btn btn-primary">Reset Password</button>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+
+  </div>
+</div>
+
+<script>
+  $('#profiles').attr('class', 'nav-item active');
+</script>
+
+<!-- main-panel ends -->
+
+<script>
+
+  ///change passwod
+  $(document).on('click', '#change_password', function () {
+
+    var npassword = $('#npassword').val();
+    var cpassword = $('#cpassword').val();
+    var cmpassword = $('#cmpassword').val();
+
+    if (npassword.length >= 8) {
+      if (npassword == cmpassword) {
+
+        $.ajax({
+          url: '/change-password',
+          method: 'POST',
+          data: {
+            npassword, cpassword
+          }
+        })
+          .then((response) => {
+
+            alert(response.msg)
+
+          })
+          .catch((error) => {
+            console.log(error)
+          });
+      } else {
+        alert('New password do not match confirmed password')
+      }
+    } else {
+      alert('New password must not be less than 8 character')
+    }
+  });
+
+</script>

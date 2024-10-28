@@ -1,0 +1,89 @@
+<style>
+    .loading-hiden {
+        display: none;
+    }
+
+    .loading-show {
+        display: contents;
+    }
+</style>
+
+<div class="content-wrapper">
+    <div class="row mb-3">
+        <div class="col-md-12">
+            <div class="row">
+                <div class="col-md-3 col-12">
+                    {{#if codebars}}
+                    <button id="print-code-pdf" type="button" class="btn btn-primary">Print Barcodes
+                        ({{codebars.length}})</button>
+                    {{else}}
+                    <h3 class="text-center text-primary"> No Empty barcodes available in your Branch</h3>
+                    {{/if}}
+
+                </div>
+                <!--div class="col-md-3 col-12">
+                    <a href="" id="export-code-pdf" type="button" class="btn btn-success text-white">Download PDF</a>
+                </div-->
+            </div>
+        </div>
+    </div>
+    <div id="loading" class="loading-hiden">
+        <img class="center-block" width="500" src="/images/cupertino.gif" alt="#" />
+    </div>
+    <div class="mb-3"></div>
+    <div id="barcode-list" class="row">
+
+        {{#each codebars}}
+        <div class="col-sm-2 col-md-4">
+            <img class="mb-3" id="barcode-img" src="{{this.code_data}}" />
+        </div>
+        {{/each}}
+    </div>
+</div>
+
+<script>
+    $('#print_code').attr('class', 'nav-item active');
+
+    $(document).on('click', '#print-code-pdf', function () {
+
+        $('#loading').attr('class', 'loading-show')
+        $.ajax({
+            url: '/print-barcode-pdf',
+            method: 'POST',
+            data: {
+
+            }
+        })
+            .then((response) => {
+
+                if (response.status == 'good') {
+                    setTimeout(function () {
+
+                        alert(response.message)
+                        console.log(response)
+                        $('#loading').attr('class', 'loading-hiden')
+                        //$('#export-code-pdf').attr('class', 'btn btn-primary dwn-show')
+
+                        //$('#export-code-pdf').attr('href', '/outputFiles/' + response.file_url)
+                        //$('#export-code-pdf').attr('download', response.file_url)
+                        //window.open('https://support.wwf.org.uk', '_blank');
+                        window.location.replace('/outputFiles/' + response.file_url);
+                    }, 5000);
+
+                } else {
+                    $('#loading').attr('class', 'loading-hiden')
+                    alert(response.message)
+                }
+
+            })
+            .catch((error) => {
+                console.log(error)
+                $('#loading').attr('class', 'loading-hiden')
+                alert('Check internet, try again')
+            });
+
+
+
+    })
+
+</script>

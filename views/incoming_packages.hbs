@@ -1,0 +1,768 @@
+<style>
+    .loading-hiden {
+        display: none;
+    }
+
+    .loading-show {
+        display: contents;
+    }
+    .h-btn{
+        min-width: 200px;
+    }
+</style>
+
+<div class="content-wrapper">
+    <div class="row mb-3">
+        <div class="col-md-12">
+            <div class="row">
+                <div class="col-12 col-xl-8 mb-4 mb-xl-0">
+                    <h3 class="font-weight-bold">Incoming Packages</h3>
+                </div>
+                <div class="col-12 col-xl-4">
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+           
+            <div class="d-flex justify-content-between table-responsive">
+                <span></span>
+                <!--button id="hanging_btn" class="btn btn-dark h-btn">Hanging Package</button-->
+                <div class="d-flex">
+                    <!--select class="form-select form-control simple-select" name="branch_select" id="branch_select">
+                        {{#if branches}}
+                        <option selected="true" value="0">All Location(Branch)</option>
+                        {{/if}}
+                        {{#each branches}}
+                        <option value="{{this.id}}">{{this.name}}</option>
+                        {{/each}}
+                    </select-->
+                    <select class="form-select form-control simple-select" name="package_tag" id="package_tag">
+                        {{#each tags}}
+                        <option value="{{this.id}}">{{substr 14 this.name}}</option>
+                        {{/each}}
+                        <option selected="true" value="0">All Type</option>
+                    </select>
+
+                    <button id="filter_btn" class="btn btn-primary simple-btn">Filter</button>
+                </div>
+            </div>
+
+            <div class="table-responsive">
+                <div id="loading" class="loading-hiden">
+                    <img class="center-block" width="350" src="/images/cupertino.gif" alt="#" />
+                </div>
+                <table class="table table-striped mt-3">
+                    <thead>
+                        <tr class="thead-style">
+                            <th>No</th>
+                            <th> Package name</th>
+                            <th>Price</th>
+                            <th> Receiver name </th>
+                            <th> Receiver phone </th>
+                            <th> Sender branch </th>
+                            <th> Sender staff </th>
+                            <th> Date issue </th>
+                            <th> Action </th>
+                        </tr>
+                    </thead>
+                    <tbody id="incoming-list">
+
+                        {{#each packages}}
+                        <tr id="package_{{this.id}}">
+                            <td>{{index_plas @index 1}}</td>
+                            <td class="text-capitalize">{{this.name}}</td>
+                            <td>{{this.price}}</td>
+                            <td class="text-capitalize"> {{this.receiver_name}} </td>
+                            <td> {{this.receiver_phone}}</td>
+                            <td><label class="badge badge-primary">{{this.bname}}</label></td>
+                            <td> <label class="badge badge-success">{{fulname}}</label></td>
+                            <td> {{subdate this.created_at}}</td>
+                            <td>
+                                <button type="button" pprice="{{this.price}}" pid="{{this.id}}" bid="{{this.bid}}" pname="{{this.name}}"
+                                    pbranch="{{this.bname}}" pimage="{{this.thumbnail}}" branch-id="{{this.id}}"
+                                    class="btn receive_btn btn-primary btn-icon">
+                                    <i class="fa fa-eye"></i>
+                                </button>
+                            </td>
+                        </tr>
+                        {{/each}}
+                    </tbody>
+                </table>
+            </div>
+            <input type="hidden" name="action-type" id="action-type">
+            <input type="hidden" name="barcode_id" id="code-text">
+            <input class="form-control" type="hidden" name="" id="package-id">
+        </div>
+    </div>
+</div>
+
+<div class="modal fade mobile-full-width" id="receiveModal" tabindex="-1" data-bs-backdrop="static"
+    data-bs-keyboard="false" role="dialog" aria-labelledby="receiveModal" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="font-weight-bold">Receive Package</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                </button>
+            </div>
+            <div class="container mt-3 mb-3">
+               
+                <div id="package-receive-details" class="loading-hiden">
+                   <div class="row mb-5">
+                     <div class="col-sm-6 col-md-4">
+                        <h4 class="mb-3">Package Owners</h4>
+                        <h5><b>Sender name: </b><i id="sender_name"></i></h5>
+                        <h5><b>Sender phone: </b><i id="sender_phone"></i></h5>
+                        <br>
+                        <h5><b>Receiver name: </b><i id="receiver_name"></i></h5>
+                        <h5><b>Receiver phone: </b><i id="receiver_phone"></i></h5>
+                     </div>
+                     <div class="col-sm-6 col-md-4">
+                        <h4 class="mb-3">Staffs & Transporter</h4>
+                        <h5><b>Staff name: </b><i id="staff_name"></i></h5>
+                        <h5><b>Staff phone: </b><i id="staff_phone"></i></h5>
+                        <br>
+                        <h5><b>Transporter name: </b><i id="transporter_name"></i></h5>
+                        <h5><b>Transporter phone: </b><i id="transporter_phone"></i></h5>
+                        <br>
+                        <h5><b>Create at: </b><i id="created_at"></i></h5>
+                     </div>
+                     <div class="col-sm-6 col-md-4">
+                        <h4>Package Descriptions</h4>
+                        <p id="description"></p>
+                        <br>
+                        <div id="edit-description-status" class="loading-hiden">
+                            <h5>Edited</h5>
+                            <!--p>By : <b>Sambokile kindeki</b></p-->
+                            <p id="edit-description"></p>
+                        </div>
+                     </div>
+                   </div>
+                   
+                </div>
+                <div class="row">
+                    <div class="col-sm-6 col-md-4 grid-margin stretch-card">
+                        <div class="card tale-bg">
+                            <div class="card-people mt-auto">
+                                <img class="package-branch-img" id="edit-img" src="" alt="">
+                                <div class="weather-info">
+                                    <div class="d-flex">
+                                        <div class="ms-2">
+                                            <h3 id="edit-pname" class="location font-weight-normal"></h3>
+                                            <h4 id="edit-bname" class="font-weight-normal"></h4>
+                                            <h4 id="edit-pprice" class="font-weight-normal"></h4>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-md-4">
+                        
+                        <div id="reading-bar-edit" class="scanner-area">
+                            <div class="pt-3 pb-3">
+                                <img id="codebar-img-edit"
+                                    src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAARIAAAB6CAYAAABz59ygAAAABmJLR0QA/wD/AP+gvaeTAAANc0lEQVR4nO3ce2xTZR8H8G/brd1kY4z7AIFtyDaQMhAwwBjJuIgmAgFJ5OIgG1TZgBkkoi5gjAETxkVRJyGgSCQqGFAZlxjk2gWGCYRbhIiTaRAGFIRt3Nbxff94s76UtlvhwfCSfD9J/+B3fuc5zzmkX855TtVCkhARMWB91BMQkcefgkREjClIRMSYgkREjClIRMSYgkREjClIRMSYgkREjClIRMRYRLiNFovF78/1P4itr9/7A9nG6qHGud/6/R73/22ej2r8hzWfh3U9H1b/o/p7/7fn829f53DroeiORESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMWUjyUU9CRB5vuiMREWMKEhExpiAREWMKEhExpiAREWMKEhExpiAREWMKkgd04cIFzJ07F5mZmWjXrh2ioqKQlJSEkSNHYufOnUH38Xq9WLp0Kfr164eWLVsiLi4OTqcTCxcuxLVr1/x6Z8+eDYvF0uBn2rRpvv558+Y12j9hwgS/Y/Ts2TNkb0FBQcD86+rq8NFHH6Fnz56Ijo5GTEwMnn32Waxduxbh/Bxp3759sNlssFgsWL16dcD2pUuXYtSoUUhMTER0dDTatm2LjIwMFBcXw+v1Bh3z/PnzyM3NRUJCAhwOB1JTU7FkyRLU1dUF9LrdbuTl5cHpdCI2NhZt2rTBoEGDUFxcHLRfwhfxqCfwuCovL8eiRYuQnJyMHj16IC4uDufPn8eWLVtQUlKC4uJivPbaa377TJo0Cd9++y2SkpIwceJEWK1W/PzzzygsLMT69etx4MABREVFAQD69++PmpqaoMfeuXMnTp8+jaysLF+tT58+cLlcQfv37t2LkydP+vXXs1qtmDp1akB9wIABAbWcnBysXbsW7dq1wyuvvAKLxYKSkhJMnjwZv//+O957772Q1+v69evIyclBZGQkbt26FbRnwYIFsNlsSEtLwzPPPIMbN27A7XYjPz8fP/30EzZt2gSLxeLr93g8GDhwIMrLyzF8+HCkpaVh27ZtmDNnDo4fP44vvvjC13v79m0MGjQIAJCcnIzMzEzU1tbC7XbD7XZj+/bt+P7772G16t/WB0J5IFevXuXZs2cD6mVlZXQ4HIyJiWFNTY2vfuTIEQJgYmIiq6urffXa2lr26dOHALh+/fpGj3vr1i22adOGLVq04M2bNxvt93q97NSpE2NjY1lVVeW3zel00m63NzoGSR48eJAA2L59e3o8Hl/d4/EwKSmJERERPH36dMj9Z82axc6dO3PKlCkEwFWrVgX0nDx5knfu3PGrXb58mU8//TQBcNu2bX7bCgoKCICzZ8/21aqrq339u3fv9tVv377N3NxcHj161G+M8vJytm3blgD4zTffhHUtJJDi9wE1bdoU7dq1C6j369cP3bp1Q3V1NcrLy331iooKAEDfvn3RpEkTXz0iIgKZmZkAgEuXLjV63I0bN6KyshLZ2dlwOByN9m/duhUVFRUYP348YmJiGu0PZceOHQCA7OxsNG/e3Fdv3rw5ZsyYAa/Xi/Xr1wfdd8+ePfjkk09QXFzsd+73SklJ8bvjAID4+HiMHDkSAHDs2DFf3ev14quvvoLFYsEbb7zhqzdp0gR5eXkA4HdHEhkZiVWrVqFHjx5+4ycmJiI3NxfAfx+95MHo0eYhO3LkCH799VdERUWhY8eOvnpaWhqsVisOHjyI6upq35fa6/Viz549iIyMDProca8VK1YAQNDHkYb6715PududO3ewcOFClJeXw+FwoH///hg7diyio6P9+i5fvgwAQcOzc+fOAICDBw8GbKupqUFubi7GjRuH559/Hlu2bAlr3vWqqqqwdetWAMBTTz3lq586dQoejwdOpzNgTiNGjAAAlJaWhnWM+nCLjY29r7nJ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"
+                                    alt="" srcset="">
+                            </div>
+
+                            <div class="d-flex">
+                               
+                                <!--input class="form-control" type="text" name="" id="input-code-edit">
+                                <button type="button" id="search-bar-edit" class="btn btn-primary">search</button-->
+                            </div>
+
+                        </div>
+                       <div id="barcode-msg-receive"></div>
+
+                        <div id="loading-bar-edit" class="loading-hiden">
+                            <img class="center-block" width="80%" src="/images/bar_gif.gif" alt="#" />
+                        </div>
+
+                    </div>
+
+                    <div class="col-sm-6 col-md-4">
+                    
+                        <!--receved form-->
+                        <div class="loading-show" id="receive-form">
+                        <div class="form-group">
+                            <label class="form-label">Receive description*</label>
+                            <textarea name="description-closed" maxlength="400" id="description-closed"
+                                class="form-control text-area-style" rows="3" style="width: 100% !important;"
+                                placeholder="give reason to remove the package">wel received</textarea>
+                        </div>
+                        
+                        <div id="loading-receive" class="loading-hiden">
+                            <img class="center-block" width="300" src="/images/cupertino.gif" alt="#" />
+                        </div>
+                        <button type="button" id="receive-package" class="btn btn-primary w-100 mt-3">Receive
+                            Package</button>
+                        </div>   
+                        <!--end received form-->   
+                    </div>
+                   
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade mobile-full-width" id="hangingModal" tabindex="-1" data-bs-backdrop="static"
+    data-bs-keyboard="false" role="dialog" aria-labelledby="hangingModal" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="font-weight-bold">Hanging Package</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                </button>
+            </div>
+            <div class="container mt-3 mb-3">  
+                
+                <div id="package-hanging-details" class="loading-hiden">
+                   <div class="row mb-5">
+                     <div class="col-sm-6 col-md-4">
+                        <h4 class="mb-3">Package Owners</h4>
+                        <h5><b>Sender name: </b><i id="sender_name_h"></i></h5>
+                        <h5><b>Sender phone: </b><i id="sender_phone_h"></i></h5>
+                        <br>
+                        <h5><b>Receiver name: </b><i id="receiver_name_h"></i></h5>
+                        <h5><b>Receiver phone: </b><i id="receiver_phone_h"></i></h5>
+                        <br>
+                        <h5><b>Price Tsh: </b><i id="price_h"></i></h5>
+                     </div>
+                     <div class="col-sm-6 col-md-4">
+                        <h4 class="mb-3">Staffs & Transporter</h4>
+                        <h5><b>Staff name: </b><i id="staff_name_h"></i></h5>
+                        <h5><b>Staff phone: </b><i id="staff_phone_h"></i></h5>
+                        <br>
+                        <h5><b>Transporter name: </b><i id="transporter_name_h"></i></h5>
+                        <h5><b>Transporter phone: </b><i id="transporter_phone_h"></i></h5>
+                        <br>
+                        <h5><b>Create at: </b><i id="created_at_h"></i></h5>
+                     </div>
+                     <div class="col-sm-6 col-md-4">
+                         <h4>Package Descriptions</h4>
+                        <p id="description_h"></p>
+                        <br>
+                        <div id="edit-description-status_h" class="loading-hiden">
+                            <h5>Edited</h5>
+                            <!--p>By : <b>Sambokile kindeki</b></p-->
+                            <p id="edit-description_h"></p>
+                        </div>
+                     </div>
+                     <div class="col-12">
+                         <h4 class="text-danger">This package can't be received to a wrong destination. please redirect the package to intended Branch or ask sender to change Destination.</h4>
+                         <h4 class="text-success" id="og_desc"></h4>
+                     </div>
+                   </div>
+                   
+                </div>
+                <div class="row">
+                    <div class="col-sm-6 col-md-4">
+                        
+                            <div class="card tale-bg">
+                            <div class="card-people mt-auto">
+                            <div id="hanging-package-info" class="loading-hiden">
+                                <img class="hanging-package-img" id="hanging-package-img" src="" alt="">
+                                <div class="weather-info">
+                                    <div class="d-flex">
+                                        <div class="ms-2">
+                                            <h3 id="hanging-pname" class="location font-weight-normal"></h3>
+                                            <h4 id="hanging-bname" class="font-weight-normal"></h4>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-md-4">
+                       
+                        <div id="reading-bar-hanging" class="scanner-area">
+                            <div class="pt-3 pb-3">
+                                <img id="codebar-img"
+                                    src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAARIAAAB6CAYAAABz59ygAAAABmJLR0QA/wD/AP+gvaeTAAANc0lEQVR4nO3ce2xTZR8H8G/brd1kY4z7AIFtyDaQMhAwwBjJuIgmAgFJ5OIgG1TZgBkkoi5gjAETxkVRJyGgSCQqGFAZlxjk2gWGCYRbhIiTaRAGFIRt3Nbxff94s76UtlvhwfCSfD9J/+B3fuc5zzmkX855TtVCkhARMWB91BMQkcefgkREjClIRMSYgkREjClIRMSYgkREjClIRMSYgkREjClIRMRYRLiNFovF78/1P4itr9/7A9nG6qHGud/6/R73/22ej2r8hzWfh3U9H1b/o/p7/7fn829f53DroeiORESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMWUjyUU9CRB5vuiMREWMKEhExpiAREWMKEhExpiAREWMKEhExpiAREWMKkgd04cIFzJ07F5mZmWjXrh2ioqKQlJSEkSNHYufOnUH38Xq9WLp0Kfr164eWLVsiLi4OTqcTCxcuxLVr1/x6Z8+eDYvF0uBn2rRpvv558+Y12j9hwgS/Y/Ts2TNkb0FBQcD86+rq8NFHH6Fnz56Ijo5GTEwMnn32Waxduxbh/Bxp3759sNlssFgsWL16dcD2pUuXYtSoUUhMTER0dDTatm2LjIwMFBcXw+v1Bh3z/PnzyM3NRUJCAhwOB1JTU7FkyRLU1dUF9LrdbuTl5cHpdCI2NhZt2rTBoEGDUFxcHLRfwhfxqCfwuCovL8eiRYuQnJyMHj16IC4uDufPn8eWLVtQUlKC4uJivPbaa377TJo0Cd9++y2SkpIwceJEWK1W/PzzzygsLMT69etx4MABREVFAQD69++PmpqaoMfeuXMnTp8+jaysLF+tT58+cLlcQfv37t2LkydP+vXXs1qtmDp1akB9wIABAbWcnBysXbsW7dq1wyuvvAKLxYKSkhJMnjwZv//+O957772Q1+v69evIyclBZGQkbt26FbRnwYIFsNlsSEtLwzPPPIMbN27A7XYjPz8fP/30EzZt2gSLxeLr93g8GDhwIMrLyzF8+HCkpaVh27ZtmDNnDo4fP44vvvjC13v79m0MGjQIAJCcnIzMzEzU1tbC7XbD7XZj+/bt+P7772G16t/WB0J5IFevXuXZs2cD6mVlZXQ4HIyJiWFNTY2vfuTIEQJgYmIiq6urffXa2lr26dOHALh+/fpGj3vr1i22adOGLVq04M2bNxvt93q97NSpE2NjY1lVVeW3zel00m63NzoGSR48eJAA2L59e3o8Hl/d4/EwKSmJERERPH36dMj9Z82axc6dO3PKlCkEwFWrVgX0nDx5knfu3PGrXb58mU8//TQBcNu2bX7bCgoKCICzZ8/21aqrq339u3fv9tVv377N3NxcHj161G+M8vJytm3blgD4zTffhHUtJJDi9wE1bdoU7dq1C6j369cP3bp1Q3V1NcrLy331iooKAEDfvn3RpEkTXz0iIgKZmZkAgEuXLjV63I0bN6KyshLZ2dlwOByN9m/duhUVFRUYP348YmJiGu0PZceOHQCA7OxsNG/e3Fdv3rw5ZsyYAa/Xi/Xr1wfdd8+ePfjkk09QXFzsd+73SklJ8bvjAID4+HiMHDkSAHDs2DFf3ev14quvvoLFYsEbb7zhqzdp0gR5eXkA4HdHEhkZiVWrVqFHjx5+4ycmJiI3NxfAfx+95MHo0eYhO3LkCH799VdERUWhY8eOvnpaWhqsVisOHjyI6upq35fa6/Viz549iIyMDProca8VK1YAQNDHkYb6715PududO3ewcOFClJeXw+FwoH///hg7diyio6P9+i5fvgwAQcOzc+fOAICDBw8GbKupqUFubi7GjRuH559/Hlu2bAlr3vWqqqqwdetWAMBTTz3lq586dQoejwdOpzNgTiNGjAAAlJaWhnWM+nCLjY29r7nJ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"
+                                    alt="" srcset="">
+                            </div>
+
+                            <div class="d-flex">
+                                <input class="form-control" type="hidden" name="" id="input-pid-edit">
+                                <!--input class="form-control" type="text" name="" id="input-code-edit">
+                                <button type="button" id="search-bar-edit" class="btn btn-primary">search</button-->
+                            </div>
+
+                        </div>
+                        <div id="barcode-msg-hanging"></div>
+
+                        <div id="loading-bar-hanging" class="loading-hiden">
+                            <img class="center-block" width="80%" src="/images/bar_gif.gif" alt="#" />
+                        </div>
+
+                    </div>
+
+                    <div class="col-sm-6 col-md-4">
+                        <div class="loading-hiden" id="redirect-form">
+                        <div class="form-group">
+                            <label class="form-label">Redirect description*</label>
+                            <textarea name="description-edit-reason" maxlength="400" id="description-redirect"
+                                class="form-control text-area-style" rows="3" style="width: 100% !important;"
+                                placeholder="give reason to remove the package"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <h5>Redirect To: <b id="redirect-branch"></b></h5>
+                            <input type="hidden" name="" id="redirect-bid">
+                            <input type="hidden" name="" id="og_desc_input">
+                            <input type="hidden" name="" id="edit_desc_input">
+                        </div>
+                        <div id="loading-redirect" class="loading-hiden">
+                            <img class="center-block" width="300" src="/images/cupertino.gif" alt="#" />
+                        </div>
+                        <button type="button" id="redirect-package" class="btn btn-primary w-100 mt-3">Redirect
+                            Package</button>
+                        </div> 
+
+                       
+                    </div>
+                   
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $('#incoming-packages').attr('class', 'nav-item active');
+
+    let code = "";
+    let reading = false;
+
+    $(document).on('click', '.btn-close', function () {
+        window.location.reload();
+    })
+
+
+    function validateBarcodes(text) {
+
+        if (text == '' || text == null) {
+            alert('Valid barcode is required')
+            return false;
+        } else {
+            return true;
+        }
+
+    }
+
+    function validateDescription(text, label) {
+
+        if (text == '' || text == null) {
+            alert(label + ' is required')
+            return false;
+        } else {
+            if (text.length > 400) {
+                alert('description must be less than 400 characters')
+                return false
+            } else {
+                return true;
+            }
+        }
+
+    }
+
+    $(document).on('click', '.receive_btn', function () {
+
+        var pname = $(this).attr('pname');
+        var pimage = $(this).attr('pimage');
+        var pbranch = $(this).attr('pbranch');
+        var pid = $(this).attr('pid');
+        var pprice = $(this).attr('pprice');
+
+        $('#action-type').val('receive')
+
+        $('#edit-pname').text(pname)
+        $('#package-id').val(pid)
+        $('#edit-bname').text('From : '+pbranch)
+        $('#edit-pprice').text('Price : Tsh '+pprice)
+        $('#edit-img').attr('src', '/images/' + pimage)
+
+        $('#receiveModal').modal('show')
+    })
+
+     $(document).on('click', '#hanging_btn', function () {
+
+        $('#action-type').val('hanging')
+
+        $('#hangingModal').modal('show')
+    })
+
+    $(document).on('click', '#receive-package', function (e) {
+        e.preventDefault()
+        try {
+
+            
+            var barcode_id = $('#code-text').val()
+            var pid = $('#package-id').val()
+            var closed_description = $('#description-closed').val()
+            
+
+            if (validateDescription(closed_description, 'Close Package description') && validateBarcodes(barcode_id)) {
+
+                if (confirm('Are you sure you Receive the package ?')) {
+
+                    $('#loading-receive').attr('class', 'loading-show')
+                    $('#receive-package').attr('disabled', true)
+
+                   
+
+                    $.ajax({
+                        url: '/receive-package',
+                        method: 'POST',
+                        data: {
+                            barcode_id, closed_description, pid
+                        }
+                    })
+                        .then((response) => {
+
+                            $('#loading-receive').attr('class', 'loading-hiden')
+                            $('#receive-package').removeAttr('disabled')
+
+                            if (response.status == 'good') {
+                                alert(response.msg)
+                                window.location.reload();
+                            } else {
+                                alert(response.msg)
+                            }
+
+                        })
+                        .catch((error) => {
+                            console.log(error)
+                            alert('Check internet, try again')
+                        });
+
+                }
+            }
+
+        } catch (error) {
+            console.log(error)
+            alert('something is wrong')
+        }
+
+    })
+
+ $(document).on('click', '#filter_btn', function () {
+
+        var branch_from = $('#branch_select').val();
+        //alert(branch_from)
+
+        $('#loading').attr('class', 'loading-show  d-flex justify-content-center')
+        $.ajax({
+            url: '/filter-incoming-package',
+            method: 'POST',
+            data: {
+                branch_from
+            }
+        })
+            .then((response) => {
+                $('#loading').attr('class', 'loading-hiden')
+                $('#incoming-list').html(response);
+            })
+            .catch((error) => {
+                $('#loading').attr('class', 'loading-hiden')
+                console.log(error)
+            });
+
+    })
+
+    
+
+$(document).on('click', '#redirect-package', function (e) {
+        e.preventDefault()
+        try {
+
+            var barcode_id = $('#code-text').val()
+            var description = $('#description-redirect').val()
+            var edit_description = $('#edit_desc_input').val()
+            var og_description = $('#og_desc_input').val()
+            var branch_to = $('#redirect-bid').val();
+            var pid = $('#package-id').val();
+
+            if (validateBarcodes(barcode_id) && validateDescription(description, 'Redirect Package Description')) {
+
+                var redirect_description = description+", "+og_description+", "+edit_description
+
+                //alert(barcode_id+", "+redirect_description+", "+branch_to+", "+pid)
+                
+                if (confirm('Are you sure you want to redirect this package ?')) {
+
+                    $('#loading-redirect').attr('class', 'loading-show')
+
+
+                    $.ajax({
+                        url: '/redirect-package',
+                        method: 'POST',
+                        data: {
+                            barcode_id, pid, redirect_description, branch_to
+                        }
+                    })
+                        .then((response) => {
+
+                            $('#loading-redirect').attr('class', 'loading-hiden')
+
+                            if (response.status == "good") {
+                                alert(response.msg)
+                                window.location.reload();
+                            } else {
+                                alert(response.msg)
+                            }
+
+                        })
+                        .catch((error) => {
+                            console.log(error)
+                            alert('Check internet, try again')
+                        });
+
+                }
+            }
+
+        } catch (error) {
+            console.log(error)
+            alert('something is wrong')
+        }
+
+    })
+
+
+     document.addEventListener('keypress', e => {
+        //usually scanners throw an 'Enter' key at the end of read
+        //e.preventDefault()
+
+        if (e.keyCode === 13) {
+            if (code.length >= 12) {
+                //console.log(code);
+                var action_type = $('#action-type').val();
+
+                if (action_type == 'receive') {
+
+                    //var input_code = $('#input-code-edit').val();
+                    var pid = $('#package-id').val();
+
+                    $('#reading-bar-edit').attr('class', 'scanner-area loading-hiden')
+                    $('#loading-bar-edit').attr('class', 'loading-show')
+
+                    $.ajax({
+                        url: '/find-onuse-barcode-receive',
+                        method: 'POST',
+                        data: {
+                            input_code: code, pid
+                        }
+                    })
+                        .then((response) => {
+
+                            $('#loading-bar-edit').attr('class', 'loading-hiden')
+                            $('#reading-bar-edit').attr('class', 'scanner-area')
+
+                            if (response.status == 1) {
+                                var date = response.data.created_at
+                                date = date.split('T')
+                                
+
+
+                                $('#package-receive-details').attr('class', 'loading-show')
+
+                                $('#barcode-msg-receive').html("<h4 class='text-success'>Barcode is valid</h4>");
+                                $('#code-text').val(response.code_text)
+                                $('#codebar-img-edit').attr('src', response.code_data)
+                                $('#p_edit_id').val(response.data.id)
+
+                                $('#sender_name').text(response.data.sender_name);
+                                $('#sender_phone').text(response.data.sender_phone);
+                                $('#receiver_name').text(response.data.receiver_name);
+                                $('#receiver_phone').text(response.data.receiver_phone);
+                                $('#transporter_name').text(response.data.transporter_name);
+                                $('#transporter_phone').text(response.data.transporter_phone);
+                                $('#staff_name').text(response.data.fulname)
+                                $('#staff_phone').text(response.data.phone1)
+                                $('#created_at').text(date[0]+' '+date[1])
+                                
+                                $('#description').text(response.data.description)
+                                $('#edit-description').text(response.data.edit_description)
+
+                                if(response.data.edit_by > 0){
+                                   
+                                    $('#edit-description-status').attr('class', 'loading-show')
+                                }
+
+                                //console.log(response.data) 
+
+                                $('#receive-form').attr('class', 'col-12 loading-show')
+
+                            } else if (response.status == 2) {
+                                $('#code-text').val('')
+                                $('#barcode-msg-receive').html("<h4 class='text-danger'>Barcode or branches doesn't match the Package</h4>");
+
+                                $('#receive-form').attr('class', 'loading-hiden')
+                                $('#package-receive-details').attr('class', 'loading-hiden')
+                                $('#edit-description-status').attr('class', 'loading-hiden')
+                            } else if (response.status == 3) {
+                                $('#code-text').val('')
+                                $('#barcode-msg-receive').html("<h4 class='text-danger'>Barcode doesn't match with action</h4>");
+
+                                $('#package-receive-details').attr('class', 'loading-hiden')
+                                $('#edit-description-status').attr('class', 'loading-hiden')
+                                $('#receive-form').attr('class', 'loading-hiden')
+                            }
+                            else {
+                                $('#code-text').val('')
+                                $('#barcode-msg-receive').html("<h4 class='text-danger'>Barcode is invalid</h4>");
+                                $('#receive-form').attr('class', 'loading-hiden')
+
+                                $('#package-receive-details').attr('class', 'loading-hiden')
+                                $('#edit-description-status').attr('class', 'loading-hiden')
+                            }
+
+                        })
+                        .catch((error) => {
+                            console.log(error)
+                            alert('Check internet, try again')
+                        });
+
+                } else if (action_type == 'hanging') {
+
+                    $('#reading-bar-hanging').attr('class', 'scanner-area loading-hiden')
+                    $('#loading-bar-hanging').attr('class', 'loading-show')
+
+                    $.ajax({
+                        url: '/find-onuse-barcode-hanging',
+                        method: 'POST',
+                        data: {
+                            input_code: code
+                        }
+                    })
+                        .then((response) => {
+
+                            $('#loading-bar-hanging').attr('class', 'loading-hiden')
+                            $('#reading-bar-hanging').attr('class', 'scanner-area')
+
+                            if (response.status == 1) {
+
+                                var date = response.data.created_at
+                                date = date.split('T')
+
+                                var branch_from_id = response.data.branch_from
+                                var branch_to_id = response.data.branch_to
+                                var branch_to_name = response.data.bname
+
+                                var result = response.branches.filter(obj => {return obj.id == branch_from_id})
+                                var branch_from_name = result[0].name
+
+                                var staffname = response.data.fulname
+                                var staffphone = response.data.phone1
+
+                                var desc = "The original sender was "+staffname+", "+staffphone+" from "+branch_from_name+". and destination was "+branch_to_name
+
+                                $('#package-hanging-details').attr('class', 'loading-show')
+                                $('#hanging-package-info').attr('class', 'loading-show')
+
+                                $('#barcode-msg-receive').html("<h4 class='text-success'>Barcode is valid</h4>");
+                                $('#code-text').val(response.code_text)
+                                $('#codebar-img-edit').attr('src', response.code_data)
+                                $('#package-id').val(response.data.id)
+
+                                $('#sender_name_h').text(response.data.sender_name);
+                                $('#sender_phone_h').text(response.data.sender_phone);
+                                $('#receiver_name_h').text(response.data.receiver_name);
+                                $('#receiver_phone_h').text(response.data.receiver_phone);
+                                $('#transporter_name_h').text(response.data.transporter_name);
+                                $('#transporter_phone_h').text(response.data.transporter_phone);
+                                $('#staff_name_h').text(staffname)
+                                $('#staff_phone_h').text(staffphone)
+                                $('#price_h').text(response.data.price)
+                                $('#created_at_h').text(date[0]+' '+date[1])
+
+                                $('#redirect-branch').text(branch_to_name);
+                                $('#redirect-bid').val(branch_to_id);
+                                $('#hanging-package-img').attr('src', '/images/'+response.data.thumbnail)
+                                $('#hanging-bname').text(response.data.bname);
+                                $('#hanging-pname').text(response.data.name);
+                                
+                                $('#description_h').text(response.data.description)
+                                $('#edit-description_h').text(response.data.edit_description)
+                                $('#og_desc').text(desc)
+                                $('#og_desc_input').val(desc)
+                                $('#edit_desc_input').val(response.data.edit_description)
+
+                                if(response.data.edit_by > 0){
+                                   
+                                    $('#edit-description-status_h').attr('class', 'loading-show')
+                                }
+
+                                //console.log(response.data) 
+
+                                $('#redirect-form').attr('class', 'col-12 loading-show')
+
+
+
+                                $('#barcode-msg-hanging').html("<h4 class='text-success'>Barcode is valid</h4>");
+                                $('#code-text').val(response.code_text)
+                                $('#codebar-img').attr('src', response.code_data)
+
+                            } else if (response.status == 2) {
+                                $('#package-hanging-details').attr('class', 'loading-hiden')
+                                $('#hanging-package-info').attr('class', 'loading-hiden')
+                                $('#redirect-form').attr('class', 'col-12 loading-hiden')
+
+                                $('#code-text').val('')
+                                $('#barcode-msg-hanging').html("<h4 class='text-danger'>Barcode doesn't match or the Package is not on Hanging</h4>");
+
+                            
+                            } else if (response.status == 3) {
+                                $('#package-hanging-details').attr('class', 'loading-hiden')
+                                $('#hanging-package-info').attr('class', 'loading-hiden')
+                                $('#redirect-form').attr('class', 'col-12 loading-hiden')
+                                $('#code-text').val('')
+                                $('#barcode-msg-hanging').html("<h4 class='text-danger'>Barcode doesn't match with action</h4>");
+
+                            }
+                            else {
+                                $('#package-hanging-details').attr('class', 'loading-hiden')
+                                $('#hanging-package-info').attr('class', 'loading-hiden')
+                                $('#redirect-form').attr('class', 'col-12 loading-hiden')
+                                $('#code-text').val('')
+                                $('#barcode-msg-hanging').html("<h4 class='text-danger'>Barcode is invalid</h4>");
+                            }
+
+                        })
+                        .catch((error) => {
+                            console.log(error)
+                            alert('Check internet, try again')
+                        });
+
+
+                } else {
+                    alert('Click action button or Refresh page and try again')
+                }
+
+                code = "";
+            }
+        } else {
+            $('#barcode-msg').html("<h4 class='text-danger'>Something wrong</h4>");
+            code += e.key; //while this is not an 'enter' it stores the every key            
+        }
+
+        //run a timeout of 200ms at the first read and clear everything
+        if (!reading) {
+            reading = true;
+            setTimeout(() => {
+                code = "";
+                reading = false;
+            }, 200);  //200 works fine for me but you can adjust it
+        }
+    });
+
+
+</script>

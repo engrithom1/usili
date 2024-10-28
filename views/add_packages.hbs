@@ -1,0 +1,848 @@
+<style>
+    .loading-hiden {
+        display: none;
+    }
+
+    .loading-show {
+        display: contents;
+    }
+
+    .first {
+        float: left;
+        margin-right: 1em;
+    }
+
+    .price {
+        float: right;
+        margin-left: 1em;
+    }
+
+    .list:after {
+        content: '';
+        border-bottom: dotted;
+        display: block;
+        overflow: hidden;
+        height: 0.6em;
+    }
+
+    #invoice-POS {
+        box-shadow: 0 0 1in -0.25in rgba(0, 0, 0, 0.5);
+        padding: 2mm;
+        margin: 0 auto;
+        width: 80mm;
+        background: #FFF;
+
+    }
+
+    h1 {
+        font-size: 1.5em;
+        color: #222;
+    }
+
+    h2 {
+        font-size: .9em;
+    }
+
+    h3 {
+        font-size: 1.2em;
+        font-weight: 300;
+        line-height: 2em;
+    }
+
+    p {
+        font-size: 13px;
+        color: #666;
+        font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+        /*font-family: 'JuneBug';*/
+        /*line-height: 1.2em;*/
+    }
+
+    #top,
+    #mid,
+    #bot {
+        /* Targets all id with 'col-' */
+        border-bottom: 1px solid #EEE;
+    }
+
+    #top {
+        min-height: 100px;
+    }
+
+    #mid {
+        min-height: 80px;
+    }
+
+    #bot {
+        min-height: 50px;
+    }
+
+    .info {
+        display: block;
+        float: left;
+        margin-left: 0;
+    }
+
+    .title {
+        float: right;
+    }
+
+    .title p {
+        text-align: right;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    td {
+        padding: 5px 0 5px 15px;
+        border: 1px solid #EEE
+    }
+
+    .tabletitle {
+        padding: 5px;
+        font-size: .5em;
+        background: #EEE;
+    }
+
+    .service {
+        border-bottom: 1px solid #EEE;
+    }
+
+    .item {
+        width: 24mm;
+    }
+
+    .itemtext {
+        font-size: .5em;
+    }
+
+    #legalcopy {
+        margin-top: 5mm;
+    }
+
+    .hh_p {
+        font-size: 14px !important;
+    }
+
+    .head-text {
+        /*font-size: 30px;*/
+        font-weight: 600;
+    }
+</style>
+
+<div class="content-wrapper">
+    <div class="row mb-3">
+        <div class="col-md-12">
+            <div class="row">
+                <div class="col-12 col-xl-8 mb-4 mb-xl-0">
+                    <h3 class="font-weight-bold">Add Package</h3>
+                </div>
+                <div class="col-12 col-xl-4">
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <form id="package-form" action="/create-package" method="post" enctype="multipart/form-data">
+        <div class="row">
+
+            <div class="col-md-12 grid-margin stretch-card">
+                <div class="card">
+                    <div class="card-body">
+                        <p class="card-title">Package Actors</p>
+                        <h5 class="text-primary">
+                            Sender, Receiver and Transporter should use the same phone number every time for better
+                            records keeping.
+                        </h5>
+                        <div class="row">
+                            <div class="col-sm-6 col-md-4">
+                                <div class="form-group">
+                                    <label class="form-label">Sender name *</label>
+                                    <input name="sender_name" id="sender_name" class="form-control" maxlength="60"
+                                        required type="text" placeholder="fullname">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Sender phone *</label>
+                                    <input name="sender_phone" id="sender_phone" class="form-control" maxlength="40"
+                                        required type="text" placeholder="0xxxxxxxxx">
+                                </div>
+                            </div>
+
+                            <div class="col-sm-6 col-md-4">
+                                <div class="form-group">
+                                    <label class="form-label">Receiver name *</label>
+                                    <input name="receiver_name" id="receiver_name" class="form-control" maxlength="60"
+                                        required type="text" placeholder="fullname">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Receiver phone *</label>
+                                    <input name="receiver_phone" id="receiver_phone" class="form-control" maxlength="40"
+                                        required type="text" placeholder="0xxxxxxxxx">
+                                </div>
+                            </div>
+
+                            <div class="col-sm-6 col-md-4">
+                                <div class="form-group">
+                                    <label class="form-label">Transporter name (option)</label>
+                                    <input name="transporter_name" id="transporter_name" class="form-control"
+                                        maxlength="60" required type="text" placeholder="fullname">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Transporter phone (option)</label>
+                                    <input name="transporter_phone" id="transporter_phone" class="form-control"
+                                        maxlength="40" required type="text" placeholder="0xxxxxxxxx">
+                                </div>
+                            </div>
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-12 grid-margin stretch-card">
+                <div class="card">
+                    <div class="card-body">
+                        <p class="card-title">Package Details</p>
+
+                        <div class="row">
+                            <div class="col-sm-6 col-md-4">
+                                <div class="form-group">
+                                    <label class="form-label">Package name *</label>
+                                    <input name="name" id="name" class="form-control" maxlength="60" required
+                                        type="text" placeholder="item name">
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="form-label">Package value *</label>
+                                    <input name="package_value" id="package_value" class="form-control" maxlength="40"
+                                        required type="number" placeholder="10000">
+                                </div>
+                            </div>
+
+
+                            <div class="col-sm-6 col-md-4">
+                                <div class="form-group">
+                                    <label class="form-label">Package Size *</label>
+                                    <select id="package_size" name="package_size" class="form-select form-control">
+                                        <option value="Small">Small</option>
+                                        <option value="Medium">Medium</option>
+                                        <option value="Large">Large</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Package Weight (in KG) *</label>
+                                    <input name="package_weight" id="package_weight" class="form-control" maxlength="40"
+                                        required type="number" placeholder="5">
+                                </div>
+                            </div>
+
+                            <div class="col-sm-6 col-md-4">
+                                <div class="form-group">
+                                    <label class="form-label">Package Type *</label>
+                                    <select id="package_tag" name="package_tag" class="form-select form-control">
+
+                                        {{#each tags}}
+                                        <option value="{{this.id}}">{{this.name}}</option>
+                                        {{/each}}
+                                    </select>
+                                </div>
+                                <div class="form-group">
+
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!--div class="col-md-6 grid-margin stretch-card">
+                <div class="card">
+                    <div class="card-body">
+                        <p class="card-title">Barcode input</p>
+                        <div class="row">
+                            <div class="col-12">
+                                <input type="hidden" name="barcode_id" id="code-text">
+                                <div id="reading-bar" class="scanner-area">
+                                    <div class="pt-3 pb-3">
+                                        <img id="codebar-img" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAARIAAAB6CAYAAABz59ygAAAABmJLR0QA/wD/AP+gvaeTAAANc0lEQVR4nO3ce2xTZR8H8G/brd1kY4z7AIFtyDaQMhAwwBjJuIgmAgFJ5OIgG1TZgBkkoi5gjAETxkVRJyGgSCQqGFAZlxjk2gWGCYRbhIiTaRAGFIRt3Nbxff94s76UtlvhwfCSfD9J/+B3fuc5zzmkX855TtVCkhARMWB91BMQkcefgkREjClIRMSYgkREjClIRMSYgkREjClIRMSYgkREjClIRMRYRLiNFovF78/1P4itr9/7A9nG6qHGud/6/R73/22ej2r8hzWfh3U9H1b/o/p7/7fn829f53DroeiORESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMWUjyUU9CRB5vuiMREWMKEhExpiAREWMKEhExpiAREWMKEhExpiAREWMKkgd04cIFzJ07F5mZmWjXrh2ioqKQlJSEkSNHYufOnUH38Xq9WLp0Kfr164eWLVsiLi4OTqcTCxcuxLVr1/x6Z8+eDYvF0uBn2rRpvv558+Y12j9hwgS/Y/Ts2TNkb0FBQcD86+rq8NFHH6Fnz56Ijo5GTEwMnn32Waxduxbh/Bxp3759sNlssFgsWL16dcD2pUuXYtSoUUhMTER0dDTatm2LjIwMFBcXw+v1Bh3z/PnzyM3NRUJCAhwOB1JTU7FkyRLU1dUF9LrdbuTl5cHpdCI2NhZt2rTBoEGDUFxcHLRfwhfxqCfwuCovL8eiRYuQnJyMHj16IC4uDufPn8eWLVtQUlKC4uJivPbaa377TJo0Cd9++y2SkpIwceJEWK1W/PzzzygsLMT69etx4MABREVFAQD69++PmpqaoMfeuXMnTp8+jaysLF+tT58+cLlcQfv37t2LkydP+vXXs1qtmDp1akB9wIABAbWcnBysXbsW7dq1wyuvvAKLxYKSkhJMnjwZv//+O957772Q1+v69evIyclBZGQkbt26FbRnwYIFsNlsSEtLwzPPPIMbN27A7XYjPz8fP/30EzZt2gSLxeLr93g8GDhwIMrLyzF8+HCkpaVh27ZtmDNnDo4fP44vvvjC13v79m0MGjQIAJCcnIzMzEzU1tbC7XbD7XZj+/bt+P7772G16t/WB0J5IFevXuXZs2cD6mVlZXQ4HIyJiWFNTY2vfuTIEQJgYmIiq6urffXa2lr26dOHALh+/fpGj3vr1i22adOGLVq04M2bNxvt93q97NSpE2NjY1lVVeW3zel00m63NzoGSR48eJAA2L59e3o8Hl/d4/EwKSmJERERPH36dMj9Z82axc6dO3PKlCkEwFWrVgX0nDx5knfu3PGrXb58mU8//TQBcNu2bX7bCgoKCICzZ8/21aqrq339u3fv9tVv377N3NxcHj161G+M8vJytm3blgD4zTffhHUtJJDi9wE1bdoU7dq1C6j369cP3bp1Q3V1NcrLy331iooKAEDfvn3RpEkTXz0iIgKZmZkAgEuXLjV63I0bN6KyshLZ2dlwOByN9m/duhUVFRUYP348YmJiGu0PZceOHQCA7OxsNG/e3Fdv3rw5ZsyYAa/Xi/Xr1wfdd8+ePfjkk09QXFzsd+73SklJ8bvjAID4+HiMHDkSAHDs2DFf3ev14quvvoLFYsEbb7zhqzdp0gR5eXkA4HdHEhkZiVWrVqFHjx5+4ycmJiI3NxfAfx+95MHo0eYhO3LkCH799VdERUWhY8eOvnpaWhqsVisOHjyI6upq35fa6/Viz549iIyMDProca8VK1YAQNDHkYb6715PududO3ewcOFClJeXw+FwoH///hg7diyio6P9+i5fvgwAQcOzc+fOAICDBw8GbKupqUFubi7GjRuH559/Hlu2bAlr3vWqqqqwdetWAMBTTz3lq586dQoejwdOpzNgTiNGjAAAlJaWhnWM+nCLjY29r7nJ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"
+                                            alt="" srcset="">
+                                    </div>
+                                    <div class="d-flex">
+                                        <input class="form-control" type="hidden" name="" id="input-code">
+                                        <!--button type="button" id="search-bar" class="btn btn-primary">search</button-->
+            <!--/div>
+                                </div>
+                                <div id="barcode-msg"></div>
+
+                                <div id="loading-bar" class="loading-hiden">
+                                    <img class="center-block" width="80%" src="/images/bar_gif.gif" alt="#" />
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div-->
+
+            <!--div class="col-md-6 grid-margin stretch-card">
+                <div class="card">
+                    <div class="card-body">
+                        <p class="card-title">Package Image</p>
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="w-100">
+                                    <label class="form-label">Choose package Image or leave a default image*</label>
+                                    <img id="output" width="300px" height="180px" src="/images/branch.png"
+                                        class="user-profile-img" alt="">
+                                </div>
+                                <div class="drag-file-area">
+                                    <label class="label"><span class="browse-files"> <input id="thumbnail"
+                                                name="thumbnail" type="file" accept="image/*"
+                                                onchange="document.getElementById('output').src = window.URL.createObjectURL(this.files[0])"
+                                                class="default-file-input" /> <span class="browse-files-text">browse
+                                                file</span></span> </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div-->
+
+            <div class="col-md-12 grid-margin stretch-card">
+                <div class="card">
+                    <div class="card-body">
+                        <p class="card-title">Shipping Details</p>
+                        <div class="row">
+
+                            <div class="col-sm-6 col-md-4">
+                                <div class="form-group">
+                                    <label class="">Destination (Location Branch) *</label>
+                                    <select id="branch_to" name="branch_to" class="form-select form-control">
+
+                                        {{#each branches}}
+                                        <option value="{{this.id}}">{{this.name}}</option>
+                                        {{/each}}
+
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Specify location (option)</label>
+                                    <input name="specific_location" id="specific_location" class="form-control"
+                                        maxlength="60" required type="text" placeholder="Arusha maji ya chai">
+                                </div>
+
+
+
+                            </div>
+
+                            <div class="col-sm-6 col-md-4">
+
+                                <div class="form-group">
+                                    <label class="form-label">Transportation Price *</label>
+                                    <input name="price" id="price" class="form-control" maxlength="40" required
+                                        type="number" placeholder="1000">
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="form-label">Description (option)</label>
+                                    <textarea name="description" id="description" class="form-control" rows="1"
+                                        style="width: 100% !important;"
+                                        placeholder="Any additional details…"></textarea>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-6 col-md-4">
+                                <div class="form-group">
+                                    <label class="">Shipping Date *</label>
+                                    <input class="form-control" type="date" name="shipping_at" id="shipping_at">
+                                </div>
+                                <div class="form-group">
+                                    <label class="">Arival Date *</label>
+                                    <input class="form-control" type="date" name="arive_at" id="arive_at">
+                                </div>
+                            </div>
+
+                            <div class="col-sm-12 col-md-12">
+                                <div class="row">
+                                    <div class="col-sm-12 col-md-4">
+
+                                    </div>
+                                    <div class="col-sm-12 col-md-4">
+                                       <center>
+                                         <div id="loading" class="loading-hiden">
+                                            <img class="center-block" width="350" src="/images/cupertino.gif" alt="#" />
+                                        </div>
+                                       </center>
+                                        <button type="button" id="create-package"
+                                            class="btn btn-primary w-100 mt-2">Submit
+                                            Package</button>
+                                    </div>
+                                    <div class="col-sm-12 col-md-4">
+                                       
+                                    </div>
+
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </form>
+</div>
+
+<div class="modal fade mobile-full-width" id="receiptModal" tabindex="-1" data-bs-backdrop="static"
+    data-bs-keyboard="false" role="dialog" aria-labelledby="receiptModal" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="container mt-3 mb-3">
+                <center>
+                    <h3 class="mt-2 mb-3 head-text text-success">Package sent Successfully, You may Print Receipt</h3>
+                </center>
+
+                <div class="" id="printThis">
+
+
+                    <div class="pb-5" id="invoice-POS">
+                        <center>
+                            <img src="/images/new_logo.png" width="250px" alt="logo">
+                            <h5>TRUST FIRST</h5>
+                        </center>
+                        <div>
+                            <p id="pp">
+                            </p>
+                            <center>
+                            <img id="codedata-img"
+                                src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAARIAAAB6CAYAAABz59ygAAAABmJLR0QA/wD/AP+gvaeTAAANc0lEQVR4nO3ce2xTZR8H8G/brd1kY4z7AIFtyDaQMhAwwBjJuIgmAgFJ5OIgG1TZgBkkoi5gjAETxkVRJyGgSCQqGFAZlxjk2gWGCYRbhIiTaRAGFIRt3Nbxff94s76UtlvhwfCSfD9J/+B3fuc5zzmkX855TtVCkhARMWB91BMQkcefgkREjClIRMSYgkREjClIRMSYgkREjClIRMSYgkREjClIRMRYRLiNFovF78/1P4itr9/7A9nG6qHGud/6/R73/22ej2r8hzWfh3U9H1b/o/p7/7fn829f53DroeiORESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMWUjyUU9CRB5vuiMREWMKEhExpiAREWMKEhExpiAREWMKEhExpiAREWMKkgd04cIFzJ07F5mZmWjXrh2ioqKQlJSEkSNHYufOnUH38Xq9WLp0Kfr164eWLVsiLi4OTqcTCxcuxLVr1/x6Z8+eDYvF0uBn2rRpvv558+Y12j9hwgS/Y/Ts2TNkb0FBQcD86+rq8NFHH6Fnz56Ijo5GTEwMnn32Waxduxbh/Bxp3759sNlssFgsWL16dcD2pUuXYtSoUUhMTER0dDTatm2LjIwMFBcXw+v1Bh3z/PnzyM3NRUJCAhwOB1JTU7FkyRLU1dUF9LrdbuTl5cHpdCI2NhZt2rTBoEGDUFxcHLRfwhfxqCfwuCovL8eiRYuQnJyMHj16IC4uDufPn8eWLVtQUlKC4uJivPbaa377TJo0Cd9++y2SkpIwceJEWK1W/PzzzygsLMT69etx4MABREVFAQD69++PmpqaoMfeuXMnTp8+jaysLF+tT58+cLlcQfv37t2LkydP+vXXs1qtmDp1akB9wIABAbWcnBysXbsW7dq1wyuvvAKLxYKSkhJMnjwZv//+O957772Q1+v69evIyclBZGQkbt26FbRnwYIFsNlsSEtLwzPPPIMbN27A7XYjPz8fP/30EzZt2gSLxeLr93g8GDhwIMrLyzF8+HCkpaVh27ZtmDNnDo4fP44vvvjC13v79m0MGjQIAJCcnIzMzEzU1tbC7XbD7XZj+/bt+P7772G16t/WB0J5IFevXuXZs2cD6mVlZXQ4HIyJiWFNTY2vfuTIEQJgYmIiq6urffXa2lr26dOHALh+/fpGj3vr1i22adOGLVq04M2bNxvt93q97NSpE2NjY1lVVeW3zel00m63NzoGSR48eJAA2L59e3o8Hl/d4/EwKSmJERERPH36dMj9Z82axc6dO3PKlCkEwFWrVgX0nDx5knfu3PGrXb58mU8//TQBcNu2bX7bCgoKCICzZ8/21aqrq339u3fv9tVv377N3NxcHj161G+M8vJytm3blgD4zTffhHUtJJDi9wE1bdoU7dq1C6j369cP3bp1Q3V1NcrLy331iooKAEDfvn3RpEkTXz0iIgKZmZkAgEuXLjV63I0bN6KyshLZ2dlwOByN9m/duhUVFRUYP348YmJiGu0PZceOHQCA7OxsNG/e3Fdv3rw5ZsyYAa/Xi/Xr1wfdd8+ePfjkk09QXFzsd+73SklJ8bvjAID4+HiMHDkSAHDs2DFf3ev14quvvoLFYsEbb7zhqzdp0gR5eXkA4HdHEhkZiVWrVqFHjx5+4ycmJiI3NxfAfx+95MHo0eYhO3LkCH799VdERUWhY8eOvnpaWhqsVisOHjyI6upq35fa6/Viz549iIyMDProca8VK1YAQNDHkYb6715PududO3ewcOFClJeXw+FwoH///hg7diyio6P9+i5fvgwAQcOzc+fOAICDBw8GbKupqUFubi7GjRuH559/Hlu2bAlr3vWqqqqwdetWAMBTTz3lq586dQoejwdOpzNgTiNGjAAAlJaWhnWM+nCLjY29r7nJ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"
+                                alt="" srcset="">
+                            </center>
+                            <br>
+
+                            <center>
+                                <i>----------------------------</i>
+                                <p>Asante kwa kutuchagua<br>
+                                    TRUST FIRST
+                                </p>
+
+                                <i>----------------------------</i>
+                                <br>
+                            </center>
+
+                        </div>
+
+                    </div><!--End Invoice-->
+
+                </div>
+                <div class="d-flex justify-content-center mt-3">
+                    <button class="btn btn-primary" id="on_print"><i class="fa fa-printer"></i>Print</button>
+                    <span class="m-3"> </span>
+                    <button id="cancel" class="btn btn-danger">Cancel</button>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+<script>
+
+    function isNumeric(num) {
+        return /^-?\d+$/.test(num)
+    }
+
+    $(document).on('click', '#on_print', function () {
+        //alert('Richard')
+        printJS({
+            printable: 'printThis',
+            type: 'html',
+            targetStyle: ['*'],
+            //style: `@import url('https://fonts.googleapis.com/css?family=Annie+Use+Your+Telescope');`,
+            // font: 'Annie Use Your Telescope'
+            //header: 'Hello am printing', tahoma
+            style: `#invoice-POS{width:80mm} #pp {font-family:rockwell;} @page { margin: 0mm; size: 80m 80m; } @media print { body { margin: 2mm; width: 80mm; height:auto;font_size:20px } }`,
+            //font:'tahoma'
+        })
+
+    })
+
+    $(document).on('click', '#cancel', function () {
+        window.location.reload();
+    })
+
+
+
+    function validateWeight(amount) {
+
+        if (amount == '' || amount == null) {
+            alert('Package weight is required')
+            return false;
+        } else {
+            if (isNumeric(amount)) {
+                if (amount > 0) {
+                    return true
+                } else {
+                    alert('Package weight must be 1 or more')
+                    return false;
+                }
+            } else {
+                alert('Package Weight must be Integer value')
+                return false;
+            }
+        }
+
+    }
+
+
+    function validateAmount(amount) {
+
+        if (amount == '' || amount == null) {
+            alert('Price is required')
+            return false;
+        } else {
+            if (isNumeric(amount)) {
+                if (amount > 999) {
+                    return true
+                } else {
+                    alert('Price must be 1000 or more')
+                    return false;
+                }
+            } else {
+                alert('Price must be Integer value')
+                return false;
+            }
+        }
+
+    }
+
+    function validateValue(amount) {
+
+        if (amount == '' || amount == null) {
+            alert('Package Value is required')
+            return false;
+        } else {
+            if (isNumeric(amount)) {
+                if (amount > 999) {
+                    return true
+                } else {
+                    alert('Package Value must be 1000 or more')
+                    return false;
+                }
+            } else {
+                alert('Package Value must be Integer value')
+                return false;
+            }
+        }
+
+    }
+
+    function validatePhone(phone, label) {
+
+        if (phone == '' || phone == null) {
+            alert(label + ' Phone number is required')
+            return false;
+        } else {
+
+            if (phone.length == "10") {
+                var first = phone.slice(0, 1)
+                var last = phone.slice(-9)
+
+                if (first == '0' || first == 0) {
+                    //alert(first+" - "+last);
+                    if (isNumeric(last)) {
+                        return true;
+                    } else {
+                        alert('Phonenumber must be Integer value')
+                        return false;
+                    }
+                } else {
+                    alert('Phonenumber must begin with 0')
+                    return false;
+
+                }
+
+            } else {
+                alert('Phone number must have 10 digits begin with 0')
+                return false;
+
+            }
+        }
+
+    }
+
+    function validateNames(text, label) {
+
+        if (text == '' || text == null) {
+            alert(label + ' name is required')
+            return false;
+        } else {
+            return true;
+        }
+
+    }
+
+    function validateBarcodes(text) {
+
+        if (text == '' || text == null) {
+            alert('Valid barcode is required')
+            return false;
+        } else {
+            return true;
+        }
+
+    }
+
+    function validateDate(text, type) {
+
+        if (text == '' || text == null) {
+            alert(type + ' date is required')
+            return false;
+        } else {
+            return true;
+        }
+
+    }
+
+
+    $('#add-package').attr('class', 'nav-item active');
+
+    let code = "";
+    let reading = false;
+
+    function consoleCodes(code) {
+        console.log('this code:' + code)
+    }
+    /*textInput or keydown
+    document.addEventListener('keypress', e => {
+        //usually scanners throw an 'Enter' key at the end of read
+        //e.preventDefault()
+
+        if (e.keyCode === 13) {
+            if (code.length >= 12) {
+                e.preventDefault()
+                console.log(code);
+
+                $('#reading-bar').attr('class', 'scanner-area loading-hiden')
+                $('#loading-bar').attr('class', 'loading-show')
+
+                $.ajax({
+                    url: '/find-barcode-valid',
+                    method: 'POST',
+                    data: {
+                        input_code: code
+                    }
+                })
+                    .then((response) => {
+
+                        $('#loading-bar').attr('class', 'loading-hiden')
+                        $('#reading-bar').attr('class', 'scanner-area')
+
+                        if (response.status == 1) {
+                            $('#barcode-msg').html("<h4 class='text-success'>Barcode is valid</h4>");
+                            $('#code-text').val(response.code_text)
+                            $('#codebar-img').attr('src', response.code_data)
+
+                        } else if (response.status == 2) {
+                            $('#code-text').val('')
+                            $('#barcode-msg').html("<h4 class='text-danger'>Barcode is not generated in your Branch</h4>");
+
+                        } else if (response.status == 3) {
+                            $('#code-text').val('')
+                            $('#barcode-msg').html("<h4 class='text-danger'>Barcode is onuse or expired</h4>");
+
+                        }
+                        else {
+                            $('#code-text').val('')
+                            $('#barcode-msg').html("<h4 class='text-danger'>Barcode is invalid</h4>");
+                        }
+
+                    })
+                    .catch((error) => {
+                        console.log(error)
+                        alert('Check internet, try again')
+                    });
+
+
+                code = "";
+            }
+        } else {
+            $('#barcode-msg').html("<h4 class='text-danger'>Something wrong</h4>");
+            code += e.key; //while this is not an 'enter' it stores the every key            
+        }
+
+        //run a timeout of 200ms at the first read and clear everything
+        if (!reading) {
+            reading = true;
+            setTimeout(() => {
+                code = "";
+                reading = false;
+            }, 200);  //200 works fine for me but you can adjust it
+        }
+    });
+*/
+    $(document).on('click', '#search-bar', function (e) {
+
+        e.preventDefault()
+        var input_code = $('#input-code').val();
+
+        $('#reading-bar').attr('class', 'scanner-area loading-hiden')
+        $('#loading-bar').attr('class', 'loading-show')
+
+        $.ajax({
+            url: '/find-barcode-valid',
+            method: 'POST',
+            data: {
+                input_code
+            }
+        })
+            .then((response) => {
+
+                $('#loading-bar').attr('class', 'loading-hiden')
+                $('#reading-bar').attr('class', 'scanner-area')
+
+                if (response.status == 1) {
+                    $('#barcode-msg').html("<h4 class='text-success'>Barcode is valid</h4>");
+                    $('#code-text').val(response.code_text)
+                    $('#codebar-img').attr('src', response.code_data)
+
+                } else if (response.status == 2) {
+                    $('#code-text').val('')
+                    $('#barcode-msg').html("<h4 class='text-danger'>Barcode is not generated in your Branch</h4>");
+
+                } else if (response.status == 3) {
+                    $('#code-text').val('')
+                    $('#barcode-msg').html("<h4 class='text-danger'>Barcode is onuse or expired</h4>");
+
+                }
+                else {
+                    $('#code-text').val('')
+                    $('#barcode-msg').html("<h4 class='text-danger'>Barcode is invalid</h4>");
+                }
+
+            })
+            .catch((error) => {
+                console.log(error)
+                alert('Check internet, try again')
+            });
+
+    })
+
+    $(document).on('click', '#create-package', function (e) {
+        e.preventDefault()
+        try {
+
+            var sender_name = $('#sender_name').val();
+            var sender_phone = $('#sender_phone').val();
+            var receiver_name = $('#receiver_name').val();
+            var receiver_phone = $('#receiver_phone').val();
+            var transporter_name = $('#transporter_name').val();
+            var transporter_phone = $('#transporter_phone').val();
+            //var barcode_id = $('#code-text').val()
+            var name = $('#name').val()
+            var price = $('#price').val()
+            var branch_to = $('#branch_to').val()
+            var arive_at = $('#arive_at').val()
+            var description = $('#description').val()
+
+            //////////adittional information
+            var package_value = $('#package_value').val()
+            var package_size = $('#package_size').val()
+            var package_weight = $('#package_weight').val()
+            var package_tag = $('#package_tag').val()
+            var shipping_at = $('#shipping_at').val()
+            var specific_location = $('#specific_location').val()
+
+            var package_type = $("#package_tag option:selected").text();
+
+            //var img = document.getElementById('thumbnail').files[0]
+            // var thumbnail = ""
+
+            /*if (img) {
+                thumbnail = img
+            }*/
+
+            if (validateNames(sender_name, 'Sender') && validatePhone(sender_phone, 'Sender') && validateNames(receiver_name, 'Receiver') && validatePhone(receiver_phone, 'Receiver') && validateNames(name, 'Package') && validateAmount(price) && validateValue(package_value) && validateWeight(package_weight) && validateDate(arive_at, 'Arival') && validateDate(shipping_at, 'Shipping')) {
+
+                if (confirm('Are you sure you want to send this package ?')) {
+                    $('#loading').attr('class', 'loading-show')
+                    $('#create-package').attr('disabled', true)
+                 
+                    //$('#package-form').submit();
+
+                    $.ajax({
+                        url: '/create-package',
+                        method: 'POST',
+                        data: {
+                            sender_name, sender_phone, receiver_name, receiver_phone, transporter_name, transporter_phone, name, price, branch_to, arive_at, description, package_value, package_size, package_weight, package_tag, shipping_at, specific_location
+                        }
+                    })
+                        .then((response) => {
+
+                            $('#loading').attr('class', 'loading-hiden')
+                            $('#create-package').removeAttr('disabled')
+                            if (response.status == "good") {
+
+                                var pp = "Cargo Receipt<br>"
+                                pp += "Booking Id :"+response.data.barcode_id+"<br>"
+                                pp += "Brand name :Usiri Transportation Services"
+                                pp += "<br><br>"
+                                pp += "Journey route :"+response.data.bb_from.region+" - "+response.data.bb_to.region+"<br>"
+                                pp += "Shiping date :"+shipping_at+"<br>"
+                                pp += "Alive date :"+arive_at
+                                pp += "<br><br>"
+                                pp += "Paid amount :TSH "+price+".00"
+                                pp += "<br><br>"
+                                pp += "Sender details<br>"
+                                pp += "Sender name :" + sender_name + "<br>"
+                                pp += "Sender phone :"+ sender_phone+"<br>"
+                                pp += "Receiver name :"+receiver_name+"<br>"
+                                pp += "Receiver phone :"+receiver_phone
+                                pp += "<br><br>"
+                                pp += "Package name :"+name+"<br>"
+                                pp += "Package weight :"+package_weight+"kg<br>"
+                                pp += "Package value :TSH "+package_value+".00<br>"
+                                pp += "Package size :"+package_size+"<br>"
+                                pp += "Package type :"+package_type
+                                pp += "<br><br>"
+                                pp += "Agent name :"+response.data.user_name+"<br>"
+                                pp += "Agent phone :"+response.data.user_phone+"<br>"
+                                pp += "Bus company :Usiri Transportation Services<br>"
+                                pp += "Company phone :0768448525<br>"
+                                pp += "CUSTOMER SERVICES :0768448525<br>"
+                                pp += ""+response.data.bb_from.region+" :"+response.data.bb_from.contact+"<br>"
+                                pp += ""+response.data.bb_to.region+" :"+response.data.bb_to.contact+"<br>"
+
+                                $('#pp').html(pp)
+                                 $('#codedata-img').attr('src', response.data.code_data)
+
+                                $('#receiptModal').modal('show')
+
+                            } else {
+                                alert(response.msg)
+                            }
+
+                        })
+                        .catch((error) => {
+                            console.log(error)
+                            alert('Check internet, try again')
+                        });
+
+                }
+            }
+
+        } catch (error) {
+            console.log(error)
+            alert('something is wrong')
+        }
+
+    })
+
+
+</script>

@@ -1,0 +1,178 @@
+<style>
+    .loading-hiden {
+        display: none;
+    }
+
+    .loading-show {
+        display: contents;
+    }
+
+    .date_input {
+        border-width: 0px !important;
+        padding: 0px 6px !important;
+    }
+
+    .date-separator {
+        margin-right: 2px !important;
+    }
+</style>
+
+<div class="content-wrapper">
+    <div class="row mb-3">
+        <div class="col-md-12">
+            <div class="row">
+                <div class="col-12 col-xl-8 mb-4 mb-xl-0">
+                    <h3 class="font-weight-bold">Revenue Summary</h3>
+                </div>
+                <div class="col-12 col-xl-4">
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+            <div class="d-flex justify-content-between table-responsive">
+                <p class="card-title"></p>
+                <div class="d-flex">
+                    <input class="date_input" type="date" name="from_data" id="date_from">
+                    <span class="date-separator"></span>
+                    <input class="date_input" type="date" name="to_data" id="date_to">
+                    <!--select class="form-select form-control simple-select" name="branch_from" id="branch_from">
+                        {{#if branches}}
+                        <option selected="true" value="0">All Branches</option>
+                        {{/if}}
+                        {{#each branches}}
+                        <option value="{{this.id}}">{{this.name}}</option>
+                        {{/each}}
+
+                    </select-->
+
+                    <button id="filter_btn" class="btn btn-primary simple-btn">Filter</button>
+                    <button id="export_btn" class="btn btn-dark simple-btn">Export</button>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">
+
+                    <div id="loading" class="loading-hiden">
+                        <img class="center-block" width="350" src="/images/cupertino.gif" alt="#" />
+                    </div>
+                    <br>
+
+                    <div id="data-head" class="text-center">
+                        <h4>To Day's Revenue's From All Branches</h4>
+                    </div>
+                    <div id="d-content">
+                        <div class="table-responsive">
+                            <table class="table table-striped mt-3">
+                                <thead>
+                                    <tr class="thead-style">
+                                        <th>No</th>
+                                        <th> Branch name</th>
+                                        <th> Packages </th>
+                                        <th> Ave/pack </th>
+                                        <th> Total rev </th>
+
+                                    </tr>
+                                </thead>
+                                <tbody id="branch-list">
+
+                                    {{#each packages}}
+                                    <tr id="package_{{this.id}}">
+                                        <td>{{index_plas @index 1}}</td>
+                                        <td class="text-capitalize">{{this.name}}</td>
+                                        <td class="text-capitalize"> {{this.packages}} </td>
+                                        <td><label class="badge badge-success">Tsh {{price this.average}}</label></td>
+                                        <td><label class="badge badge-primary">Tsh {{price this.revenue}}</label></td>
+                                    </tr>
+                                    {{/each}}
+
+
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div class="mt-4">
+                            <h4><u>Summary</u></h4>
+                        </div>
+                        <h5>Total Packages : {{price packs}}</h5>
+                        <h5>Average price/pack Tsh: {{price avg}}/=</h5>
+                        <h5>Total Income Tsh: {{price rev}}/=</h5>
+
+                    </div>
+
+
+                </div>
+                <div class="col-md-4">
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <input type="hidden" name="action-type" id="action-type">
+</div>
+
+<script>
+
+    function validateDate(start, end) {
+
+        if (start == null || start == '' || end == null || end == '') {
+            alert('Start and End Date are Required')
+            return false;
+        } else {
+            if (start > end) {
+                alert('Start date must not be greater than End Date')
+                return false;
+            } else {
+                return true;
+            }
+        }
+    }
+
+    function validateBranches(fbranch, tbranch) {
+        if (fbranch == tbranch && fbranch > 0) {
+            alert('From and Final destination must be difference')
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    $(document).on('click', '#filter_btn', function () {
+
+        var fdate = $('#date_from').val();
+        var tdate = $('#date_to').val();
+
+        var data_header = "<h4>All Branches Revenue " + fdate + " To " + tdate + "</h4>"
+
+        if (validateDate(fdate, tdate)) {
+
+            $('#data-head').html(data_header);
+            $('#loading').attr('class', 'loading-show')
+
+            $.ajax({
+                url: '/filter-revenue-packages',
+                method: 'POST',
+                data: {
+                    'sdate': fdate, 'edate': tdate
+                }
+            })
+                .then((response) => {
+                    $('#loading').attr('class', 'loading-hiden')
+                    $('#d-content').html(response);
+                })
+                .catch((error) => {
+                    $('#loading').attr('class', 'loading-hiden')
+                    alert('Network or server error')
+                    console.log(error)
+                });
+
+        }
+
+
+    })
+</script>

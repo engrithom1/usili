@@ -1,0 +1,45 @@
+{{#each staffs}}
+<tr id="staff_{{this.id}}">
+    <td class="py-1">
+        <img src="/images/{{this.avator}}" alt="image">
+    </td>
+    <td> {{this.username}} </td>
+    <td> {{this.fulname}}</td>
+    <td>
+        {{this.phone1}}
+    </td>
+    <td>
+        {{#if (if_equal this.role 3)}}
+        <label class="badge badge-danger">Super manager</label>
+        {{/if}}
+        {{#if (if_equal this.role 2)}}
+        <label class="badge badge-success">Branch manager</label>
+        {{/if}}
+        {{#if (if_equal this.role 1)}}
+        <label class="badge badge-info">Branch staff</label>
+        {{/if}}
+    </td>
+    <td> {{this.bname}}</td>
+    <td>
+        <!--button type="button" id="view-staff" class="btn btn-info btn-icon">
+            <i class="ti-eye">{{userInfo.user.role}}</i>
+        </button-->
+         {{#if (if_greater @root.userInfo.user.role 1)}}
+        {{#if (if_not_equal this.role 3)}}
+        {{#if (if_not_equal @root.userInfo.user.id this.id)}}
+        <button type="button" status="{{this.status}}" fulname="{{this.fulname}}" phone2="{{this.phone2}}"
+            phone1="{{this.phone1}}" staff-id="{{this.id}}" user-branch="{{this.branch_id}}" user-role="{{this.role}}"
+            class="edit_btn btn btn-success btn-icon">
+            <i class="fa fa-edit"></i>
+        </button>
+        <button type="button" user-branch="{{this.branch_id}}" user-role="{{this.role}}" staff-image="{{this.avator}}"
+            staff-id="{{this.id}}" class="delete_btn btn btn-danger btn-icon">
+            <i class="fa fa-times"></i>
+        </button>
+        {{/if}}
+        {{/if}}
+        {{/if}}
+
+    </td>
+</tr>
+{{/each}}

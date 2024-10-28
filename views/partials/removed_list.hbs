@@ -1,0 +1,21 @@
+{{#each packages}}
+<tr id="package_{{this.id}}">
+    <td>{{index_plas @index 1}}</td>
+    <td class="text-capitalize">{{this.name}}</td>
+    <td class="text-capitalize"> {{this.price}} </td>
+    <td><label class="badge badge-primary">{{this.bfname}}</label></td>
+    <td> <label class="badge badge-success">{{this.btname}}</label></td>
+    <td> {{this.fulname}}</td>
+    <td> {{this.remove_staff}}</td>
+    <td> {{this.remove_description}}</td>
+    <td> {{subdate this.created_at}}</td>
+    <td> {{subdate this.updated_at}}</td>
+    <!--td>
+                                <button type="button" pprice="{{this.price}}" pid="{{this.id}}" bid="{{this.bid}}"
+                                    pname="{{this.name}}" pbranch="{{this.bname}}" pimage="{{this.thumbnail}}"
+                                    branch-id="{{this.id}}" class="btn receive_btn btn-primary btn-icon">
+                                    <i class="fa fa-eye"></i>
+                                </button>
+                            </td-->
+</tr>
+{{/each}}

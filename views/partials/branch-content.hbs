@@ -1,0 +1,130 @@
+<h5>Data Summary</h5>
+
+<div class="row">
+    <div class="col-sm-6 col-md-3 mb-4 stretch-card transparent">
+        <div class="card card-tale">
+            <div class="card-body">
+
+                <p id="view-sent" class="fs-25 mt-3">{{price sent}}</p>
+                <p>Sent Packages</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6 col-md-3 mb-4 stretch-card transparent">
+        <div class="card card-tale">
+            <div class="card-body">
+
+                <p id="view-received" class="fs-25 mt-3">{{price received}}</p>
+                <p>Received Packages</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6 col-md-3 mb-4 stretch-card transparent">
+        <div class="card card-dark-blue">
+            <div class="card-body">
+
+                <p id="view-trashed" class="fs-25 mt-3">{{price trashed}}</p>
+                <p>Trashed Packages</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6 col-md-3 mb-4 stretch-card transparent">
+        <div class="card card-dark-blue">
+            <div class="card-body">
+
+                <p id="view-revenue" class="fs-25 mt-3">{{price revenue}}/=</p>
+                <p>Total Revenue</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<h5 class="mt-3">Branch Details</h5>
+<div class="row">
+    <div class="col-sm-6 col-md-4 grid-margin stretch-card">
+        <div class="card tale-bg">
+            <div class="card-people mt-auto">
+                <img class="package-branch-img" id="view-img" src="/images/{{data.thumbnail}}" alt="">
+                <div class="weather-info">
+                    <div class="d-flex">
+                        <div class="ms-2">
+                            <h3 id="edit-pname" class="location font-weight-normal"></h3>
+                            <h4 id="edit-bname" class="font-weight-normal"></h4>
+                            <h4 id="edit-pprice" class="font-weight-normal"></h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6 col-md-4">
+ <p>
+            <b>Branch name:</b><br>
+            {{data.name}}
+        </p>
+        <p>
+            <b>Place :</b><br>
+            {{data.region}} {{data.district}}
+        </p>
+        <p>
+            <b>Branch Location:</b><br>
+            {{data.location}}
+        </p>
+    </div>
+
+    <div class="col-sm-6 col-md-4">
+        <p id="view-description">
+            <b>Branch Description:</b><br>
+            {{data.description}}
+        </p>
+    </div>
+
+</div>
+
+<h5 class="mt-3">Staff Members</h5>
+
+<div class="row">
+    <div class="col-12">
+        <div class="table-responsive">
+
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>No</th>
+                        <th> User name </th>
+                        <th> Full name </th>
+                        <th> Phone no </th>
+                        <th> Role </th>
+                    </tr>
+                </thead>
+                <tbody id="staff-list">
+
+                    {{#each staffs}}
+                    <tr id="staff_{{this.id}}">
+                        <td class="py-1">
+                            {{index_plas @index 1}}
+                        </td>
+                        <td> {{this.username}} </td>
+                        <td> {{this.fulname}}</td>
+                        <td>
+                            {{this.phone1}}
+                        </td>
+                        <td>
+                            {{#if (if_equal this.role 3)}}
+                            <label class="badge badge-danger">Super manager</label>
+                            {{/if}}
+                            {{#if (if_equal this.role 2)}}
+                            <label class="badge badge-success">Branch manager</label>
+                            {{/if}}
+                            {{#if (if_equal this.role 1)}}
+                            <label class="badge badge-info">Branch staff</label>
+                            {{/if}}
+                        </td>
+
+                    </tr>
+                    {{/each}}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

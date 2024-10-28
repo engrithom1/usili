@@ -1,0 +1,37 @@
+<center class="mb-5">
+    <h3>{{heading}}</h3>
+</center>
+
+{{#each packages}}
+<div class="pdf-item">
+    <table class="pdf-table">
+        <tr>
+            <td class="td-1">
+                <div>
+                   <h5>Package ID : {{this.barcode_id}}</h5>
+                   <h5>Package name : {{this.name}}</h5> 
+                   <h5>Package type : {{this.package_tag}}</h5> 
+                   <h5>Package size : {{this.package_size}}</h5> 
+                   <h5>Package weight : {{this.package_weight}} Kg</h5> 
+                </div>
+            </td>
+            <td class="td-2">
+                <div>
+                    <h5>From : {{this.branch_from_region}} ({{this.branch_from_name}})</h5>
+                    <h5>Sender name : {{this.sender_name}}</h5>
+                    <h5>Sender phone : {{this.sender_phone}}</h5>
+                    <h5>{{this.branch_from_region}} Contacts : {{this.branch_from_contact}}</h5>
+                </div>
+            </td>
+            <td class="td-2">
+               <div>
+                    <h5>Destination : {{this.branch_to_region}} ({{this.branch_to_name}})</h5>
+                    <h5>Receiver name : {{this.receiver_name}}</h5>
+                    <h5>Receiver phone : {{this.receiver_phone}}</h5>
+                    <h5>{{this.branch_to_region}} Contacts : {{this.branch_to_contact}}</h5> 
+               </div>
+            </td>
+        </tr>
+    </table>
+</div>
+{{/each}}

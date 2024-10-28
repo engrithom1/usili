@@ -1,0 +1,70 @@
+<div class="content-wrapper">
+    <div class="row mb-3">
+        <div class="col-md-12">
+            <div class="row">
+                <div class="col-12 col-xl-9 mb-4 mb-xl-0">
+                    <h3 class="font-weight-bold text-center text-capitalize">{{message}}</h3>
+                </div>
+                <div class="col-12 col-xl-3">
+                    <a href="/customers" type="button" class="btn btn-primary">
+                        <- Customers </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        {{#each events}}
+
+        <div class="col-md-12 grid-margin stretch-card">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="text-center mb-3">Package Name : <b>{{this.name}}</b></h4>
+                    <div class="row">
+                        <div class="col-sm-6 col-md-4 mb-3">
+                            <h5>Sender name: <b>{{this.sender_name}}</b></h5>
+                            <h5>Sender Phone: <b>{{this.sender_phone}}</b></h5>
+                            <br>
+                            <h5>Receiver name: <b>{{this.receiver_name}}</b></h5>
+                            <h5>Receiver Phone: <b>{{this.receiver_phone}}</b></h5>
+                        </div>
+
+                        <div class="col-sm-6 col-md-4 mb-3">
+                            <h5><b class="text-primary">{{this.bfname}}</b> To <b class="text-success">{{this.btname}}</b></h5>
+
+                            <h5>Created at: <b>{{subdate this.created_at}}</b></h5>
+                            <h5>Transportation Price: <b>{{price this.price}}</b></h5>
+
+                            {{#if (if_equal this.status 1)}}
+                            <h5>Package status: <label class="badge badge-primary">On Transit</label></h5>
+                            {{/if}}
+                            {{#if (if_equal this.status 2)}}
+                            <h5>Package status: <label class="badge badge-success">Received</label></h5>
+                            {{/if}}
+                            {{#if (if_equal this.status 3)}}
+                            <h5>Package status: <label class="badge badge-danger">Removed</label></h5>
+                            {{/if}}
+
+
+                        </div>
+
+                        <div class="col-sm-6 col-md-4 mb-3">
+                            <h5>Staff name: <b>{{this.fulname}}</b></h5>
+                            <h5>Staff Phone: <b>{{this.phone1}}</b></h5>
+                            <br>
+                            <h5>Transporter name: <b>{{this.transporter_name}}</b></h5>
+                            <h5>Transporter Phone: <b>{{this.transporter_phone}}</b></h5>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {{/each}}
+    </div>
+</div>
+
+<script>
+    $('#customers').attr('class', 'nav-item active');
+</script>
