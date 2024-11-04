@@ -1,39 +1,51 @@
 {{#each packages}}
-<tr id="package_{{this.id}}">
-    <td>{{index_plas @index 1}}</td>
-    {{#if (if_equal this.package_size 'Small' )}}
-    <td><span class="text-success text-small">[sm] </span><span class="text-capitalize">{{this.name}}</span></td>
-    {{/if}}
-    {{#if (if_equal this.package_size 'Large' )}}
-    <td><span class="text-danger">[lg] </span><span class="text-capitalize">{{this.name}}</span>
-    </td>
-    {{/if}}
-    {{#if (if_equal this.package_size 'Medium' )}}
-    <td><span class="text-primary">[md] </span><span class="text-capitalize">{{this.name}}</span></td>
-    {{/if}}
-    <td>{{this.price}}</td>
-    <td><label class="badge badge-dark">{{this.package_tag}}</label></td>
-    <td class="text-capitalize"> {{this.receiver_name}} </td>
-    <td> <a class="text-success no-href-dec add_phone" phone="{{this.receiver_phone}}">{{this.receiver_phone}} <i
-                class="mdi mdi-message-processing"></i></a></td>
-    <td><label class="badge badge-primary">{{this.bname}}</label></td>
-    <td> <label class="badge badge-success">{{fulname}}</label></td>
+  <tr id="package_{{this.id}}">
+                            <td>{{index_plas @index 1}}</td>
+                            {{#if (if_equal this.package_size 'Small' )}}
+                            <td><span class="text-success text-small">[sm] </span><span
+                                    class="text-capitalize">{{this.name}}</span></td>
+                            {{/if}}
+                            {{#if (if_equal this.package_size 'Large' )}}
+                            <td><span class="text-danger">[lg] </span><span class="text-capitalize">{{this.name}}</span>
+                            </td>
+                            {{/if}}
+                            {{#if (if_equal this.package_size 'Medium' )}}
+                            <td><span class="text-primary">[md] </span><span
+                                    class="text-capitalize">{{this.name}}</span></td>
+                            {{/if}}
+                            <td>{{this.price}}</td>
+                            <td><label class="badge badge-dark">{{this.package_tag}}</label></td>
+                            <td class="text-capitalize"> {{this.receiver_name}} </td>
+                            <td> <a class="text-success no-href-dec add_phone"
+                                    phone="{{this.receiver_phone}}">{{this.receiver_phone}} <i
+                                        class="mdi mdi-message-processing"></i></a></td>
+                            <td><label class="badge badge-primary">{{this.bname}}</label></td>
+                            <td> <label class="badge badge-success">{{fulname}}</label></td>
 
-    <td> {{subdate this.created_at}}</td>
-    <td>
-        <button type="button" pid="{{this.id}}" bid="{{this.bid}}" pname="{{this.name}}" pbranch="{{this.bname}}"
-            pimage="{{this.thumbnail}}" branch-id="{{this.id}}" class="btn receipt_btn btn-primary btn-icon">
-            <i class="fa fa-print"></i>
-        </button>
-        <button type="button" pid="{{this.id}}" bid="{{this.bid}}" pname="{{this.name}}" pbranch="{{this.bname}}"
-            pimage="{{this.thumbnail}}" branch-id="{{this.id}}" class="btn edit_btn btn-success btn-icon">
-            <i class="fa fa-edit"></i>
-        </button>
-
-        <button type="button" pname="{{this.name}}" pbranch="{{this.bname}}" pimage="{{this.thumbnail}}"
-            pid="{{this.id}}" bid="{{this.bid}}" class="remove_btn btn btn-danger btn-icon">
-            <i class="fa fa-times"></i>
-        </button>
-    </td>
-</tr>
+                            <td> {{subdate this.created_at}}</td>
+                            <td>
+                                <button type="button" pid="{{this.id}}" bid="{{this.bid}}" pname="{{this.name}}"
+                                    pbranch="{{this.bname}}" pimage="{{this.thumbnail}}"sender_name="{{this.sender_name}}" sender_phone="{{this.sender_phone}}" receiver_name="{{this.receiver_name}}" receiver_phone="{{this.receiver_phone}}" bcid="{{this.barcode_id}}" branch-id="{{this.id}}"
+                                    class="btn receive_btn btn-primary btn-icon">
+                                    <i class="mdi mdi-gift"></i>
+                                </button>
+                                <button type="button" pid="{{this.id}}" bid="{{this.bid}}" pname="{{this.name}}"
+                                    pbranch="{{this.bname}}" pimage="{{this.thumbnail}}" branch-id="{{this.id}}"
+                                    class="btn receipt_btn btn-dark btn-icon">
+                                    <i class="fa fa-print"></i>
+                                </button>
+                                <button type="button" pid="{{this.id}}" bid="{{this.bid}}" pname="{{this.name}}"
+                                    pbranch="{{this.bname}}" pimage="{{this.thumbnail}}" branch-id="{{this.id}}"
+                                    class="btn edit_btn btn-success btn-icon">
+                                    <i class="fa fa-edit"></i>
+                                </button>
+{{#if (if_equal @root.userInfo.user.role 3)}}
+                                <button type="button" pname="{{this.name}}" pbranch="{{this.bname}}"
+                                    pimage="{{this.thumbnail}}" sender_name="{{this.sender_name}}" sender_phone="{{this.sender_phone}}" receiver_name="{{this.receiver_name}}" receiver_phone="{{this.receiver_phone}}" bcid="{{this.barcode_id}}" pid="{{this.id}}" bid="{{this.bid}}"
+                                    class="remove_btn btn btn-danger btn-icon">
+                                    <i class="fa fa-times"></i>
+                                </button>
+                                {{/if}}
+                            </td>
+                        </tr>
 {{/each}}

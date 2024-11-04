@@ -15,6 +15,33 @@ function getRandomInt(min, max) {
   return Math.floor(Math.random() * (max - min + 1) + min);
 }
 
+function getDateTime() {
+  var now     = new Date(); 
+  var year    = now.getFullYear();
+  var month   = now.getMonth()+1; 
+  var day     = now.getDate();
+  var hour    = now.getHours();
+  var minute  = now.getMinutes();
+  var second  = now.getSeconds(); 
+  if(month.toString().length == 1) {
+       month = '0'+month;
+  }
+  if(day.toString().length == 1) {
+       day = '0'+day;
+  }   
+  if(hour.toString().length == 1) {
+       hour = '0'+hour;
+  }
+  if(minute.toString().length == 1) {
+       minute = '0'+minute;
+  }
+  if(second.toString().length == 1) {
+       second = '0'+second;
+  }   
+  var dateTime = year+'-'+month+'-'+day+' '+hour+':'+minute+':'+second;   
+   return dateTime;
+}
+
 function genCode(cod) {
 
   try {
@@ -119,6 +146,36 @@ function phoneListArray(phone_list){
 
 }
 
+function getDateTomorrow() {
+  var now = new Date(); 
+  now.setDate(now.getDate() + 1);
+  var year    = now.getFullYear();
+  var month   = now.getMonth()+1; 
+  var day     = now.getDate();
+  var hour    = now.getHours();
+  var minute  = now.getMinutes();
+  var second  = now.getSeconds(); 
+  if(month.toString().length == 1) {
+       month = '0'+month;
+  }
+  if(day.toString().length == 1) {
+       day = '0'+day;
+  }   
+  if(hour.toString().length == 1) {
+       hour = '0'+hour;
+  }
+  if(minute.toString().length == 1) {
+       minute = '0'+minute;
+  }
+  if(second.toString().length == 1) {
+       second = '0'+second;
+  }   
+  var dateTime = year+'-'+month+'-'+day;   
+   return dateTime;
+}
+
+   
+
 exports.updatePackage = (req, res) => {
 
   if (req.session.user) {
@@ -126,22 +183,22 @@ exports.updatePackage = (req, res) => {
     userInfo.user = req.session.user.user
   }
 
-  var { pid,barcode_id, sender_name, sender_phone, receiver_name, receiver_phone, transporter_name, transporter_phone, branch_to, arive_at, price, name, edit_description } = req.body;
+  var { pid,barcode_id, sender_name, sender_phone, receiver_name, receiver_phone, transporter_name, transporter_phone, branch_to, arive_at, price, name, description, package_value, package_size, package_weight, package_tag, shipping_at, specific_location } = req.body;
 
   var branch_id = req.session.user.user.bid;
   var user_id = req.session.user.user.id;
 
-  var updated_at = new Date().toLocaleString();
+  console.log(req.body)
+
+  var updated_at = getDateTime()
 
   pool.getConnection((err, connection) => {
     if (err) throw err; // not connected
     //console.log('Connected!');
    
+      var query = "UPDATE packages SET name = ?, price = ?,arive_at = ?,branch_to = ?, description = ?, edit_by = ?, sender_name = ?,sender_phone = ?,receiver_name = ?,receiver_phone = ?,transporter_name = ?,transporter_phone = ?, updated_at = ?, package_value = ?, package_size = ?, package_weight = ?, package_tag = ?, shipping_at = ?, specific_location = ? WHERE id = ?;"     
 
-      var query = "UPDATE packages SET name = ?, price = ?,arive_at = ?,branch_to = ?, edit_description = ?, edit_by = ?, sender_name = ?,sender_phone = ?,receiver_name = ?,receiver_phone = ?,transporter_name = ?,transporter_phone = ?, updated_at = ? WHERE id = ? AND barcode_id = ?;"
-     
-
-      connection.query(query, [name, price, arive_at, branch_to, edit_description, user_id, sender_name, sender_phone, receiver_name, receiver_phone, transporter_name, transporter_phone,updated_at,pid,barcode_id], async (err, rows) => {
+      connection.query(query, [name, price, arive_at, branch_to, description, user_id, sender_name, sender_phone, receiver_name, receiver_phone, transporter_name, transporter_phone,updated_at, package_value, package_size, package_weight, package_tag, shipping_at, specific_location,pid], async (err, rows) => {
         // Once done, release connection
         //connection.release();
         if (!err) {
@@ -171,7 +228,8 @@ exports.receivePackage = (req, res) => {
   var branch_id = req.session.user.user.bid;
   var user_id = req.session.user.user.id;
 
-  var closed_at = new Date().toLocaleString();
+  var closed_at = getDateTime()
+  //var closed_at = new Date().toLocaleString();
 
   pool.getConnection((err, connection) => {
     if (err) throw err; // not connected
@@ -246,7 +304,7 @@ exports.createPackage = (req, res) => {
     userInfo.user = req.session.user.user
   }
 
-  var { sender_name,sender_phone,receiver_name,receiver_phone,transporter_name,transporter_phone, name,price,branch_to,arive_at,description,package_value,package_size,package_weight,package_tag,shipping_at,specific_location } = req.body;
+  var { sender_name,sender_phone,receiver_name,receiver_phone,transporter_name,transporter_phone, name,price,branch_to,description,package_value,package_size,package_weight,package_tag,specific_location } = req.body;
 
   console.log(req.body)
   //return req.body;
@@ -258,6 +316,8 @@ exports.createPackage = (req, res) => {
   var trans_name = transporter_name || user_name
   var trans_phone = transporter_phone || user_phone
   var body = description || "No package description"
+
+  var shipping_at = getDateTomorrow()
  
 
   pool.getConnection( (err, connection) => {
@@ -284,7 +344,7 @@ exports.createPackage = (req, res) => {
         var nreceiver = '255'+receiver_phone.substring(1);
 
         var numberz = [nsender, nreceiver]
-        var message = "Mzigo wenye jina "+name+" umetumwa kwa "+receiver_name+" ("+receiver_phone+") na "+sender_name+" ("+sender_phone+"), Kupitia USIRI TRANS Tawi "+bb_from.name+"( "+bb_from.region+") kwenda Tawi "+bb_to.name+"( "+bb_to.region+") kwa Gharama ya Tsh "+price+" Unatarajiwa kuwasiri tare "+arive_at+". Karibu tukuhudumie."
+        var message = "Mzigo wenye jina "+name+" umetumwa kwa "+receiver_name+" ("+receiver_phone+") na "+sender_name+" ("+sender_phone+"), Kupitia USIRI TRANS Tawi "+bb_from.name+"( "+bb_from.region+") kwenda Tawi "+bb_to.name+"( "+bb_to.region+") kwa Gharama ya Tsh "+price+" Utasafirishwa tare "+shipping_at+". Karibu tukuhudumie."
 
     /*if (req.file) {*/
 
@@ -294,7 +354,7 @@ exports.createPackage = (req, res) => {
       var query = "INSERT INTO packages SET barcode_id = ?, name = ?, price = ?,arive_at = ?,branch_to = ? ,branch_from = ?, description = ?, thumbnail = ?, created_by = ?, sender_name = ?,sender_phone = ?,receiver_name = ?,receiver_phone = ?,transporter_name = ?,transporter_phone = ?,status = ?, package_value = ?, package_size = ?, package_weight = ?, package_tag = ?, specific_location = ?, shipping_at = ?;"
           query += "INSERT INTO barcodes SET code_id = " + barcode_id + ", branch_id = " + branch_id + ", code_data = '" + code_data + "', status = " + 2 + ", code_type = '" + code128 + "', batch_no = " + branch_id + ", created_by = " + user_id + ";"
 
-      connection.query(query, [barcode_id, name, price, arive_at, branch_to, branch_id, body, filename, user_id, sender_name, sender_phone, receiver_name, receiver_phone, trans_name, trans_phone, 1,package_value,package_size,package_weight,package_tag,specific_loc,shipping_at], async (err, rows) => {
+      connection.query(query, [barcode_id, name, price,shipping_at, branch_to, branch_id, body, filename, user_id, sender_name, sender_phone, receiver_name, receiver_phone, trans_name, trans_phone, 1,package_value,package_size,package_weight,package_tag,specific_loc,shipping_at], async (err, rows) => {
         // Once done, release connection
         //connection.release();
        
@@ -314,14 +374,14 @@ exports.createPackage = (req, res) => {
         if (rec_bool && sen_bool && ress) {
           /////goood ok ok
           
-          return res.json({status: 'good',data, msg: "Package has been created successfully" });
+          return res.json({status: 'good',data,shipping_at, msg: "Package has been created successfully" });
           //res.redirect('/outgoing-packages');
         } else {
           ////////somering wrong
           //res.redirect('/outgoing-packages');
          // console.log(err)
          console.log('issue on insertion mbalimbali')
-         return res.json({status: 'good',data, msg: "Package has been created successfully" });
+         return res.json({status: 'good',data,shipping_at, msg: "Package has been created successfully" });
         }
 
       }else{
@@ -383,7 +443,7 @@ exports.removePackage = (req, res) => {
     userInfo.user = req.session.user.user
   }
 
-  var updated_at = new Date().toLocaleString();
+  var updated_at = getDateTime()
 
   var { barcode_id, pid, description } = req.body;
   var branch_id = req.session.user.user.bid;
@@ -461,7 +521,7 @@ exports.incomingPackages = (req, res) => {
     description: "landing page of this simple payment apprication"
   }
 
-  var query = "SELECT us.fulname,pc.price, pc.package_size, pt.name AS package_tag, pc.created_at, pc.receiver_name, pc.receiver_phone, pc.id, pc.thumbnail,br.id AS bid, pc.name, br.name AS bname  FROM packages AS pc INNER JOIN branches AS br ON pc.branch_from = br.id INNER JOIN package_tag AS pt ON pc.package_tag = pt.id INNER JOIN users AS us ON pc.created_by = us.id  WHERE pc.status = ? AND pc.branch_to = ? ORDER BY pc.created_at DESC;"
+  var query = "SELECT us.fulname,pc.price,pc.barcode_id,pc.sender_name,pc.sender_phone, pc.package_size, pt.name AS package_tag, pc.created_at, pc.receiver_name, pc.receiver_phone, pc.id, pc.thumbnail,br.id AS bid, pc.name, br.name AS bname  FROM packages AS pc INNER JOIN branches AS br ON pc.branch_from = br.id INNER JOIN package_tag AS pt ON pc.package_tag = pt.id INNER JOIN users AS us ON pc.created_by = us.id  WHERE pc.status = ? AND pc.branch_to = ? ORDER BY pc.created_at DESC;"
       query += "SELECT id, name FROM branches WHERE id != ?;"
       query += "SELECT id, name FROM package_tag;"
   pool.getConnection((err, connection) => {
@@ -494,7 +554,7 @@ exports.outgoingPackages = (req, res) => {
     description: "landing page of this simple payment apprication"
   }
 
-  var query = "SELECT us.fulname,pc.price, pc.package_size, pt.name AS package_tag, pc.created_at,pc.receiver_name, pc.receiver_phone, pc.id, pc.thumbnail, br.id AS bid, pc.name, br.name AS bname  FROM packages AS pc INNER JOIN branches AS br ON pc.branch_to = br.id INNER JOIN package_tag AS pt ON pc.package_tag = pt.id INNER JOIN users AS us ON pc.created_by = us.id  WHERE pc.status = ? AND pc.branch_from = ? ORDER BY pc.created_at DESC;"
+  var query = "SELECT us.fulname,pc.price,pc.barcode_id,pc.sender_name,pc.sender_phone, pc.package_size, pt.name AS package_tag, pc.created_at,pc.receiver_name, pc.receiver_phone, pc.id, pc.thumbnail, br.id AS bid, pc.name, br.name AS bname  FROM packages AS pc INNER JOIN branches AS br ON pc.branch_to = br.id INNER JOIN package_tag AS pt ON pc.package_tag = pt.id INNER JOIN users AS us ON pc.created_by = us.id  WHERE pc.status = ? AND pc.branch_from = ? ORDER BY pc.created_at DESC;"
       query += "SELECT id, name FROM branches WHERE id != ?;"
       query += "SELECT id, fulname FROM users WHERE branch_id = ?;"
       query += "SELECT id, name FROM package_tag;"
@@ -531,13 +591,13 @@ exports.filterOutgoingPackages = (req, res) => {
   var query = ""
 
   if(branch_id == 0 && staff_id == 0){
-    query = "SELECT us.fulname,pc.package_size, pt.name AS package_tag, pc.created_at,pc.receiver_name,pc.price, pc.receiver_phone, pc.id, pc.thumbnail, br.id AS bid, pc.name, br.name AS bname  FROM packages AS pc INNER JOIN branches AS br ON pc.branch_to = br.id INNER JOIN package_tag AS pt ON pc.package_tag = pt.id INNER JOIN users AS us ON pc.created_by = us.id  WHERE pc.status = "+1+" AND pc.branch_from = "+bid+" ORDER BY pc.created_at DESC;"
+    query = "SELECT us.fulname,pc.barcode_id,pc.sender_name,pc.sender_phone,pc.package_size, pt.name AS package_tag, pc.created_at,pc.receiver_name,pc.price, pc.receiver_phone, pc.id, pc.thumbnail, br.id AS bid, pc.name, br.name AS bname  FROM packages AS pc INNER JOIN branches AS br ON pc.branch_to = br.id INNER JOIN package_tag AS pt ON pc.package_tag = pt.id INNER JOIN users AS us ON pc.created_by = us.id  WHERE pc.status = "+1+" AND pc.branch_from = "+bid+" ORDER BY pc.created_at DESC;"
   }else if(branch_id == 0 && staff_id != 0){
-    query = "SELECT us.fulname,pc.package_size, pt.name AS package_tag, pc.created_at,pc.receiver_name,pc.price, pc.receiver_phone, pc.id, pc.thumbnail, br.id AS bid, pc.name, br.name AS bname  FROM packages AS pc INNER JOIN branches AS br ON pc.branch_to = br.id INNER JOIN package_tag AS pt ON pc.package_tag = pt.id INNER JOIN users AS us ON pc.created_by = us.id  WHERE pc.status = "+1+" AND pc.branch_from = "+bid+" AND pc.created_by = "+staff_id+" ORDER BY pc.created_at DESC;"
+    query = "SELECT us.fulname,pc.barcode_id,pc.sender_name,pc.sender_phone,pc.package_size, pt.name AS package_tag, pc.created_at,pc.receiver_name,pc.price, pc.receiver_phone, pc.id, pc.thumbnail, br.id AS bid, pc.name, br.name AS bname  FROM packages AS pc INNER JOIN branches AS br ON pc.branch_to = br.id INNER JOIN package_tag AS pt ON pc.package_tag = pt.id INNER JOIN users AS us ON pc.created_by = us.id  WHERE pc.status = "+1+" AND pc.branch_from = "+bid+" AND pc.created_by = "+staff_id+" ORDER BY pc.created_at DESC;"
   }else if(branch_id != 0 && staff_id == 0){
-    query = "SELECT us.fulname,pc.package_size, pt.name AS package_tag, pc.created_at,pc.receiver_name,pc.price, pc.receiver_phone, pc.id, pc.thumbnail, br.id AS bid, pc.name, br.name AS bname  FROM packages AS pc INNER JOIN branches AS br ON pc.branch_to = br.id INNER JOIN package_tag AS pt ON pc.package_tag = pt.id INNER JOIN users AS us ON pc.created_by = us.id  WHERE pc.status = "+1+" AND pc.branch_from = "+bid+" AND pc.branch_to = "+branch_id+" ORDER BY pc.created_at DESC;"
+    query = "SELECT us.fulname,pc.barcode_id,pc.sender_name,pc.sender_phone,pc.package_size, pt.name AS package_tag, pc.created_at,pc.receiver_name,pc.price, pc.receiver_phone, pc.id, pc.thumbnail, br.id AS bid, pc.name, br.name AS bname  FROM packages AS pc INNER JOIN branches AS br ON pc.branch_to = br.id INNER JOIN package_tag AS pt ON pc.package_tag = pt.id INNER JOIN users AS us ON pc.created_by = us.id  WHERE pc.status = "+1+" AND pc.branch_from = "+bid+" AND pc.branch_to = "+branch_id+" ORDER BY pc.created_at DESC;"
   }else{
-     query = "SELECT us.fulname,pc.package_size, pt.name AS package_tag, pc.created_at,pc.receiver_name,pc.price, pc.receiver_phone, pc.id, pc.thumbnail, br.id AS bid, pc.name, br.name AS bname  FROM packages AS pc INNER JOIN branches AS br ON pc.branch_to = br.id INNER JOIN package_tag AS pt ON pc.package_tag = pt.id INNER JOIN users AS us ON pc.created_by = us.id  WHERE pc.status = "+1+" AND pc.branch_from = "+bid+" AND pc.created_by = "+staff_id+" AND pc.branch_to = "+branch_id+" ORDER BY pc.created_at DESC;"
+     query = "SELECT us.fulname,pc.barcode_id,pc.sender_name,pc.sender_phone,pc.package_size, pt.name AS package_tag, pc.created_at,pc.receiver_name,pc.price, pc.receiver_phone, pc.id, pc.thumbnail, br.id AS bid, pc.name, br.name AS bname  FROM packages AS pc INNER JOIN branches AS br ON pc.branch_to = br.id INNER JOIN package_tag AS pt ON pc.package_tag = pt.id INNER JOIN users AS us ON pc.created_by = us.id  WHERE pc.status = "+1+" AND pc.branch_from = "+bid+" AND pc.created_by = "+staff_id+" AND pc.branch_to = "+branch_id+" ORDER BY pc.created_at DESC;"
   }
 
   pool.getConnection((err, connection) => {
@@ -575,9 +635,9 @@ exports.filterIncomingPackages = (req, res) => {
   var query = ""
 
   if(branch_from > 0){
-query = "SELECT us.fulname,pc.price, pc.created_at, pc.receiver_name, pc.receiver_phone, pc.id, pc.thumbnail,br.id AS bid, pc.name, br.name AS bname  FROM packages AS pc INNER JOIN branches AS br ON pc.branch_from = br.id INNER JOIN users AS us ON pc.created_by = us.id  WHERE pc.status = "+1+" AND pc.branch_to = "+branch_id+" AND pc.branch_from = "+branch_from+" ORDER BY pc.created_at ASC;"
+query = "SELECT us.fulname,pc.price,pc.barcode_id,pc.sender_name,pc.sender_phone, pc.package_size, pt.name AS package_tag, pc.created_at, pc.receiver_name, pc.receiver_phone, pc.id, pc.thumbnail,br.id AS bid, pc.name, br.name AS bname  FROM packages AS pc INNER JOIN branches AS br ON pc.branch_from = br.id INNER JOIN package_tag AS pt ON pc.package_tag = pt.id INNER JOIN users AS us ON pc.created_by = us.id  WHERE pc.status = "+1+" AND pc.branch_to = "+branch_id+" AND pc.branch_from = "+branch_from+" ORDER BY pc.created_at ASC;"
   }else{
-query = "SELECT us.fulname,pc.price, pc.created_at, pc.receiver_name, pc.receiver_phone, pc.id, pc.thumbnail,br.id AS bid, pc.name, br.name AS bname  FROM packages AS pc INNER JOIN branches AS br ON pc.branch_from = br.id INNER JOIN users AS us ON pc.created_by = us.id  WHERE pc.status = "+1+" AND pc.branch_to = "+branch_id+" ORDER BY pc.created_at ASC;"
+query = "SELECT us.fulname,pc.price,pc.barcode_id,pc.sender_name,pc.sender_phone, pc.package_size, pt.name AS package_tag, pc.created_at, pc.receiver_name, pc.receiver_phone, pc.id, pc.thumbnail,br.id AS bid, pc.name, br.name AS bname  FROM packages AS pc INNER JOIN branches AS br ON pc.branch_from = br.id INNER JOIN package_tag AS pt ON pc.package_tag = pt.id INNER JOIN users AS us ON pc.created_by = us.id  WHERE pc.status = "+1+" AND pc.branch_to = "+branch_id+" ORDER BY pc.created_at ASC;"
   }
 
  
@@ -631,7 +691,7 @@ exports.receivedReports = (req, res) => {
     var date_start = yy+'-'+mm+'-'+dd+' 00:00:00' 
     var date_end = yy+'-'+mm+'-'+dd+' 23:59:59' 
 
-  var query = "SELECT us.fulname, rs.fulname AS receive_staff, pc.created_at,pc.closed_at, pc.closed_at, pc.price, pc.id, pc.thumbnail, bf.id AS bfid,  bt.id AS btid, pc.name, bf.name AS bfname, bt.name AS btname  FROM packages AS pc INNER JOIN branches AS bf ON pc.branch_from = bf.id INNER JOIN branches AS bt ON pc.branch_to = bt.id INNER JOIN users AS us ON pc.created_by = us.id INNER JOIN users AS rs ON pc.closed_by = rs.id WHERE pc.status = ? AND pc.created_at >= ? AND pc.created_at <= ? ORDER BY pc.created_at DESC;"
+  var query = "SELECT us.fulname, rs.fulname AS receive_staff, pc.created_at,pc.closed_at, pc.closed_at, pc.price, pc.id, pc.thumbnail, bf.id AS bfid,  bt.id AS btid, pc.name, bf.name AS bfname, bt.name AS btname  FROM packages AS pc INNER JOIN branches AS bf ON pc.branch_from = bf.id INNER JOIN branches AS bt ON pc.branch_to = bt.id INNER JOIN users AS us ON pc.created_by = us.id INNER JOIN users AS rs ON pc.closed_by = rs.id WHERE pc.status = ? AND pc.closed_at >= ? AND pc.closed_at <= ? ORDER BY pc.closed_at DESC;"
   query += "SELECT id, name FROM branches;"
 
   pool.getConnection((err, connection) => {
@@ -750,13 +810,13 @@ exports.filterReceivedPackages = (req, res) => {
   var query = ""
 
   if(fbranch == 0 && tbranch == 0){
-    query = "SELECT us.fulname, rs.fulname AS receive_staff, pc.created_at,pc.closed_at,pc.price, pc.id, pc.thumbnail, bf.id AS bfid,  bt.id AS btid, pc.name, bf.name AS bfname, bt.name AS btname  FROM packages AS pc INNER JOIN branches AS bf ON pc.branch_from = bf.id INNER JOIN branches AS bt ON pc.branch_to = bt.id INNER JOIN users AS us ON pc.created_by = us.id INNER JOIN users AS rs ON pc.closed_by = rs.id  WHERE pc.status = "+2+" AND pc.created_at >= '"+date_start+"' AND pc.created_at <= '"+date_end+"' ORDER BY pc.created_at DESC;"
+    query = "SELECT us.fulname, rs.fulname AS receive_staff, pc.created_at,pc.closed_at,pc.price, pc.id, pc.thumbnail, bf.id AS bfid,  bt.id AS btid, pc.name, bf.name AS bfname, bt.name AS btname  FROM packages AS pc INNER JOIN branches AS bf ON pc.branch_from = bf.id INNER JOIN branches AS bt ON pc.branch_to = bt.id INNER JOIN users AS us ON pc.created_by = us.id INNER JOIN users AS rs ON pc.closed_by = rs.id  WHERE pc.status = "+2+" AND pc.closed_at >= '"+date_start+"' AND pc.closed_at <= '"+date_end+"' ORDER BY pc.closed_at DESC;"
   }else if(fbranch == 0 && tbranch != 0){
-    query = "SELECT us.fulname,rs.fulname AS receive_staff, pc.created_at,pc.closed_at,pc.price, pc.id, pc.thumbnail, bf.id AS bfid,  bt.id AS btid, pc.name, bf.name AS bfname, bt.name AS btname  FROM packages AS pc INNER JOIN branches AS bf ON pc.branch_from = bf.id INNER JOIN branches AS bt ON pc.branch_to = bt.id INNER JOIN users AS us ON pc.created_by = us.id INNER JOIN users AS rs ON pc.closed_by = rs.id  WHERE pc.status = "+2+" AND pc.branch_to = "+tbranch+" AND pc.created_at >= '"+date_start+"' AND pc.created_at <= '"+date_end+"' ORDER BY pc.created_at DESC;"
+    query = "SELECT us.fulname,rs.fulname AS receive_staff, pc.created_at,pc.closed_at,pc.price, pc.id, pc.thumbnail, bf.id AS bfid,  bt.id AS btid, pc.name, bf.name AS bfname, bt.name AS btname  FROM packages AS pc INNER JOIN branches AS bf ON pc.branch_from = bf.id INNER JOIN branches AS bt ON pc.branch_to = bt.id INNER JOIN users AS us ON pc.created_by = us.id INNER JOIN users AS rs ON pc.closed_by = rs.id  WHERE pc.status = "+2+" AND pc.branch_to = "+tbranch+" AND pc.closed_at >= '"+date_start+"' AND pc.closed_at <= '"+date_end+"' ORDER BY pc.closed_at DESC;"
   }else if(fbranch != 0 && tbranch == 0){
-    query = "SELECT us.fulname,rs.fulname AS receive_staff, pc.created_at,pc.closed_at,pc.price, pc.id, pc.thumbnail, bf.id AS bfid,  bt.id AS btid, pc.name, bf.name AS bfname, bt.name AS btname  FROM packages AS pc INNER JOIN branches AS bf ON pc.branch_from = bf.id INNER JOIN branches AS bt ON pc.branch_to = bt.id INNER JOIN users AS us ON pc.created_by = us.id INNER JOIN users AS rs ON pc.closed_by = rs.id WHERE pc.status = "+2+" AND pc.branch_from = "+fbranch+" AND pc.created_at >= '"+date_start+"' AND pc.created_at <= '"+date_end+"' ORDER BY pc.created_at DESC;"
+    query = "SELECT us.fulname,rs.fulname AS receive_staff, pc.created_at,pc.closed_at,pc.price, pc.id, pc.thumbnail, bf.id AS bfid,  bt.id AS btid, pc.name, bf.name AS bfname, bt.name AS btname  FROM packages AS pc INNER JOIN branches AS bf ON pc.branch_from = bf.id INNER JOIN branches AS bt ON pc.branch_to = bt.id INNER JOIN users AS us ON pc.created_by = us.id INNER JOIN users AS rs ON pc.closed_by = rs.id WHERE pc.status = "+2+" AND pc.branch_from = "+fbranch+" AND pc.closed_at >= '"+date_start+"' AND pc.closed_at <= '"+date_end+"' ORDER BY pc.closed_at DESC;"
   }else{
-    query = "SELECT us.fulname,rs.fulname AS receive_staff, pc.created_at,pc.closed_at,pc.price, pc.id, pc.thumbnail, bf.id AS bfid,  bt.id AS btid, pc.name, bf.name AS bfname, bt.name AS btname  FROM packages AS pc INNER JOIN branches AS bf ON pc.branch_from = bf.id INNER JOIN branches AS bt ON pc.branch_to = bt.id INNER JOIN users AS us ON pc.created_by = us.id INNER JOIN users AS rs ON pc.closed_by = rs.id WHERE pc.status = "+2+" AND pc.branch_to = "+tbranch+" AND pc.branch_from = "+fbranch+" AND pc.created_at >= '"+date_start+"' AND pc.created_at <= '"+date_end+"' ORDER BY pc.created_at DESC;"
+    query = "SELECT us.fulname,rs.fulname AS receive_staff, pc.created_at,pc.closed_at,pc.price, pc.id, pc.thumbnail, bf.id AS bfid,  bt.id AS btid, pc.name, bf.name AS bfname, bt.name AS btname  FROM packages AS pc INNER JOIN branches AS bf ON pc.branch_from = bf.id INNER JOIN branches AS bt ON pc.branch_to = bt.id INNER JOIN users AS us ON pc.created_by = us.id INNER JOIN users AS rs ON pc.closed_by = rs.id WHERE pc.status = "+2+" AND pc.branch_to = "+tbranch+" AND pc.branch_from = "+fbranch+" AND pc.closed_at >= '"+date_start+"' AND pc.close_at <= '"+date_end+"' ORDER BY pc.closed_at DESC;"
   }
 
   pool.getConnection((err, connection) => {
@@ -811,7 +871,7 @@ exports.bmReceivedReports = (req, res) => {
     var date_start = yy+'-'+mm+'-'+dd+' 00:00:00' 
     var date_end = yy+'-'+mm+'-'+dd+' 23:59:59' 
 
-  var query = "SELECT us.fulname, rs.fulname AS receive_staff, pc.created_at, pc.closed_at, pc.price, pc.id, pc.thumbnail, bf.id AS bfid,  bt.id AS btid, pc.name, bf.name AS bfname, bt.name AS btname  FROM packages AS pc INNER JOIN branches AS bf ON pc.branch_from = bf.id INNER JOIN branches AS bt ON pc.branch_to = bt.id INNER JOIN users AS us ON pc.created_by = us.id INNER JOIN users AS rs ON pc.closed_by = rs.id  WHERE pc.status = ? AND pc.branch_to = ? AND pc.created_at >= ? AND pc.created_at <= ? ORDER BY pc.created_at DESC;"
+  var query = "SELECT us.fulname, rs.fulname AS receive_staff, pc.created_at, pc.closed_at, pc.price, pc.id, pc.thumbnail, bf.id AS bfid,  bt.id AS btid, pc.name, bf.name AS bfname, bt.name AS btname  FROM packages AS pc INNER JOIN branches AS bf ON pc.branch_from = bf.id INNER JOIN branches AS bt ON pc.branch_to = bt.id INNER JOIN users AS us ON pc.created_by = us.id INNER JOIN users AS rs ON pc.closed_by = rs.id  WHERE pc.status = ? AND pc.branch_to = ? AND pc.closed_at >= ? AND pc.closed_at <= ? ORDER BY pc.closed_at DESC;"
   query += "SELECT id, name FROM branches WHERE id != ?;"
 
   pool.getConnection((err, connection) => {
@@ -1112,9 +1172,9 @@ exports.filterRemovedPackages = (req, res) => {
   var query = ""
 
   if(branch == 0){
-    query = "SELECT us.fulname, rs.fulname AS remove_staff, pc.created_at,pc.updated_at, pc.closed_at, pc.price, pc.id,pc.remove_description, pc.thumbnail, bf.id AS bfid,  bt.id AS btid, pc.name, bf.name AS bfname, bt.name AS btname  FROM packages AS pc INNER JOIN branches AS bf ON pc.branch_from = bf.id INNER JOIN branches AS bt ON pc.branch_to = bt.id INNER JOIN users AS us ON pc.created_by = us.id INNER JOIN users AS rs ON pc.remove_by = rs.id WHERE pc.status = "+3+" AND pc.created_at >= '"+date_start+"' AND pc.created_at <= '"+date_end+"' ORDER BY pc.id DESC;"
+    query = "SELECT us.fulname, rs.fulname AS remove_staff, pc.created_at,pc.updated_at, pc.closed_at, pc.price, pc.id,pc.remove_description, pc.thumbnail, bf.id AS bfid,  bt.id AS btid, pc.name, bf.name AS bfname, bt.name AS btname  FROM packages AS pc INNER JOIN branches AS bf ON pc.branch_from = bf.id INNER JOIN branches AS bt ON pc.branch_to = bt.id INNER JOIN users AS us ON pc.created_by = us.id INNER JOIN users AS rs ON pc.remove_by = rs.id WHERE pc.status = "+3+" AND pc.updated_at >= '"+date_start+"' AND pc.updated_at <= '"+date_end+"' ORDER BY pc.id DESC;"
   }else{  
-   query = "SELECT us.fulname, rs.fulname AS remove_staff, pc.created_at,pc.updated_at, pc.closed_at, pc.price, pc.id,pc.remove_description, pc.thumbnail, bf.id AS bfid,  bt.id AS btid, pc.name, bf.name AS bfname, bt.name AS btname  FROM packages AS pc INNER JOIN branches AS bf ON pc.branch_from = bf.id INNER JOIN branches AS bt ON pc.branch_to = bt.id INNER JOIN users AS us ON pc.created_by = us.id INNER JOIN users AS rs ON pc.remove_by = rs.id WHERE pc.status = "+3+" AND pc.branch_from = "+branch+" AND pc.created_at >= '"+date_start+"' AND pc.created_at <= '"+date_end+"' ORDER BY pc.id DESC;"
+   query = "SELECT us.fulname, rs.fulname AS remove_staff, pc.created_at,pc.updated_at, pc.closed_at, pc.price, pc.id,pc.remove_description, pc.thumbnail, bf.id AS bfid,  bt.id AS btid, pc.name, bf.name AS bfname, bt.name AS btname  FROM packages AS pc INNER JOIN branches AS bf ON pc.branch_from = bf.id INNER JOIN branches AS bt ON pc.branch_to = bt.id INNER JOIN users AS us ON pc.created_by = us.id INNER JOIN users AS rs ON pc.remove_by = rs.id WHERE pc.status = "+3+" AND pc.branch_from = "+branch+" AND pc.updated_at >= '"+date_start+"' AND pc.updated_at <= '"+date_end+"' ORDER BY pc.id DESC;"
   }
 
   pool.getConnection((err, connection) => {
@@ -1178,11 +1238,10 @@ exports.sendMultSMS = async (req, res) => {
     });
   });
 }else{
-  return res.json({ status: 'bad', msg: 'Message not sent, check your bundle and try again' });
+  return res.json({ status: 'bad', msg: 'Message not sent, check your bundle or network connection try again' });
 }
 
 }
-
 
 exports.pdfOutgoingPackages = (req, res) => {
 
@@ -1247,9 +1306,13 @@ exports.filterReceiverPhones = (req, res) => {
 
   var branch_id = req.body.branch_id
   var staff_id = req.body.staff_id
+  var type = req.body.type
+
+  console.log(req.body)
 
   var query = ""
 
+ if(type == 'outgoing'){
   if(branch_id == 0 && staff_id == 0){
     query = "SELECT pc.receiver_phone FROM packages AS pc WHERE pc.status = "+1+" AND pc.branch_from = "+bid+" ORDER BY pc.created_at DESC;"
   }else if(branch_id == 0 && staff_id != 0){
@@ -1259,6 +1322,16 @@ exports.filterReceiverPhones = (req, res) => {
   }else{
      query = "SELECT pc.receiver_phone FROM packages AS pc WHERE pc.status = "+1+" AND pc.branch_from = "+bid+" AND pc.created_by = "+staff_id+" AND pc.branch_to = "+branch_id+" ORDER BY pc.created_at DESC;"
   }
+ }
+
+ if(type == 'incomming'){
+  if(branch_id == 0){
+    query = "SELECT pc.receiver_phone FROM packages AS pc WHERE pc.status = "+1+" AND pc.branch_to = "+bid+" ORDER BY pc.created_at DESC;"
+  }else{
+    query = "SELECT pc.receiver_phone FROM packages AS pc WHERE pc.status = "+1+" AND pc.branch_to = "+bid+" AND pc.branch_from = "+branch_id+" ORDER BY pc.created_at DESC;"
+  }
+ }
+
 
   pool.getConnection((err, connection) => {
     if (err) throw err; // not connected
@@ -1278,4 +1351,63 @@ exports.filterReceiverPhones = (req, res) => {
       }  
     });
   });
+}
+//getPackageEditData
+exports.getPackageEditData = (req, res) => {
+
+  if (req.session.user) {
+    userInfo.isLoged = req.session.user.isLoged
+    userInfo.user = req.session.user.user
+  }
+  var bid = req.session.user.user.bid
+
+  var pid = req.body.pid
+
+   query = "SELECT us.fulname,us.phone1,pc.shipping_at,pc.description, pc.arive_at,pc.shipping_at,pc.package_value, pc.package_weight,pc.sender_name,pc.sender_phone,pc.package_size, pc.package_tag, pc.created_at,pc.receiver_name,pc.price, pc.receiver_phone, pc.id, pc.thumbnail, br.id AS bid, pc.name FROM packages AS pc INNER JOIN branches AS br ON pc.branch_to = br.id INNER JOIN users AS us ON pc.created_by = us.id  WHERE pc.id = ?;"
+
+  pool.getConnection((err, connection) => {
+    if (err) throw err; // not connected
+
+    connection.query(query, [pid], (err, packages) => {
+      if (!err) {
+        console.log(packages)
+        return res.json({ status: 'good',data:packages[0] , msg: "Package successful Updated" });
+      }else{
+          console.log(err);
+          return res.json({ status: 'bad', msg: "Database or server error" });
+      }  
+    });
+  });
+
+
+}
+
+//////receipt print
+exports.getReceiptData = (req, res) => {
+
+  if (req.session.user) {
+    userInfo.isLoged = req.session.user.isLoged
+    userInfo.user = req.session.user.user
+  }
+  var bid = req.session.user.user.bid
+
+  var pid = req.body.pid
+
+   query = "SELECT us.fulname,us.phone1,pc.shipping_at, pc.arive_at, pc.package_weight, pc.barcode_id,pc.sender_name,pc.sender_phone,pc.package_size, pt.name AS package_tag, pc.created_at,pc.receiver_name,pc.price, pc.receiver_phone, pc.id, pc.thumbnail, br.id AS bid, pc.name, br.name AS bb_to_name, bt.name AS bb_from_name, br.region AS bb_to_region, bt.region AS bb_from_region, bt.contact AS bb_from_contact, br.contact AS bb_to_contact, bc.code_data  FROM packages AS pc INNER JOIN branches AS br ON pc.branch_to = br.id INNER JOIN branches AS bt ON pc.branch_from = bt.id INNER JOIN package_tag AS pt ON pc.package_tag = pt.id INNER JOIN barcodes AS bc ON pc.barcode_id = bc.code_id INNER JOIN users AS us ON pc.created_by = us.id  WHERE pc.id = ?;"
+
+  pool.getConnection((err, connection) => {
+    if (err) throw err; // not connected
+
+    connection.query(query, [pid], (err, packages) => {
+      if (!err) {
+        console.log(packages)
+        return res.json({ status: 'good',data:packages[0] , msg: "Package successful Updated" });
+      }else{
+          console.log(err);
+          return res.json({ status: 'bad', msg: "Database or server error" });
+      }  
+    });
+  });
+
+
 }

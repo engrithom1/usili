@@ -25,13 +25,15 @@ router.get("/revenue-report",checker.authSuper, packageController.revenueReports
 router.get("/removed-packages",checker.authSuper, packageController.removedReports);
 /////revenueReports
 
-
 // router.post("/create-package",upload.imageUpload.single("thumbnail"), packageController.createPackage);
 router.post("/create-package",checker.authChecker, packageController.createPackage);
-router.post("/remove-package",checker.authChecker, packageController.removePackage);
+router.post("/remove-package",checker.authSuper, packageController.removePackage);
 router.post("/update-package",checker.authChecker, packageController.updatePackage);
 router.post("/receive-package",checker.authChecker, packageController.receivePackage);
 router.post("/redirect-package",checker.authChecker, packageController.redirectPackage);
+
+router.post("/get-receipt-data",checker.authChecker, packageController.getReceiptData);
+router.post("/get-package-edit-data",checker.authChecker, packageController.getPackageEditData);
 
 router.post("/filter-outgoing-package",checker.authChecker, packageController.filterOutgoingPackages);
 router.post("/filter-incoming-package",checker.authChecker, packageController.filterIncomingPackages);

@@ -11,23 +11,158 @@
         text-decoration: none;
         cursor: pointer;
     }
-    .pdf-item{
+
+    .pdf-item {
         border: 1px solid #555;
         border-radius: 8px;
         padding: 15px 10px;
         margin-bottom: 20px;
     }
+
     .pdf-table {
-  width: 100%;
-}
-.td-1 {
-  width: 40%;
-  padding-left:8px;
-}
-.td-2 {
-  width: 30%;
-  padding-left:8px;
-}
+        width: 100%;
+    }
+
+    .td-1 {
+        width: 40%;
+        padding-left: 8px;
+    }
+
+    .td-2 {
+        width: 30%;
+        padding-left: 8px;
+    }
+
+    .h5-pdf {
+        margin-bottom: 10px
+    }
+
+    ;
+
+
+    .first {
+        float: left;
+        margin-right: 1em;
+    }
+
+    .price {
+        float: right;
+        margin-left: 1em;
+    }
+
+    .list:after {
+        content: '';
+        border-bottom: dotted;
+        display: block;
+        overflow: hidden;
+        height: 0.6em;
+    }
+
+    #invoice-POS {
+        box-shadow: 0 0 1in -0.25in rgba(0, 0, 0, 0.5);
+        padding: 2mm;
+        margin: 0 auto;
+        width: 80mm;
+        background: #FFF;
+
+    }
+
+    h1 {
+        font-size: 1.5em;
+        color: #222;
+    }
+
+    h2 {
+        font-size: .9em;
+    }
+
+    h3 {
+        font-size: 1.2em;
+        font-weight: 300;
+        line-height: 2em;
+    }
+
+    p {
+        font-size: 13px;
+        color: #666;
+        font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+        /*font-family: 'JuneBug';*/
+        /*line-height: 1.2em;*/
+    }
+
+    #top,
+    #mid,
+    #bot {
+        /* Targets all id with 'col-' */
+        border-bottom: 1px solid #EEE;
+    }
+
+    #top {
+        min-height: 100px;
+    }
+
+    #mid {
+        min-height: 80px;
+    }
+
+    #bot {
+        min-height: 50px;
+    }
+
+    .info {
+        display: block;
+        float: left;
+        margin-left: 0;
+    }
+
+    .title {
+        float: right;
+    }
+
+    .title p {
+        text-align: right;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    td {
+        padding: 5px 0 5px 15px;
+        border: 1px solid #EEE
+    }
+
+    .tabletitle {
+        padding: 5px;
+        font-size: .5em;
+        background: #EEE;
+    }
+
+    .service {
+        border-bottom: 1px solid #EEE;
+    }
+
+    .item {
+        width: 24mm;
+    }
+
+    .itemtext {
+        font-size: .5em;
+    }
+
+    #legalcopy {
+        margin-top: 5mm;
+    }
+
+    .hh_p {
+        font-size: 14px !important;
+    }
+
+    .head-text {
+        /*font-size: 30px;*/
+        font-weight: 600;
+    }
 </style>
 
 <div class="content-wrapper">
@@ -75,36 +210,37 @@
                     </select>
                     <button id="filter_btn" class="btn btn-primary simple-btn">Filter</button>
                     <button id="pdf_btn" class="btn btn-success text-white simple-btn">PDF</button>
-                    <button id="sms_btn" class="btn btn-dark text-white simple-btn">Send SMS</button>
+                    <button id="sms_btn" class="btn btn-dark text-white simple-btn">SendSMS</button>
                 </div>
             </div>
 
             <div id="message_phone" class="loading-hiden">
-<div class="card mt-3">
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-md-7 col-sm-12">
-                            <div class="form-group">
-                                <label for="">Phone numbers (comma separated)</label>
-                                <textarea class="form-control" rows="5" name="phone_list" id="phone_list"></textarea>
+                <div class="card mt-3">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-7 col-sm-12">
+                                <div class="form-group">
+                                    <label for="">Phone numbers (comma separated)</label>
+                                    <textarea class="form-control" rows="5" name="phone_list"
+                                        id="phone_list"></textarea>
+                                </div>
                             </div>
-                        </div>
-                        <div class="col-md-5 col-sm-12">
-                            <div class="form-group">
-                                <label for="">Message</label>
-                                <textarea class="form-control" name="message_field" id="message_field"></textarea>
-                            </div>
-                            <div id="loading-send-sms" class="loading-hiden">
-                    <img class="center-block" width="350" src="/images/cupertino.gif" alt="#" />
-                </div>
-                            <div class="d-flex justify-content-between">
-                                <button class="btn btn-primary" id="send_sms">Send SMS</button>
-                                <button class="btn btn-danger text-white" id="clear_chat">Clear Chat</button>
+                            <div class="col-md-5 col-sm-12">
+                                <div class="form-group">
+                                    <label for="">Message</label>
+                                    <textarea class="form-control" name="message_field" id="message_field"></textarea>
+                                </div>
+                                <div id="loading-send-sms" class="loading-hiden">
+                                    <img class="center-block" width="350" src="/images/cupertino.gif" alt="#" />
+                                </div>
+                                <div class="d-flex justify-content-between">
+                                    <button class="btn btn-primary" id="send_sms">Send SMS</button>
+                                    <button class="btn btn-danger text-white" id="clear_chat">Clear Chat</button>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
             </div>
 
             <div class="table-responsive">
@@ -155,8 +291,15 @@
                             <td> {{subdate this.created_at}}</td>
                             <td>
                                 <button type="button" pid="{{this.id}}" bid="{{this.bid}}" pname="{{this.name}}"
-                                    pbranch="{{this.bname}}" pimage="{{this.thumbnail}}" branch-id="{{this.id}}"
-                                    class="btn receipt_btn btn-primary btn-icon">
+                                    pbranch="{{this.bname}}" pimage="{{this.thumbnail}}"
+                                    sender_name="{{this.sender_name}}" sender_phone="{{this.sender_phone}}"
+                                    receiver_name="{{this.receiver_name}}" receiver_phone="{{this.receiver_phone}}"
+                                    bcid="{{this.barcode_id}}" branch-id="{{this.id}}"
+                                    class="btn receive_btn btn-primary btn-icon">
+                                    <i class="mdi mdi-gift"></i>
+                                </button>
+                                <button type="button" pid="{{this.id}}" bid="{{this.bid}}"
+                                    class="btn receipt_btn btn-dark btn-icon">
                                     <i class="fa fa-print"></i>
                                 </button>
                                 <button type="button" pid="{{this.id}}" bid="{{this.bid}}" pname="{{this.name}}"
@@ -164,12 +307,15 @@
                                     class="btn edit_btn btn-success btn-icon">
                                     <i class="fa fa-edit"></i>
                                 </button>
-
+                                {{#if (if_equal @root.userInfo.user.role 3)}}
                                 <button type="button" pname="{{this.name}}" pbranch="{{this.bname}}"
-                                    pimage="{{this.thumbnail}}" pid="{{this.id}}" bid="{{this.bid}}"
-                                    class="remove_btn btn btn-danger btn-icon">
+                                    pimage="{{this.thumbnail}}" sender_name="{{this.sender_name}}"
+                                    sender_phone="{{this.sender_phone}}" receiver_name="{{this.receiver_name}}"
+                                    receiver_phone="{{this.receiver_phone}}" bcid="{{this.barcode_id}}"
+                                    pid="{{this.id}}" bid="{{this.bid}}" class="remove_btn btn btn-danger text-white btn-icon">
                                     <i class="fa fa-times"></i>
                                 </button>
+                                {{/if}}
                             </td>
                         </tr>
                         {{/each}}
@@ -213,12 +359,14 @@
         {{/each}}
     </div-->
     <input type="hidden" name="action-type" id="action-type">
+    <input type="hidden" name="bcid" id="bcid">
+    <input type="hidden" name="pid" id="pid">
 </div>
 
 <!-- remove modal-->
 <div class="modal fade mobile-full-width" id="removeModal" tabindex="-1" data-bs-backdrop="static"
     data-bs-keyboard="false" role="dialog" aria-labelledby="removeModal" aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-dialog modal-md" role="document">
 
         <div class="modal-content">
             <div class="modal-header">
@@ -228,7 +376,7 @@
             </div>
             <div class="container mt-3 mb-3">
                 <div class="row">
-                    <div class="col-sm-6 col-md-4 grid-margin stretch-card">
+                    <div class="col-sm-12 col-md-12 grid-margin stretch-card">
                         <div class="card tale-bg">
                             <div class="card-people mt-auto">
                                 <img class="package-branch-img" id="remove-img" src="" alt="{{this.name}}">
@@ -237,13 +385,19 @@
                                         <div class="ms-2">
                                             <h3 id="remove-pname" class="location font-weight-normal"></h3>
                                             <h4 id="remove-bname" class="font-weight-normal"></h4>
+
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="col-sm-6 col-md-4">
+                    <div class="col-sm-12">
+                        <h5 id="sender_info"></h5>
+                        <h5 id="receiver_info"></h5>
+                    </div>
+
+                    <!--div class="col-sm-6 col-md-4">
                         <input type="hidden" name="barcode_id" id="code-text">
                         <div id="reading-bar" class="scanner-area">
                             <div class="pt-3 pb-3">
@@ -256,7 +410,7 @@
                                 <input class="form-control" type="hidden" name="" id="input-pid">
                                 <!--input class="form-control" type="text" name="" id="input-code">
                                 <button type="button" id="search-bar" class="btn btn-primary">search</button-->
-                            </div>
+                    <!--/div>
 
                         </div>
                         <div id="barcode-msg"></div>
@@ -265,19 +419,96 @@
                             <img class="center-block" width="80%" src="/images/bar_gif.gif" alt="#" />
                         </div>
 
-                    </div>
+                    </div-->
 
-                    <div class="col-sm-6 col-md-4">
+                    <div class="col-sm-12 col-md-12">
                         <div class="form-group">
                             <label class="form-label">Reason*</label>
                             <textarea name="description" maxlength="400" id="description"
-                                class="form-control text-area-style" rows="5" style="width: 100% !important;"
+                                class="form-control text-area-style" rows="2" style="width: 100% !important;"
                                 placeholder="give reason to remove the package"></textarea>
                         </div>
                         <div id="loading" class="loading-hiden">
                             <img class="center-block" width="300" src="/images/cupertino.gif" alt="#" />
                         </div>
-                        <button type="button" id="remove-package" class="btn btn-primary w-100 mt-3">Remove
+                        <button type="button" id="remove-package" class="btn btn-danger text-white w-100 mt-3">Remove
+                            Package</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--receiver -->
+<div class="modal fade mobile-full-width" id="receiveModal" tabindex="-1" data-bs-backdrop="static"
+    data-bs-keyboard="false" role="dialog" aria-labelledby="receiveModal" aria-hidden="true">
+    <div class="modal-dialog modal-md" role="document">
+
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="font-weight-bold">Receive Package</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                </button>
+            </div>
+            <div class="container mt-3 mb-3">
+                <div class="row">
+                    <div class="col-sm-12 col-md-12 grid-margin stretch-card">
+                        <div class="card tale-bg">
+                            <div class="card-people mt-auto">
+                                <img class="package-branch-img" id="receive-img" src="" alt="{{this.name}}">
+                                <div class="weather-info">
+                                    <div class="d-flex">
+                                        <div class="ms-2">
+                                            <h3 id="receive-pname" class="location font-weight-normal"></h3>
+                                            <h4 id="receive-bname" class="font-weight-normal"></h4>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-12">
+                        <h5 id="receive_sender_info"></h5>
+                        <h5 id="receive_receiver_info"></h5>
+                    </div>
+
+                    <!--div class="col-sm-6 col-md-4">
+                        <input type="hidden" name="barcode_id" id="code-text">
+                        <div id="reading-bar" class="scanner-area">
+                            <div class="pt-3 pb-3">
+                                <img id="codebar-img"
+                                    src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAARIAAAB6CAYAAABz59ygAAAABmJLR0QA/wD/AP+gvaeTAAANc0lEQVR4nO3ce2xTZR8H8G/brd1kY4z7AIFtyDaQMhAwwBjJuIgmAgFJ5OIgG1TZgBkkoi5gjAETxkVRJyGgSCQqGFAZlxjk2gWGCYRbhIiTaRAGFIRt3Nbxff94s76UtlvhwfCSfD9J/+B3fuc5zzmkX855TtVCkhARMWB91BMQkcefgkREjClIRMSYgkREjClIRMSYgkREjClIRMSYgkREjClIRMRYRLiNFovF78/1P4itr9/7A9nG6qHGud/6/R73/22ej2r8hzWfh3U9H1b/o/p7/7fn829f53DroeiORESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMWUjyUU9CRB5vuiMREWMKEhExpiAREWMKEhExpiAREWMKEhExpiAREWMKkgd04cIFzJ07F5mZmWjXrh2ioqKQlJSEkSNHYufOnUH38Xq9WLp0Kfr164eWLVsiLi4OTqcTCxcuxLVr1/x6Z8+eDYvF0uBn2rRpvv558+Y12j9hwgS/Y/Ts2TNkb0FBQcD86+rq8NFHH6Fnz56Ijo5GTEwMnn32Waxduxbh/Bxp3759sNlssFgsWL16dcD2pUuXYtSoUUhMTER0dDTatm2LjIwMFBcXw+v1Bh3z/PnzyM3NRUJCAhwOB1JTU7FkyRLU1dUF9LrdbuTl5cHpdCI2NhZt2rTBoEGDUFxcHLRfwhfxqCfwuCovL8eiRYuQnJyMHj16IC4uDufPn8eWLVtQUlKC4uJivPbaa377TJo0Cd9++y2SkpIwceJEWK1W/PzzzygsLMT69etx4MABREVFAQD69++PmpqaoMfeuXMnTp8+jaysLF+tT58+cLlcQfv37t2LkydP+vXXs1qtmDp1akB9wIABAbWcnBysXbsW7dq1wyuvvAKLxYKSkhJMnjwZv//+O957772Q1+v69evIyclBZGQkbt26FbRnwYIFsNlsSEtLwzPPPIMbN27A7XYjPz8fP/30EzZt2gSLxeLr93g8GDhwIMrLyzF8+HCkpaVh27ZtmDNnDo4fP44vvvjC13v79m0MGjQIAJCcnIzMzEzU1tbC7XbD7XZj+/bt+P7772G16t/WB0J5IFevXuXZs2cD6mVlZXQ4HIyJiWFNTY2vfuTIEQJgYmIiq6urffXa2lr26dOHALh+/fpGj3vr1i22adOGLVq04M2bNxvt93q97NSpE2NjY1lVVeW3zel00m63NzoGSR48eJAA2L59e3o8Hl/d4/EwKSmJERERPH36dMj9Z82axc6dO3PKlCkEwFWrVgX0nDx5knfu3PGrXb58mU8//TQBcNu2bX7bCgoKCICzZ8/21aqrq339u3fv9tVv377N3NxcHj161G+M8vJytm3blgD4zTffhHUtJJDi9wE1bdoU7dq1C6j369cP3bp1Q3V1NcrLy331iooKAEDfvn3RpEkTXz0iIgKZmZkAgEuXLjV63I0bN6KyshLZ2dlwOByN9m/duhUVFRUYP348YmJiGu0PZceOHQCA7OxsNG/e3Fdv3rw5ZsyYAa/Xi/Xr1wfdd8+ePfjkk09QXFzsd+73SklJ8bvjAID4+HiMHDkSAHDs2DFf3ev14quvvoLFYsEbb7zhqzdp0gR5eXkA4HdHEhkZiVWrVqFHjx5+4ycmJiI3NxfAfx+95MHo0eYhO3LkCH799VdERUWhY8eOvnpaWhqsVisOHjyI6upq35fa6/Viz549iIyMDProca8VK1YAQNDHkYb6715PududO3ewcOFClJeXw+FwoH///hg7diyio6P9+i5fvgwAQcOzc+fOAICDBw8GbKupqUFubi7GjRuH559/Hlu2bAlr3vWqqqqwdetWAMBTTz3lq586dQoejwdOpzNgTiNGjAAAlJaWhnWM+nCLjY29r7nJ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"
+                                    alt="" srcset="">
+                            </div>
+
+                            <div class="d-flex">
+                                <input class="form-control" type="hidden" name="" id="input-pid">
+                                <!--input class="form-control" type="text" name="" id="input-code">
+                                <button type="button" id="search-bar" class="btn btn-primary">search</button-->
+                    <!--/div>
+
+                        </div>
+                        <div id="barcode-msg"></div>
+
+                        <div id="loading-bar" class="loading-hiden">
+                            <img class="center-block" width="80%" src="/images/bar_gif.gif" alt="#" />
+                        </div>
+
+                    </div-->
+
+                    <div class="col-sm-12 col-md-12">
+                        <div class="form-group">
+                            <label class="form-label">Comment (option)</label>
+                            <textarea name="receive-description" maxlength="400" id="receive-description"
+                                class="form-control text-area-style" rows="2" style="width: 100% !important;"
+                                placeholder="give reason to remove the package">wel received</textarea>
+                        </div>
+                        <div id="loading" class="loading-hiden">
+                            <img class="center-block" width="300" src="/images/cupertino.gif" alt="#" />
+                        </div>
+                        <button type="button" id="receive-package" class="btn btn-primary w-100 mt-3">Receive
                             Package</button>
                     </div>
                 </div>
@@ -297,179 +528,211 @@
                 </button>
             </div>
             <div class="container mt-3 mb-3">
-                <div class="row">
-                    <div class="col-sm-6 col-md-4 grid-margin stretch-card">
-                        <div class="card tale-bg">
-                            <div class="card-people mt-auto">
-                                <img class="package-branch-img" id="edit-img" src="" alt="{{this.name}}">
-                                <div class="weather-info">
-                                    <div class="d-flex">
-                                        <div class="ms-2">
-                                            <h3 id="edit-pname" class="location font-weight-normal"></h3>
-                                            <h4 id="edit-bname" class="font-weight-normal"></h4>
-                                        </div>
-                                    </div>
+                 <div class="row">
+
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-body">
+                        <p class="card-title">Package Actors</p>
+                       
+                        <div class="row">
+                            <div class="col-sm-6 col-md-4">
+                                <div class="form-group">
+                                    <label class="form-label">Sender name *</label>
+                                    <input name="sender_name" id="sender_name" class="form-control" maxlength="60"
+                                        required type="text" placeholder="fullname">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Sender phone *</label>
+                                    <input name="sender_phone" id="sender_phone" class="form-control" maxlength="40"
+                                        required type="text" placeholder="0xxxxxxxxx">
                                 </div>
                             </div>
+
+                            <div class="col-sm-6 col-md-4">
+                                <div class="form-group">
+                                    <label class="form-label">Receiver name *</label>
+                                    <input name="receiver_name" id="receiver_name" class="form-control" maxlength="60"
+                                        required type="text" placeholder="fullname">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Receiver phone *</label>
+                                    <input name="receiver_phone" id="receiver_phone" class="form-control" maxlength="40"
+                                        required type="text" placeholder="0xxxxxxxxx">
+                                </div>
+                            </div>
+
+                            <div class="col-sm-6 col-md-4">
+                                <div class="form-group">
+                                    <label class="form-label">Transporter name (option)</label>
+                                    <input name="transporter_name" id="transporter_name" class="form-control"
+                                        maxlength="60" required type="text" placeholder="fullname">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Transporter phone (option)</label>
+                                    <input name="transporter_phone" id="transporter_phone" class="form-control"
+                                        maxlength="40" required type="text" placeholder="0xxxxxxxxx">
+                                </div>
+                            </div>
+
+
                         </div>
                     </div>
-                    <div class="col-sm-6 col-md-4">
-                        <input type="hidden" name="barcode_id" id="code-text-edit">
-                        <div id="reading-bar-edit" class="scanner-area">
-                            <div class="pt-3 pb-3">
-                                <img id="codebar-img-edit"
-                                    src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAARIAAAB6CAYAAABz59ygAAAABmJLR0QA/wD/AP+gvaeTAAANc0lEQVR4nO3ce2xTZR8H8G/brd1kY4z7AIFtyDaQMhAwwBjJuIgmAgFJ5OIgG1TZgBkkoi5gjAETxkVRJyGgSCQqGFAZlxjk2gWGCYRbhIiTaRAGFIRt3Nbxff94s76UtlvhwfCSfD9J/+B3fuc5zzmkX855TtVCkhARMWB91BMQkcefgkREjClIRMSYgkREjClIRMSYgkREjClIRMSYgkREjClIRMRYRLiNFovF78/1P4itr9/7A9nG6qHGud/6/R73/22ej2r8hzWfh3U9H1b/o/p7/7fn829f53DroeiORESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMWUjyUU9CRB5vuiMREWMKEhExpiAREWMKEhExpiAREWMKEhExpiAREWMKkgd04cIFzJ07F5mZmWjXrh2ioqKQlJSEkSNHYufOnUH38Xq9WLp0Kfr164eWLVsiLi4OTqcTCxcuxLVr1/x6Z8+eDYvF0uBn2rRpvv558+Y12j9hwgS/Y/Ts2TNkb0FBQcD86+rq8NFHH6Fnz56Ijo5GTEwMnn32Waxduxbh/Bxp3759sNlssFgsWL16dcD2pUuXYtSoUUhMTER0dDTatm2LjIwMFBcXw+v1Bh3z/PnzyM3NRUJCAhwOB1JTU7FkyRLU1dUF9LrdbuTl5cHpdCI2NhZt2rTBoEGDUFxcHLRfwhfxqCfwuCovL8eiRYuQnJyMHj16IC4uDufPn8eWLVtQUlKC4uJivPbaa377TJo0Cd9++y2SkpIwceJEWK1W/PzzzygsLMT69etx4MABREVFAQD69++PmpqaoMfeuXMnTp8+jaysLF+tT58+cLlcQfv37t2LkydP+vXXs1qtmDp1akB9wIABAbWcnBysXbsW7dq1wyuvvAKLxYKSkhJMnjwZv//+O957772Q1+v69evIyclBZGQkbt26FbRnwYIFsNlsSEtLwzPPPIMbN27A7XYjPz8fP/30EzZt2gSLxeLr93g8GDhwIMrLyzF8+HCkpaVh27ZtmDNnDo4fP44vvvjC13v79m0MGjQIAJCcnIzMzEzU1tbC7XbD7XZj+/bt+P7772G16t/WB0J5IFevXuXZs2cD6mVlZXQ4HIyJiWFNTY2vfuTIEQJgYmIiq6urffXa2lr26dOHALh+/fpGj3vr1i22adOGLVq04M2bNxvt93q97NSpE2NjY1lVVeW3zel00m63NzoGSR48eJAA2L59e3o8Hl/d4/EwKSmJERERPH36dMj9Z82axc6dO3PKlCkEwFWrVgX0nDx5knfu3PGrXb58mU8//TQBcNu2bX7bCgoKCICzZ8/21aqrq339u3fv9tVv377N3NxcHj161G+M8vJytm3blgD4zTffhHUtJJDi9wE1bdoU7dq1C6j369cP3bp1Q3V1NcrLy331iooKAEDfvn3RpEkTXz0iIgKZmZkAgEuXLjV63I0bN6KyshLZ2dlwOByN9m/duhUVFRUYP348YmJiGu0PZceOHQCA7OxsNG/e3Fdv3rw5ZsyYAa/Xi/Xr1wfdd8+ePfjkk09QXFzsd+73SklJ8bvjAID4+HiMHDkSAHDs2DFf3ev14quvvoLFYsEbb7zhqzdp0gR5eXkA4HdHEhkZiVWrVqFHjx5+4ycmJiI3NxfAfx+95MHo0eYhO3LkCH799VdERUWhY8eOvnpaWhqsVisOHjyI6upq35fa6/Viz549iIyMDProca8VK1YAQNDHkYb6715PududO3ewcOFClJeXw+FwoH///hg7diyio6P9+i5fvgwAQcOzc+fOAICDBw8GbKupqUFubi7GjRuH559/Hlu2bAlr3vWqqqqwdetWAMBTTz3lq586dQoejwdOpzNgTiNGjAAAlJaWhnWM+nCLjY29r7nJXR71LdHjrrKyki6Xizk5ORwyZAgjIiJos9n48ccfB/QWFhYSADt27MhXX32VeXl5TElJYevWrblhw4ZGj3XixAkC4MCBA8OaW3l5Oa1WK9PT04NudzqdBBDw6dy5M48dO+bX+8EHHxAA33777YBxli1bRgDs2bNnwLYZM2YwPj6e586dI0nm5+eHfLSpN2/ePLpcLo4ePZrNmjUjAI4cOZJ1dXW+nh9//JEA+MILL5Ak3W43CwsLWVlZydu3b9NisdBms/ntE0xtbS179epFADxw4ECDvRKagsTQb7/95vcljI+P5+bNm0P2f/7552zSpImvPyIigq+//jorKysbPdbMmTMJgGvWrAlrbm+99RYB8NNPPw26ffHixXS73bx06RKvXbvG0tJSZmVl+dZybty44estKysjAHbo0IGXL1/21a9cucLk5GQCYFJSkt/4u3btosVi4cqVK321cIKka9euvutjtVr5zjvvBATCunXrCIATJ04kST755JMEwPz8fJJkXFwcAfDq1asNXqN58+YRAKdMmdJgnzRMQfKQ3Lx5k0ePHuWkSZNC3pHMmTOHkZGRXL58OS9cuECPx8O1a9cyNjaWnTp14vnz50OOX11dzbi4ODZr1sxvEbeh+bRu3ZpPPPEE//nnn/s6j+7duxMAv/76a79tEyZM8C24ulwuulwutm/fnhkZGYyIiGBycrKvt6qqiomJiczIyPBbQA0nSEiyrq6OFRUVXLRoER0OB8eOHeu3uHxvkOTm5rJp06bctGkTyfCCZOPGjbTZbOzfvz+vX78e9jWSQAqSh+zOnTvMysqizWbze0Pwww8/EABnzpwZsM+iRYsIgG+++WbIcVeuXEkAzMvLC2se9V+0yZMn3/c5vPvuuwTAOXPm+NVra2tZVFTE7t27Myoqiq1ataLL5eKpU6cIgH379vX1FhQU0G6388SJE35jhBskdysqKiIAFhUV+Wr3PtrcLZxHm82bN9Nut7NXr168cuVK2HOR4BQk/4IFCxYQABcvXuyrTZ8+nQC4bt26gP7S0lICYFZWVsgxe/fuTQA8fPhwWHMYNGgQAdDtdt/3/JcuXRoy9ILZvXt3QGgNHjw46PrLvZ/vvvuu0fEPHz5MABwyZIivVr9e5HQ6A/r/+OMPAmCXLl2CjrdlyxY6HA46nU5evHgxrHOUhumtzb/gzz//BADcvHnTV7t69SqA/739uJvH4wHw3zcowZSVleHQoUPo27cv0tPTGz3+8ePHsW/fPnTr1g0DBw687/mXlZUBALp06RJWf/1r1ueee85Xe/HFF5GSkhLQW1paihMnTmDw4MFISUlBYmJio+MHu55du3ZFixYtcOzYMfz9999+b262b98OAEHPfevWrRgzZgxSU1OxY8cOtGzZMqxzlEY86iR7XG3YsIFHjhwJqG/fvp0OhyPgbuDDDz8kAHbr1o3Xrl3z1W/dusUhQ4YQAOfPnx/0WPU/4rp70bIh9Y8Py5YtC9mzf/9+lpWVBdTXrFlDi8XCqKgo/vXXX37bKioqAn4E99lnn9FqtTIpKclvcbaxud37aPPLL7+wpKSEXq/Xr37mzBmmpaURAAsLC/22zZo1K+ARrKamhj169CAA7tq1y6+/pKSEDoeD6enpvHTpUqNzlfApSB7Qyy+/TABMTk7msGHDOHr0aL/XqdOnT/frr6mpYXp6um+xctq0aZw+fbrvDUVqamrQZ3WPx8Po6GjGxMT4BVAoVVVVbNq0KaOiohr8sixZssT3qnfo0KEcNWoUU1JSCIA2m42rV68O2Of9999ny5YtOWzYMI4ZM8bXHxcXF/ar01BB8uWXXxIAW7VqxYyMDI4bN44ZGRm02+2+R5h7F40vXrzIxMREAuDw4cNZUFDgu57Z2dl+vWfPnvUF/NixY32LxXd/li9fHtY5SCAFyQPau3cv8/PzmZ6ezjZt2tButzMpKYkjRowI+VP3qqoqzp8/n3369GHz5s0ZFxfH3r17c+7cuSHfrNR/4adOnRrWvFasWEEAHD9+fIN9hw4dYnZ2Nrt27cr4+HharVYmJCTwpZde4v79+0Oe89ChQ9m6dWtGRkayU6dOdLlcPHPmTFhzI0MHyZkzZzh//nxmZmayQ4cOtNvtTEhI4IABA7hgwYKQb6rOnTvHnJwcJiQk0G63MzU1lUVFRaytrfXrq18QbugTbOFWwqP/i7yIGNN/ayMixhQkImJMQSIixhQkImJMQSIixhQkImJMQSIixhQkImJMQSIixv4D4HyLhEMERI0AAAAASUVORK5CYII="
-                                    alt="" srcset="">
+                </div>
+            </div>
+
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-body">
+                        <p class="card-title">Package Details</p>
+
+                        <div class="row">
+                            <div class="col-sm-6 col-md-4">
+                                <div class="form-group">
+                                    <label class="form-label">Package name *</label>
+                                    <input name="name" id="name" class="form-control" maxlength="60" required
+                                        type="text" placeholder="item name">
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="form-label">Package value *</label>
+                                    <input name="package_value" id="package_value" class="form-control" maxlength="40"
+                                        required type="number" placeholder="10000">
+                                </div>
                             </div>
 
-                            <div class="d-flex">
-                                <input class="form-control" type="hidden" name="" id="input-pid-edit">
-                                <!--input class="form-control" type="text" name="" id="input-code-edit">
-                                <button type="button" id="search-bar-edit" class="btn btn-primary">search</button-->
+
+                            <div class="col-sm-6 col-md-4">
+                                <div class="form-group">
+                                    <label class="form-label">Package Size *</label>
+                                    <select id="package_size" name="package_size" class="form-select form-control">
+                                        <option value="Small">Small</option>
+                                        <option value="Medium">Medium</option>
+                                        <option value="Large">Large</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Package Weight (in KG) *</label>
+                                    <input name="package_weight" id="package_weight" class="form-control" maxlength="40"
+                                        required type="number" placeholder="5">
+                                </div>
+                            </div>
+
+                            <div class="col-sm-6 col-md-4">
+                                <div class="form-group">
+                                    <label class="form-label">Package Type *</label>
+                                    <select id="package_tag" name="package_tag" class="form-select form-control">
+
+                                        {{#each tags}}
+                                        <option value="{{this.id}}">{{this.name}}</option>
+                                        {{/each}}
+                                    </select>
+                                </div>
+                                <div class="form-group">
+
+                                </div>
                             </div>
 
                         </div>
-                        <div id="barcode-msg-edit"></div>
-
-                        <div id="loading-bar-edit" class="loading-hiden">
-                            <img class="center-block" width="80%" src="/images/bar_gif.gif" alt="#" />
-                        </div>
-
                     </div>
+                </div>
+            </div>
 
-                    <div class="col-sm-6 col-md-4">
-                        <div class="form-group">
-                            <label class="form-label">Reason to Edit*</label>
-                            <textarea name="description-edit-reason" maxlength="400" id="description-edit-reason"
-                                class="form-control text-area-style" rows="5" style="width: 100% !important;"
-                                placeholder="give reason to remove the package"></textarea>
-                        </div>
-                        <!--div id="loading" class="loading-hiden">
-                            <img class="center-block" width="300" src="/images/cupertino.gif" alt="#" />
-                        </div>
-                        <button type="button" id="remove-package" class="btn btn-primary w-100 mt-3">Remove
-                            Package</button-->
-                    </div>
-                    <div id="package-form" class="loading-hiden">
-                        <div class="container col-12">
-                            <h3 class="mp-3 mb-2">Package Actors</h3>
-                            <div class="row">
-                                <div class="col-sm-6 col-md-4">
-                                    <div class="form-group">
-                                        <label class="form-label">Sender name *</label>
-                                        <input name="sender_name" id="sender_name" class="form-control" maxlength="60"
-                                            required type="text" placeholder="fullname">
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="form-label">Sender phone *</label>
-                                        <input name="sender_phone" id="sender_phone" class="form-control" maxlength="40"
-                                            required type="text" placeholder="0xxxxxxxxx">
-                                    </div>
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-body">
+                        <p class="card-title">Shipping Details</p>
+                        <div class="row">
+
+                            <div class="col-sm-6 col-md-4">
+                                <div class="form-group">
+                                    <label class="">Destination (Location Branch) *</label>
+                                    <select id="branch_to" name="branch_to" class="form-select form-control">
+
+                                        {{#each branches}}
+                                        <option value="{{this.id}}">{{this.name}}</option>
+                                        {{/each}}
+
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Specify location (option)</label>
+                                    <input name="specific_location" id="specific_location" class="form-control"
+                                        maxlength="60" required type="text" placeholder="Arusha maji ya chai">
                                 </div>
 
-                                <div class="col-sm-6 col-md-4">
-                                    <div class="form-group">
-                                        <label class="form-label">Receiver name *</label>
-                                        <input name="receiver_name" id="receiver_name" class="form-control"
-                                            maxlength="60" required type="text" placeholder="fullname">
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="form-label">Receiver phone *</label>
-                                        <input name="receiver_phone" id="receiver_phone" class="form-control"
-                                            maxlength="40" required type="text" placeholder="0xxxxxxxxx">
-                                    </div>
-                                </div>
-
-                                <div class="col-sm-6 col-md-4">
-                                    <div class="form-group">
-                                        <label class="form-label">Transporter name *</label>
-                                        <input name="transporter_name" id="transporter_name" class="form-control"
-                                            maxlength="60" required type="text" placeholder="fullname">
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="form-label">Transporter phone *</label>
-                                        <input name="transporter_phone" id="transporter_phone" class="form-control"
-                                            maxlength="40" required type="text" placeholder="0xxxxxxxxx">
-                                    </div>
-                                </div>
 
 
                             </div>
 
-                            <h3 class="mp-3 mb-2">Package Details</h3>
-                            <div class="row">
-                                <div class="col-sm-6 col-md-4">
-                                    <div class="form-group">
-                                        <label class="form-label">Package name *</label>
-                                        <input type="hidden" name="p_edit_id" id="p_edit_id">
-                                        <input name="name" id="name" class="form-control" maxlength="60" required
-                                            type="text" placeholder="item name">
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="form-label">Transportation Price *</label>
-                                        <input name="price" id="price" class="form-control" maxlength="40" required
-                                            type="text" placeholder="1000">
-                                    </div>
+                            <div class="col-sm-6 col-md-4">
+
+                                <div class="form-group">
+                                    <label class="form-label">Transportation Price *</label>
+                                    <input name="price" id="price" class="form-control" maxlength="40" required
+                                        type="number" placeholder="1000">
                                 </div>
 
-                                <div class="col-sm-12 col-md-8">
-                                    <div class="row">
-                                        <div class="col-sm-12 col-md-6">
-                                            <div class="form-group">
-                                                <label class="">Branch *</label>
-                                                <select id="branch_to" name="branch_to"
-                                                    class="form-select form-control">
+                                <div class="form-group">
+                                    <label class="form-label">Description (option)</label>
+                                    <textarea name="description" id="description" class="form-control" rows="1"
+                                        style="width: 100% !important;"
+                                        placeholder="Any additional details…"></textarea>
+                                </div>
+                            </div>
 
-                                                    {{#each branches}}
-                                                    <option value="{{this.id}}">{{this.name}}</option>
-                                                    {{/each}}
+                            <div class="col-sm-6 col-md-4">
+                                <div class="form-group">
+                                    <label class="">Shipping Date *</label>
+                                    <input class="form-control" type="date" name="shipping_at" id="shipping_at">
+                                </div>
+                                <div class="form-group">
+                                    <label class="">Arival Date *</label>
+                                    <input class="form-control" type="date" name="arive_at" id="arive_at">
+                                </div>
+                            </div>
 
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="col-sm-12 col-md-6">
-                                            <div class="form-group">
-                                                <label class="">Arival Date *</label>
-                                                <input class="form-control" type="date" name="arive_at" id="arive_at">
-                                            </div>
-                                        </div>
-                                        <div class="col-sm-12 col-md-12">
-                                            <div class="form-group">
-                                                <label class="form-label">Description*</label>
-                                                <textarea name="description-edit" id="description-edit"
-                                                    class="form-control" rows="1" style="width: 100% !important;"
-                                                    placeholder="Any additional details…"></textarea>
-                                            </div>
-                                        </div>
+                            <div class="col-sm-12 col-md-12">
+                                <div class="row">
+                                    <div class="col-sm-12 col-md-4">
 
-                                        <div class="col-sm-12 col-md-6">
-                                            <div id="loading-update" class="loading-hiden">
-                                                <img class="center-block" width="300" src="/images/cupertino.gif"
-                                                    alt="#" />
-                                            </div>
-                                            <button type="button" id="update-package"
-                                                class="mt-2 btn btn-primary w-100">Update
-                                                Package</button>
-                                        </div>
                                     </div>
+                                    <div class="col-sm-12 col-md-4">
+                                       <center>
+                                         <div id="loading" class="loading-hiden">
+                                            <img class="center-block" width="350" src="/images/cupertino.gif" alt="#" />
+                                        </div>
+                                       </center>
+                                        <button type="button" id="update-package"
+                                            class="btn btn-primary w-100 mt-2">Update Package
+                                            </button>
+                                    </div>
+                                    <div class="col-sm-12 col-md-4">
+                                       
+                                    </div>
+
+
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+
+        </div>
+            </div>
         </div>
     </div>
 </div>
 
-<div class="modal fade mobile-full-width" id="pdfModal" tabindex="-1" data-bs-backdrop="static"
-    data-bs-keyboard="false" role="dialog" aria-labelledby="pdfModal" aria-hidden="true">
+<div class="modal fade mobile-full-width" id="pdfModal" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false"
+    role="dialog" aria-labelledby="pdfModal" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
 
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="font-weight-bold">Print On Transit Package</h4>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                <button type="button" class="btn-close close_pdf" data-bs-dismiss="modal" aria-label="Close">
                 </button>
             </div>
             <div class="container mt-3 mb-3">
@@ -486,9 +749,63 @@
                         <img class="center-block" width="350" src="/images/cupertino.gif" alt="#" />
                     </div>
                 </div>
+            </div>
+        </div>
+    </div>
 </div>
-</div>
-</div>
+
+<div class="modal fade mobile-full-width" id="receiptModal" tabindex="-1" data-bs-backdrop="static"
+    data-bs-keyboard="false" role="dialog" aria-labelledby="receiptModal" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="container mt-3 mb-3">
+                <!--center>
+                    <h3 class="mt-2 mb-3 head-text text-success">Package sent Successfully, You may Print Receipt</h3>
+                </center-->
+
+                <div class="" id="printThis">
+
+
+                    <div class="pb-5" id="invoice-POS">
+                        <center>
+                            <img src="/images/new_logo.png" width="250px" alt="logo">
+                            <h5>TRUST FIRST</h5>
+                        </center>
+                        <div>
+                            <p id="pp">
+                            </p>
+                            <center>
+                                <img id="codedata-img"
+                                    src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAARIAAAB6CAYAAABz59ygAAAABmJLR0QA/wD/AP+gvaeTAAANc0lEQVR4nO3ce2xTZR8H8G/brd1kY4z7AIFtyDaQMhAwwBjJuIgmAgFJ5OIgG1TZgBkkoi5gjAETxkVRJyGgSCQqGFAZlxjk2gWGCYRbhIiTaRAGFIRt3Nbxff94s76UtlvhwfCSfD9J/+B3fuc5zzmkX855TtVCkhARMWB91BMQkcefgkREjClIRMSYgkREjClIRMSYgkREjClIRMSYgkREjClIRMRYRLiNFovF78/1P4itr9/7A9nG6qHGud/6/R73/22ej2r8hzWfh3U9H1b/o/p7/7fn829f53DroeiORESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMWUjyUU9CRB5vuiMREWMKEhExpiAREWMKEhExpiAREWMKEhExpiAREWMKkgd04cIFzJ07F5mZmWjXrh2ioqKQlJSEkSNHYufOnUH38Xq9WLp0Kfr164eWLVsiLi4OTqcTCxcuxLVr1/x6Z8+eDYvF0uBn2rRpvv558+Y12j9hwgS/Y/Ts2TNkb0FBQcD86+rq8NFHH6Fnz56Ijo5GTEwMnn32Waxduxbh/Bxp3759sNlssFgsWL16dcD2pUuXYtSoUUhMTER0dDTatm2LjIwMFBcXw+v1Bh3z/PnzyM3NRUJCAhwOB1JTU7FkyRLU1dUF9LrdbuTl5cHpdCI2NhZt2rTBoEGDUFxcHLRfwhfxqCfwuCovL8eiRYuQnJyMHj16IC4uDufPn8eWLVtQUlKC4uJivPbaa377TJo0Cd9++y2SkpIwceJEWK1W/PzzzygsLMT69etx4MABREVFAQD69++PmpqaoMfeuXMnTp8+jaysLF+tT58+cLlcQfv37t2LkydP+vXXs1qtmDp1akB9wIABAbWcnBysXbsW7dq1wyuvvAKLxYKSkhJMnjwZv//+O957772Q1+v69evIyclBZGQkbt26FbRnwYIFsNlsSEtLwzPPPIMbN27A7XYjPz8fP/30EzZt2gSLxeLr93g8GDhwIMrLyzF8+HCkpaVh27ZtmDNnDo4fP44vvvjC13v79m0MGjQIAJCcnIzMzEzU1tbC7XbD7XZj+/bt+P7772G16t/WB0J5IFevXuXZs2cD6mVlZXQ4HIyJiWFNTY2vfuTIEQJgYmIiq6urffXa2lr26dOHALh+/fpGj3vr1i22adOGLVq04M2bNxvt93q97NSpE2NjY1lVVeW3zel00m63NzoGSR48eJAA2L59e3o8Hl/d4/EwKSmJERERPH36dMj9Z82axc6dO3PKlCkEwFWrVgX0nDx5knfu3PGrXb58mU8//TQBcNu2bX7bCgoKCICzZ8/21aqrq339u3fv9tVv377N3NxcHj161G+M8vJytm3blgD4zTffhHUtJJDi9wE1bdoU7dq1C6j369cP3bp1Q3V1NcrLy331iooKAEDfvn3RpEkTXz0iIgKZmZkAgEuXLjV63I0bN6KyshLZ2dlwOByN9m/duhUVFRUYP348YmJiGu0PZceOHQCA7OxsNG/e3Fdv3rw5ZsyYAa/Xi/Xr1wfdd8+ePfjkk09QXFzsd+73SklJ8bvjAID4+HiMHDkSAHDs2DFf3ev14quvvoLFYsEbb7zhqzdp0gR5eXkA4HdHEhkZiVWrVqFHjx5+4ycmJiI3NxfAfx+95MHo0eYhO3LkCH799VdERUWhY8eOvnpaWhqsVisOHjyI6upq35fa6/Viz549iIyMDProca8VK1YAQNDHkYb6715PududO3ewcOFClJeXw+FwoH///hg7diyio6P9+i5fvgwAQcOzc+fOAICDBw8GbKupqUFubi7GjRuH559/Hlu2bAlr3vWqqqqwdetWAMBTTz3lq586dQoejwdOpzNgTiNGjAAAlJaWhnWM+nCLjY29r7nJ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"
+                                    alt="" srcset="">
+                            </center>
+                            <br>
+
+                            <center>
+                                <i>----------------------------</i>
+                                <p>Asante kwa kutuchagua<br>
+                                    TRUST FIRST
+                                </p>
+
+                                <i>----------------------------</i>
+                                <br>
+                            </center>
+
+                        </div>
+
+                    </div><!--End Invoice-->
+
+                </div>
+                <div class="d-flex justify-content-center mt-3">
+                    <button class="btn btn-primary" id="on_print"><i class="fa fa-printer"></i>Print</button>
+                    <span class="m-3"> </span>
+                    <button id="cancel" class="btn btn-danger">Cancel</button>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
 </div>
 
 <script>
@@ -498,6 +815,27 @@
     let reading = false;
     function isNumeric(num) {
         return /^-?\d+$/.test(num)
+    }
+
+     function validateWeight(amount) {
+
+        if (amount == '' || amount == null) {
+            alert('Package weight is required')
+            return false;
+        } else {
+            if (isNumeric(amount)) {
+                if (amount > 0) {
+                    return true
+                } else {
+                    alert('Package weight must be 1 or more')
+                    return false;
+                }
+            } else {
+                alert('Package Weight must be Integer value')
+                return false;
+            }
+        }
+
     }
 
     function validateAmount(amount) {
@@ -566,18 +904,18 @@
 
     }
 
-     function validateMessage(text, label) {
+    function validateMessage(text, label) {
 
         if (text == '' || text == null) {
             alert(label + ' name is required')
             return false;
         } else {
-            if(text.length > 360){
-alert('Message is too long, Maximum characters is 360, You typed '+text.length+' character')
-            }else{
-               return true;
+            if (text.length > 360) {
+                alert('Message is too long, Maximum characters is 360, You typed ' + text.length + ' character')
+            } else {
+                return true;
             }
-            
+
         }
 
     }
@@ -633,6 +971,27 @@ alert('Message is too long, Maximum characters is 360, You typed '+text.length+'
         return res
     }
 
+    function validateValue(amount) {
+
+        if (amount == '' || amount == null) {
+            alert('Package Value is required')
+            return false;
+        } else {
+            if (isNumeric(amount)) {
+                if (amount > 999) {
+                    return true
+                } else {
+                    alert('Package Value must be 1000 or more')
+                    return false;
+                }
+            } else {
+                alert('Package Value must be Integer value')
+                return false;
+            }
+        }
+
+    }
+
     /*************************package filtering by staff and destination************/
     $(document).on('click', '#pdf_btn', function () {
 
@@ -648,7 +1007,7 @@ alert('Message is too long, Maximum characters is 360, You typed '+text.length+'
             url: '/pdf-outgoing-package',
             method: 'POST',
             data: {
-                branch_id, staff_id,to_branch_name
+                branch_id, staff_id, to_branch_name
             }
         })
             .then((response) => {
@@ -689,27 +1048,69 @@ alert('Message is too long, Maximum characters is 360, You typed '+text.length+'
 
     })
 
-    $(document).on('click', '.btn-close', function () {
-
+    $(document).on('click', '.close_pdf', function () {
         window.location.reload();
     })
 
     $(document).on('click', '.remove_btn', function () {
 
+        var receiver_name = $(this).attr('receiver_name');
+        var receiver_phone = $(this).attr('receiver_phone');
+        var sender_name = $(this).attr('sender_name');
+        var sender_phone = $(this).attr('sender_phone');
+
+        var pname = $(this).attr('pname');
         var pname = $(this).attr('pname');
         var pimage = $(this).attr('pimage');
         var pbranch = $(this).attr('pbranch');
         var pid = $(this).attr('pid');
         var bid = $(this).attr('bid');
+        var bcid = $(this).attr('bcid');
 
         $('#action-type').val('remove')
+        $('#pid').val(pid)
+        $('#bcid').val(bcid)
+
+        $('#sender_info').text("Sender : " + sender_name + " - " + sender_phone)
+        $('#receiver_info').text("Receiver : " + receiver_name + " - " + receiver_phone)
 
         $('#remove-pname').text(pname)
         $('#input-pid').val(pid)
-        $('#remove-bname').text(pbranch)
+        $('#remove-bname').text("To : " + pbranch)
         $('#remove-img').attr('src', '/images/' + pimage)
 
         $('#removeModal').modal('show')
+    })
+
+
+    $(document).on('click', '.receive_btn', function () {
+
+        var receiver_name = $(this).attr('receiver_name');
+        var receiver_phone = $(this).attr('receiver_phone');
+        var sender_name = $(this).attr('sender_name');
+        var sender_phone = $(this).attr('sender_phone');
+
+        var pname = $(this).attr('pname');
+        var pname = $(this).attr('pname');
+        var pimage = $(this).attr('pimage');
+        var pbranch = $(this).attr('pbranch');
+        var pid = $(this).attr('pid');
+        var bid = $(this).attr('bid');
+        var bcid = $(this).attr('bcid');
+
+        $('#action-type').val('receive')
+        $('#pid').val(pid)
+        $('#bcid').val(bcid)
+
+        $('#receive_sender_info').text("Sender : " + sender_name + " - " + sender_phone)
+        $('#receive_receiver_info').text("Receiver : " + receiver_name + " - " + receiver_phone)
+
+        $('#receive-pname').text(pname)
+        $('#input-pid').val(pid)
+        $('#receive-bname').text("To : " + pbranch)
+        $('#receive-img').attr('src', '/images/' + pimage)
+
+        $('#receiveModal').modal('show')
     })
 
     $(document).on('click', '#search-bar', function (e) {
@@ -760,9 +1161,10 @@ alert('Message is too long, Maximum characters is 360, You typed '+text.length+'
         e.preventDefault()
         try {
 
-            var barcode_id = $('#code-text').val()
+            var pid = $('#pid').val()
+            var barcode_id = $('#bcid').val()
             var description = $('#description').val()
-            var pid = $('#input-pid').val();
+            //var pid = $('#input-pid').val();
 
             if (validateBarcodes(barcode_id) && validateDescription(description, 'Description')) {
 
@@ -784,7 +1186,7 @@ alert('Message is too long, Maximum characters is 360, You typed '+text.length+'
 
                             if (response.status == "good") {
                                 alert(response.msg)
-                                $('#code-text').val('')
+                                $('#bcid').val('')
                                 $('#description').val('')
                                 $('#removeModal').modal('hide')
                                 document.getElementById('package_' + pid).remove()
@@ -808,45 +1210,102 @@ alert('Message is too long, Maximum characters is 360, You typed '+text.length+'
 
     })
 
+    $(document).on('click', '#receive-package', function (e) {
+        e.preventDefault()
+        try {
+
+            var pid = $('#pid').val()
+            var barcode_id = $('#bcid').val()
+            var closed_description = $('#receive-description').val()
+            //var pid = $('#input-pid').val();
+
+            if (validateBarcodes(barcode_id)) {
+
+                if (confirm('Are you sure you want to receive this package ?')) {
+
+                    $('#loading').attr('class', 'loading-show')
+
+
+                    $.ajax({
+                        url: '/receive-package',
+                        method: 'POST',
+                        data: {
+                            barcode_id, pid, closed_description
+                        }
+                    })
+                        .then((response) => {
+
+                            $('#loading').attr('class', 'loading-hiden')
+
+                            if (response.status == "good") {
+                                document.getElementById('package_' + pid).remove()
+                                alert(response.msg)
+                                $('#bcid').val('')
+                                $('#description').val('')
+                                $('#receiveModal').modal('hide')
+
+                            } else {
+                                alert(response.msg)
+                            }
+
+                        })
+                        .catch((error) => {
+                            console.log(error)
+                            alert('Check internet, try again')
+                        });
+
+                }
+            }
+
+        } catch (error) {
+            console.log(error)
+            alert('something is wrong')
+        }
+
+    })
+
     ///////messages function/////////////////////////////////////////////////////////
-        $(document).on('click', '#send_sms', function () {
+    $(document).on('click', '#send_sms', function () {
         var phone_list = $('#phone_list').val();
         var message = $('#message_field').val();
 
-        if(validateNames(phone_list, 'Phone Number or List, separated by comma') && validateMessage(message, 'Message')){
+        if (validateNames(phone_list, 'Phone Number or List, separated by comma') && validateMessage(message, 'Message')) {
+            if (confirm('Are you sure you want to send SMS ?')) {
 
-           $('#loading-send-sms').attr('class', 'loading-show  d-flex justify-content-center')
-           $('#send_sms').attr('disabled', true)
-           $('#clear_chat').attr('disabled', true)
+                $('#loading-send-sms').attr('class', 'loading-show  d-flex justify-content-center')
+                $('#send_sms').attr('disabled', true)
+                $('#clear_chat').attr('disabled', true)
 
-           $.ajax({
-            url: '/send-multi-sms',
-            method: 'POST',
-            data: {
-                phone_list, message
+                $.ajax({
+                    url: '/send-multi-sms',
+                    method: 'POST',
+                    data: {
+                        phone_list, message
+                    }
+                })
+                    .then((response) => {
+                        $('#loading-send-sms').attr('class', 'loading-hiden')
+                        $('#send_sms').removeAttr('disabled')
+                        $('#clear_chat').removeAttr('disabled')
+
+                        if (response.status == 'good') {
+                            alert(response.msg)
+                            $('#phone_list').val("");
+                            $('#message_field').val("");
+                            $('#message_phone').attr('class', 'loading-hiden')
+                        } else {
+                            alert(response.msg)
+                        }
+                    })
+                    .catch((error) => {
+                        $('#loading-send-sms').attr('class', 'loading-hiden')
+                        console.log(error)
+                    });
+
             }
-        })
-            .then((response) => {
-                $('#loading-send-sms').attr('class', 'loading-hiden')
-                 $('#send_sms').removeAttr('disabled')
-                 $('#clear_chat').removeAttr('disabled')
-
-                if(response.status == 'good'){
-                    alert(response.msg)
-                    $('#phone_list').val("");
-                    $('#message_field').val("");
-                    $('#message_phone').attr('class', 'loading-hiden')
-                }else{
-                    alert(response.msg)
-                }
-            })
-            .catch((error) => {
-                $('#loading-send-sms').attr('class', 'loading-hiden')
-                console.log(error)
-            });
         }
 
-       
+
         //$('#phone_list').text("");
         //$('#message_field').text("");
         //$('#message_phone').attr('class', 'loading-hiden')
@@ -871,13 +1330,13 @@ alert('Message is too long, Maximum characters is 360, You typed '+text.length+'
             var arry_phone = str_phone.split(',')
             //alert(arry_phone.length)
             if (checkInArray(arry_phone, phone)) {
-                if (confirm(phone+' aleady exist, do you want to remove it?')) {
+                if (confirm(phone + ' aleady exist, do you want to remove it?')) {
                     const index = arry_phone.indexOf(phone);
-                    if (index > -1) { 
-                    arry_phone.splice(index, 1);
-                    $('#phone_list').text(arry_phone.toString());
+                    if (index > -1) {
+                        arry_phone.splice(index, 1);
+                        $('#phone_list').text(arry_phone.toString());
                     }
-                    
+
                 }
             } else {
                 $('#phone_list').text(str_phone + phone + ",");
@@ -886,10 +1345,9 @@ alert('Message is too long, Maximum characters is 360, You typed '+text.length+'
 
     })
 
-
     $(document).on('click', '#sms_btn', function () {
-        
-         var branch_id = $('#branch_select').val();
+
+        var branch_id = $('#branch_select').val();
         var staff_id = $('#staff_select').val();
 
         $('#message_phone').attr('class', 'loading-show')
@@ -902,16 +1360,16 @@ alert('Message is too long, Maximum characters is 360, You typed '+text.length+'
             url: '/filter-receiver-phones',
             method: 'POST',
             data: {
-                branch_id, staff_id
+                branch_id, staff_id, type: 'outgoing'
             }
         })
             .then((response) => {
                 $('#loading').attr('class', 'loading-hiden')
-                if(response.status == 'good'){
+                if (response.status == 'good') {
                     $('#phone_list').text(response.phone_list);
                     $('#message_field').val("");
                     $('#message_phone').attr('class', 'loading-show')
-                }else{
+                } else {
                     alert(response.msg)
                 }
             })
@@ -924,22 +1382,66 @@ alert('Message is too long, Maximum characters is 360, You typed '+text.length+'
 
     $(document).on('click', '.edit_btn', function () {
 
-        var pname = $(this).attr('pname');
-        var pimage = $(this).attr('pimage');
-        var pbranch = $(this).attr('pbranch');
         var pid = $(this).attr('pid');
-        var bid = $(this).attr('bid');
+        var bcid = $(this).attr('bcid');
 
-        $('#action-type').val('update')
+        $('#pid').val(pid)
+        $('#bcid').val(bcid)
 
-        $('#edit-pname').text(pname)
-        $('#input-pid-edit').val(pid)
-        $('#edit-bname').text(pbranch)
-        $('#edit-img').attr('src', '/images/' + pimage)
+        $.ajax({
+            url: '/get-package-edit-data',
+            method: 'POST',
+            data: {
+                pid
+            }
+        })
+            .then((response) => {
 
-        $('#editModal').modal('show')
+                $('#loading').attr('class', 'loading-hiden')
+                
+                $('#receipt_btn').removeAttr('disabled')
+                $('#remove_btn').removeAttr('disabled')
+                $('#edit_btn').removeAttr('disabled')
+                $('#receive_btn').removeAttr('disabled')
+                //$('#create-package').removeAttr('disabled')
+
+                if (response.status == "good") {
+
+                    var arive_at = response.data.arive_at.split('T')
+                    var shipping_at = response.data.shipping_at.split('T')
+
+            $('#sender_name').val(response.data.sender_name);
+            $('#sender_phone').val(response.data.sender_phone);
+            $('#receiver_name').val(response.data.receiver_name);
+            $('#receiver_phone').val(response.data.receiver_phone);
+            $('#transporter_name').val(response.data.transporter_name);
+            $('#transporter_phone').val(response.data.receiver_phone);
+            //var barcode_id = $('#code-text').val()
+            $('#name').val(response.data.name)
+            $('#price').val(response.data.price)
+            $('#branch_to').val(response.data.bid)
+            $('#arive_at').val(arive_at[0])
+            $('#description').val(response.data.description)
+
+            //////////adittional information
+            $('#package_value').val(response.data.package_value)
+            $('#package_size').val(response.data.package_size)
+            $('#package_weight').val(response.data.package_weight)
+            $('#package_tag').val(response.data.package_tag)
+            $('#shipping_at').val(shipping_at[0])
+            $('#specific_location').val(response.data.specific_location)
+
+                $('#editModal').modal('show')
+                } else {
+                    alert(response.msg)
+                }
+
+            })
+            .catch((error) => {
+                alert(error)
+                alert('Check internet, try again')
+            });
     })
-
 
     $(document).on('click', '#search-bar-edit', function (e) {
 
@@ -1007,8 +1509,11 @@ alert('Message is too long, Maximum characters is 360, You typed '+text.length+'
     })
 
     $(document).on('click', '#update-package', function (e) {
-        e.preventDefault()
+       
         try {
+
+            var pid = $('#pid').val()
+            var barcode_id = $('#bcid').val()
 
             var sender_name = $('#sender_name').val();
             var sender_phone = $('#sender_phone').val();
@@ -1016,41 +1521,45 @@ alert('Message is too long, Maximum characters is 360, You typed '+text.length+'
             var receiver_phone = $('#receiver_phone').val();
             var transporter_name = $('#transporter_name').val();
             var transporter_phone = $('#transporter_phone').val();
-            var barcode_id = $('#code-text-edit').val()
-            var pid = $('#p_edit_id').val()
+            //var barcode_id = $('#code-text').val()
             var name = $('#name').val()
             var price = $('#price').val()
             var branch_to = $('#branch_to').val()
             var arive_at = $('#arive_at').val()
-            var description = $('#description-edit').val()
-            var _description = $('#description-edit-reason').val()
+            var description = $('#description').val()
+
+            //////////adittional information
+            var package_value = $('#package_value').val()
+            var package_size = $('#package_size').val()
+            var package_weight = $('#package_weight').val()
+            var package_tag = $('#package_tag').val()
+            var shipping_at = $('#shipping_at').val()
+            var specific_location = $('#specific_location').val()
 
 
+            if (validateNames(sender_name, 'Sender') && validatePhone(sender_phone, 'Sender') && validateNames(receiver_name, 'Receiver') && validatePhone(receiver_phone, 'Receiver') && validateNames(name, 'Package') && validateAmount(price) && validateValue(package_value) && validateWeight(package_weight) && validateDate(arive_at, 'Arival') && validateDate(shipping_at, 'Shipping')) {
 
-            if (validateDescription(_description, 'Reason to edit a package') && validateNames(sender_name, 'Sender') && validatePhone(sender_phone, 'Sender') && validateNames(receiver_name, 'Receiver') && validatePhone(receiver_phone, 'Receiver') && validateNames(transporter_name, 'Transporter') && validatePhone(transporter_phone, 'Transporter') && validateBarcodes(barcode_id) && validateNames(name, 'Package') && validateAmount(price) && validateDate(arive_at)) {
-
-                if (confirm('Are you sure you want to send this package ?')) {
-
-                    $('#loading-update').attr('class', 'loading-show')
+                if (confirm('Are you sure you want to Update this package ?')) {
+                    $('#loading').attr('class', 'loading-show')
                     $('#update-package').attr('disabled', true)
-
-                    var edit_description = 'Reason to edit: ' + _description
+                 
+                    //$('#package-form').submit();
 
                     $.ajax({
                         url: '/update-package',
                         method: 'POST',
                         data: {
-                            barcode_id, edit_description, name, arive_at, branch_to, price, pid, sender_name, sender_phone, receiver_name, receiver_phone, transporter_name, transporter_phone
+                           pid,barcode_id,sender_name, sender_phone, receiver_name, receiver_phone, transporter_name, transporter_phone, name, price, branch_to, arive_at, description, package_value, package_size, package_weight, package_tag, shipping_at, specific_location
                         }
                     })
                         .then((response) => {
 
-                            $('#loading-update').attr('class', 'loading-hiden')
+                            $('#loading').attr('class', 'loading-hiden')
                             $('#update-package').removeAttr('disabled')
+                            if (response.status == "good") {
+                            alert("Package Updated Successful")
+                             window.location.reload();
 
-                            if (response.status == 'good') {
-                                alert(response.msg)
-                                window.location.reload();
                             } else {
                                 alert(response.msg)
                             }
@@ -1071,9 +1580,10 @@ alert('Message is too long, Maximum characters is 360, You typed '+text.length+'
 
     })
 
-///////////print
- $(document).on('click', '#print_pdf', function () {
-        alert('Richard')
+
+    ///////////print
+    $(document).on('click', '#print_pdf', function () {
+        //alert('Richard')
         printJS({
             printable: 'package_manfest',
             type: 'html',
@@ -1092,6 +1602,108 @@ alert('Message is too long, Maximum characters is 360, You typed '+text.length+'
 */
 
     })
+
+    $(document).on('click', '#cancel', function () {
+        //window.location.reload();
+
+        $('#pp').html("")
+        $('#receiptModal').modal('hide')
+    })
+
+    $(document).on('click', '.receipt_btn', function () {
+
+       $('#receipt_btn').attr('disabled', true)
+                    $('#remove_btn').attr('disabled', true)
+                    $('#edit_btn').attr('disabled', true)
+                    $('#receive_btn').attr('disabled', true)
+
+        var pid = $(this).attr('pid');
+       // $('#receiptModal').modal('show')
+        $.ajax({
+            url: '/get-receipt-data',
+            method: 'POST',
+            data: {
+                pid
+            }
+        })
+            .then((response) => {
+
+                $('#loading').attr('class', 'loading-hiden')
+                
+                    $('#receipt_btn').removeAttr('disabled')
+        $('#remove_btn').removeAttr('disabled')
+        $('#edit_btn').removeAttr('disabled')
+        $('#receive_btn').removeAttr('disabled')
+                //$('#create-package').removeAttr('disabled')
+                if (response.status == "good") {
+
+                    var shipping_at = response.data.shipping_at.split('T')
+                    var arive_at = response.data.arive_at.split('T')
+
+                    var pp = "Cargo Receipt<br>"
+                    pp += "Booking Id :" + response.data.barcode_id + "<br>"
+                    pp += "Brand name :Usiri Transportation Services"
+                    pp += "<br><br>"
+                    pp += "Journey route :" + response.data.bb_from_region + " - " + response.data.bb_to_region + "<br>"
+                    pp += "Shiping date :" + shipping_at[0] + "<br>"
+                    pp += "Alive date :" + arive_at[0]
+                    pp += "<br><br>"
+                    pp += "Paid amount :TSH " + response.data.price + ".00"
+                    pp += "<br><br>"
+                    pp += "Sender details<br>"
+                    pp += "Sender name :" + response.data.sender_name + "<br>"
+                    pp += "Sender phone :" + response.data.sender_phone + "<br>"
+                    pp += "Receiver name :" + response.data.receiver_name + "<br>"
+                    pp += "Receiver phone :" + response.data.receiver_phone
+                    pp += "<br><br>"
+                    pp += "Package name :" + response.data.name + "<br>"
+                    pp += "Package weight :" + response.data.package_weight + "kg<br>"
+                    pp += "Package value :TSH " + response.data.package_value + ".00<br>"
+                    pp += "Package size :" + response.data.package_size + "<br>"
+                    pp += "Package type :" + response.data.package_type
+                    pp += "<br><br>"
+                    pp += "Agent name :" + response.data.fulname + "<br>"
+                    pp += "Agent phone :" + response.data.phone1 + "<br>"
+                    pp += "Bus company :Usiri Transportation Services<br>"
+                    pp += "Company phone :0768448525<br>"
+                    pp += "CUSTOMER SERVICES :0768448525<br>"
+                    pp += "" + response.data.bb_from_region + " :" + response.data.bb_from_contact + "<br>"
+                    pp += "" + response.data.bb_to_region + " :" + response.data.bb_to_contact + "<br>"
+
+                    $('#pp').html(pp)
+                    $('#codedata-img').attr('src', response.data.code_data)
+
+                    $('#receiptModal').modal('show')
+
+                    
+
+                } else {
+                    alert(response.msg)
+                }
+
+            })
+            .catch((error) => {
+                console.log(error)
+                alert('Check internet, try again')
+            });
+
+    })
+
+    $(document).on('click', '#on_print', function () {
+        //alert('Richard')
+        printJS({
+            printable: 'printThis',
+            type: 'html',
+            targetStyle: ['*'],
+            //style: `@import url('https://fonts.googleapis.com/css?family=Annie+Use+Your+Telescope');`,
+            // font: 'Annie Use Your Telescope'
+            //header: 'Hello am printing', tahoma
+            style: `#invoice-POS{width:80mm} #pp {font-family:rockwell;} @page { margin: 0mm; size: 80m 80m; } @media print { body { margin: 2mm; width: 80mm; height:auto;font_size:20px } }`,
+            //font:'tahoma'
+        })
+
+    })
+
     /*
         document.addEventListener('keypress', e => {
             //usually scanners throw an 'Enter' key at the end of read

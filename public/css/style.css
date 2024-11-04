@@ -24093,8 +24093,11 @@ table.dataTable tbody td.select-checkbox:after {
 }
 @media (max-width: 767px) {
   .content-wrapper {
-    padding: 1.5rem 1.5rem;
+    padding: 1.5rem 5px;
   }
+  .card .card-body {
+    padding: 1.25rem 8px;
+}
 }
 
 /* Sidebar */
@@ -25773,5 +25776,7 @@ table.dataTable tbody td.select-checkbox:after {
     display: none;
   }
 }
+
+
 /*# sourceMappingURL=maps/style.css.map */
 

@@ -9,6 +9,11 @@
     .h-btn{
         min-width: 200px;
     }
+
+    .no-href-dec {
+        text-decoration: none;
+        cursor: pointer;
+    }
 </style>
 
 <div class="content-wrapper">
@@ -32,23 +37,52 @@
                 <span></span>
                 <!--button id="hanging_btn" class="btn btn-dark h-btn">Hanging Package</button-->
                 <div class="d-flex">
-                    <!--select class="form-select form-control simple-select" name="branch_select" id="branch_select">
+                    <select class="form-select form-control simple-select" name="branch_select" id="branch_select">
                         {{#if branches}}
                         <option selected="true" value="0">All Location(Branch)</option>
                         {{/if}}
                         {{#each branches}}
                         <option value="{{this.id}}">{{this.name}}</option>
                         {{/each}}
-                    </select-->
-                    <select class="form-select form-control simple-select" name="package_tag" id="package_tag">
+                    </select>
+                    <!--select class="form-select form-control simple-select" name="package_tag" id="package_tag">
                         {{#each tags}}
                         <option value="{{this.id}}">{{substr 14 this.name}}</option>
                         {{/each}}
                         <option selected="true" value="0">All Type</option>
-                    </select>
+                    </select-->
 
                     <button id="filter_btn" class="btn btn-primary simple-btn">Filter</button>
+                     <button id="sms_btn" class="btn btn-dark text-white simple-btn">SendSMS</button>
                 </div>
+            </div>
+
+                        <div id="message_phone" class="loading-hiden">
+<div class="card mt-3">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-7 col-sm-12">
+                            <div class="form-group">
+                                <label for="">Phone numbers (comma separated)</label>
+                                <textarea class="form-control" rows="5" name="phone_list" id="phone_list"></textarea>
+                            </div>
+                        </div>
+                        <div class="col-md-5 col-sm-12">
+                            <div class="form-group">
+                                <label for="">Message</label>
+                                <textarea class="form-control" name="message_field" id="message_field"></textarea>
+                            </div>
+                            <div id="loading-send-sms" class="loading-hiden">
+                    <img class="center-block" width="350" src="/images/cupertino.gif" alt="#" />
+                </div>
+                            <div class="d-flex justify-content-between">
+                                <button class="btn btn-primary" id="send_sms">Send SMS</button>
+                                <button class="btn btn-danger text-white" id="clear_chat">Clear Chat</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
             </div>
 
             <div class="table-responsive">
@@ -61,6 +95,7 @@
                             <th>No</th>
                             <th> Package name</th>
                             <th>Price</th>
+                             <th>Package Type</th>
                             <th> Receiver name </th>
                             <th> Receiver phone </th>
                             <th> Sender branch </th>
@@ -74,18 +109,32 @@
                         {{#each packages}}
                         <tr id="package_{{this.id}}">
                             <td>{{index_plas @index 1}}</td>
-                            <td class="text-capitalize">{{this.name}}</td>
+                             {{#if (if_equal this.package_size 'Small' )}}
+                            <td><span class="text-success text-small">[sm] </span><span
+                                    class="text-capitalize">{{this.name}}</span></td>
+                            {{/if}}
+                            {{#if (if_equal this.package_size 'Large' )}}
+                            <td><span class="text-danger">[lg] </span><span class="text-capitalize">{{this.name}}</span>
+                            </td>
+                            {{/if}}
+                            {{#if (if_equal this.package_size 'Medium' )}}
+                            <td><span class="text-primary">[md] </span><span
+                                    class="text-capitalize">{{this.name}}</span></td>
+                            {{/if}}
                             <td>{{this.price}}</td>
+                             <td><label class="badge badge-dark">{{this.package_tag}}</label></td>
                             <td class="text-capitalize"> {{this.receiver_name}} </td>
-                            <td> {{this.receiver_phone}}</td>
+                           <td> <a class="text-success no-href-dec add_phone"
+                                    phone="{{this.receiver_phone}}">{{this.receiver_phone}} <i
+                                        class="mdi mdi-message-processing"></i></a></td>
                             <td><label class="badge badge-primary">{{this.bname}}</label></td>
                             <td> <label class="badge badge-success">{{fulname}}</label></td>
                             <td> {{subdate this.created_at}}</td>
                             <td>
-                                <button type="button" pprice="{{this.price}}" pid="{{this.id}}" bid="{{this.bid}}" pname="{{this.name}}"
-                                    pbranch="{{this.bname}}" pimage="{{this.thumbnail}}" branch-id="{{this.id}}"
+                                <button type="button" pid="{{this.id}}" bid="{{this.bid}}" pname="{{this.name}}"
+                                    pbranch="{{this.bname}}" pimage="{{this.thumbnail}}"sender_name="{{this.sender_name}}" sender_phone="{{this.sender_phone}}" receiver_name="{{this.receiver_name}}" receiver_phone="{{this.receiver_phone}}" bcid="{{this.barcode_id}}" branch-id="{{this.id}}"
                                     class="btn receive_btn btn-primary btn-icon">
-                                    <i class="fa fa-eye"></i>
+                                    <i class="mdi mdi-gift"></i>
                                 </button>
                             </td>
                         </tr>
@@ -96,11 +145,91 @@
             <input type="hidden" name="action-type" id="action-type">
             <input type="hidden" name="barcode_id" id="code-text">
             <input class="form-control" type="hidden" name="" id="package-id">
+
+            <input type="hidden" name="bcid" id="bcid">
+    <input type="hidden" name="pid" id="pid">
         </div>
     </div>
 </div>
 
+<!--receiver -->
 <div class="modal fade mobile-full-width" id="receiveModal" tabindex="-1" data-bs-backdrop="static"
+    data-bs-keyboard="false" role="dialog" aria-labelledby="receiveModal" aria-hidden="true">
+    <div class="modal-dialog modal-md" role="document">
+
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="font-weight-bold">Receive Package</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                </button>
+            </div>
+            <div class="container mt-3 mb-3">
+                <div class="row">
+                    <div class="col-sm-12 col-md-12 grid-margin stretch-card">
+                        <div class="card tale-bg">
+                            <div class="card-people mt-auto">
+                                <img class="package-branch-img" id="receive-img" src="" alt="{{this.name}}">
+                                <div class="weather-info">
+                                    <div class="d-flex">
+                                        <div class="ms-2">
+                                            <h3 id="receive-pname" class="location font-weight-normal"></h3>
+                                            <h4 id="receive-bname" class="font-weight-normal"></h4>
+                                            
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-12">
+                        <h5 id="receive_sender_info"></h5>
+                        <h5 id="receive_receiver_info"></h5>
+                    </div>
+                    
+                    <!--div class="col-sm-6 col-md-4">
+                        <input type="hidden" name="barcode_id" id="code-text">
+                        <div id="reading-bar" class="scanner-area">
+                            <div class="pt-3 pb-3">
+                                <img id="codebar-img"
+                                    src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAARIAAAB6CAYAAABz59ygAAAABmJLR0QA/wD/AP+gvaeTAAANc0lEQVR4nO3ce2xTZR8H8G/brd1kY4z7AIFtyDaQMhAwwBjJuIgmAgFJ5OIgG1TZgBkkoi5gjAETxkVRJyGgSCQqGFAZlxjk2gWGCYRbhIiTaRAGFIRt3Nbxff94s76UtlvhwfCSfD9J/+B3fuc5zzmkX855TtVCkhARMWB91BMQkcefgkREjClIRMSYgkREjClIRMSYgkREjClIRMSYgkREjClIRMRYRLiNFovF78/1P4itr9/7A9nG6qHGud/6/R73/22ej2r8hzWfh3U9H1b/o/p7/7fn829f53DroeiORESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMKUhExJiCRESMWUjyUU9CRB5vuiMREWMKEhExpiAREWMKEhExpiAREWMKEhExpiAREWMKkgd04cIFzJ07F5mZmWjXrh2ioqKQlJSEkSNHYufOnUH38Xq9WLp0Kfr164eWLVsiLi4OTqcTCxcuxLVr1/x6Z8+eDYvF0uBn2rRpvv558+Y12j9hwgS/Y/Ts2TNkb0FBQcD86+rq8NFHH6Fnz56Ijo5GTEwMnn32Waxduxbh/Bxp3759sNlssFgsWL16dcD2pUuXYtSoUUhMTER0dDTatm2LjIwMFBcXw+v1Bh3z/PnzyM3NRUJCAhwOB1JTU7FkyRLU1dUF9LrdbuTl5cHpdCI2NhZt2rTBoEGDUFxcHLRfwhfxqCfwuCovL8eiRYuQnJyMHj16IC4uDufPn8eWLVtQUlKC4uJivPbaa377TJo0Cd9++y2SkpIwceJEWK1W/PzzzygsLMT69etx4MABREVFAQD69++PmpqaoMfeuXMnTp8+jaysLF+tT58+cLlcQfv37t2LkydP+vXXs1qtmDp1akB9wIABAbWcnBysXbsW7dq1wyuvvAKLxYKSkhJMnjwZv//+O957772Q1+v69evIyclBZGQkbt26FbRnwYIFsNlsSEtLwzPPPIMbN27A7XYjPz8fP/30EzZt2gSLxeLr93g8GDhwIMrLyzF8+HCkpaVh27ZtmDNnDo4fP44vvvjC13v79m0MGjQIAJCcnIzMzEzU1tbC7XbD7XZj+/bt+P7772G16t/WB0J5IFevXuXZs2cD6mVlZXQ4HIyJiWFNTY2vfuTIEQJgYmIiq6urffXa2lr26dOHALh+/fpGj3vr1i22adOGLVq04M2bNxvt93q97NSpE2NjY1lVVeW3zel00m63NzoGSR48eJAA2L59e3o8Hl/d4/EwKSmJERERPH36dMj9Z82axc6dO3PKlCkEwFWrVgX0nDx5knfu3PGrXb58mU8//TQBcNu2bX7bCgoKCICzZ8/21aqrq339u3fv9tVv377N3NxcHj161G+M8vJytm3blgD4zTffhHUtJJDi9wE1bdoU7dq1C6j369cP3bp1Q3V1NcrLy331iooKAEDfvn3RpEkTXz0iIgKZmZkAgEuXLjV63I0bN6KyshLZ2dlwOByN9m/duhUVFRUYP348YmJiGu0PZceOHQCA7OxsNG/e3Fdv3rw5ZsyYAa/Xi/Xr1wfdd8+ePfjkk09QXFzsd+73SklJ8bvjAID4+HiMHDkSAHDs2DFf3ev14quvvoLFYsEbb7zhqzdp0gR5eXkA4HdHEhkZiVWrVqFHjx5+4ycmJiI3NxfAfx+95MHo0eYhO3LkCH799VdERUWhY8eOvnpaWhqsVisOHjyI6upq35fa6/Viz549iIyMDProca8VK1YAQNDHkYb6715PududO3ewcOFClJeXw+FwoH///hg7diyio6P9+i5fvgwAQcOzc+fOAICDBw8GbKupqUFubi7GjRuH559/Hlu2bAlr3vWqqqqwdetWAMBTTz3lq586dQoejwdOpzNgTiNGjAAAlJaWhnWM+nCLjY29r7nJ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"
+                                    alt="" srcset="">
+                            </div>
+
+                            <div class="d-flex">
+                                <input class="form-control" type="hidden" name="" id="input-pid">
+                                <!--input class="form-control" type="text" name="" id="input-code">
+                                <button type="button" id="search-bar" class="btn btn-primary">search</button-->
+                            <!--/div>
+
+                        </div>
+                        <div id="barcode-msg"></div>
+
+                        <div id="loading-bar" class="loading-hiden">
+                            <img class="center-block" width="80%" src="/images/bar_gif.gif" alt="#" />
+                        </div>
+
+                    </div-->
+
+                    <div class="col-sm-12 col-md-12">
+                        <div class="form-group">
+                            <label class="form-label">Comment (option)</label>
+                            <textarea name="receive-description" maxlength="400" id="receive-description"
+                                class="form-control text-area-style" rows="2" style="width: 100% !important;"
+                                placeholder="give reason to remove the package">wel received</textarea>
+                        </div>
+                        <div id="loading" class="loading-hiden">
+                            <img class="center-block" width="300" src="/images/cupertino.gif" alt="#" />
+                        </div>
+                        <button type="button" id="receive-package" class="btn btn-primary w-100 mt-3">Receive
+                            Package</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--div class="modal fade mobile-full-width" id="receiveModal" tabindex="-1" data-bs-backdrop="static"
     data-bs-keyboard="false" role="dialog" aria-labelledby="receiveModal" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
 
@@ -139,7 +268,7 @@
                         <div id="edit-description-status" class="loading-hiden">
                             <h5>Edited</h5>
                             <!--p>By : <b>Sambokile kindeki</b></p-->
-                            <p id="edit-description"></p>
+                            <!--p id="edit-description"></p>
                         </div>
                      </div>
                    </div>
@@ -175,7 +304,7 @@
                                
                                 <!--input class="form-control" type="text" name="" id="input-code-edit">
                                 <button type="button" id="search-bar-edit" class="btn btn-primary">search</button-->
-                            </div>
+                            <!--/div>
 
                         </div>
                        <div id="barcode-msg-receive"></div>
@@ -189,7 +318,7 @@
                     <div class="col-sm-6 col-md-4">
                     
                         <!--receved form-->
-                        <div class="loading-show" id="receive-form">
+                        <!--div class="loading-show" id="receive-form">
                         <div class="form-group">
                             <label class="form-label">Receive description*</label>
                             <textarea name="description-closed" maxlength="400" id="description-closed"
@@ -204,13 +333,13 @@
                             Package</button>
                         </div>   
                         <!--end received form-->   
-                    </div>
+                    <!--/div>
                    
                 </div>
             </div>
         </div>
     </div>
-</div>
+</div-->
 
 <div class="modal fade mobile-full-width" id="hangingModal" tabindex="-1" data-bs-backdrop="static"
     data-bs-keyboard="false" role="dialog" aria-labelledby="hangingModal" aria-hidden="true">
@@ -343,8 +472,18 @@
     let reading = false;
 
     $(document).on('click', '.btn-close', function () {
-        window.location.reload();
+        //window.location.reload();
     })
+   function validateNames(text, label) {
+
+        if (text == '' || text == null) {
+            alert(label + ' name is required')
+            return false;
+        } else {
+            return true;
+        }
+
+    }
 
 
     function validateBarcodes(text) {
@@ -374,6 +513,37 @@
 
     }
 
+ function validateMessage(text, label) {
+
+        if (text == '' || text == null) {
+            alert(label + ' name is required')
+            return false;
+        } else {
+            if(text.length > 360){
+alert('Message is too long, Maximum characters is 360, You typed '+text.length+' character')
+            }else{
+               return true;
+            }
+            
+        }
+
+    }
+
+
+    function checkInArray(arry_phone, phone) {
+        var res = false
+        for (let index = 0; index < arry_phone.length; index++) {
+            const element = arry_phone[index];
+
+            if (element == phone) {
+                res = true
+            }
+
+        }
+        return res
+    }
+
+    
     $(document).on('click', '.receive_btn', function () {
 
         var pname = $(this).attr('pname');
@@ -400,40 +570,71 @@
         $('#hangingModal').modal('show')
     })
 
-    $(document).on('click', '#receive-package', function (e) {
+
+    $(document).on('click', '.receive_btn', function () {
+
+var receiver_name = $(this).attr('receiver_name');
+var receiver_phone = $(this).attr('receiver_phone');
+var sender_name = $(this).attr('sender_name');
+var sender_phone = $(this).attr('sender_phone');
+
+var pname = $(this).attr('pname');
+        var pname = $(this).attr('pname');
+        var pimage = $(this).attr('pimage');
+        var pbranch = $(this).attr('pbranch');
+        var pid = $(this).attr('pid');
+        var bid = $(this).attr('bid');
+        var bcid = $(this).attr('bcid');
+
+        $('#action-type').val('receive')
+        $('#pid').val(pid)
+        $('#bcid').val(bcid)
+
+        $('#receive_sender_info').text("Sender : "+sender_name+" - "+sender_phone)
+        $('#receive_receiver_info').text("Receiver : "+receiver_name+" - "+receiver_phone)
+
+        $('#receive-pname').text(pname)
+        $('#input-pid').val(pid)
+        $('#receive-bname').text("To : "+pbranch)
+        $('#receive-img').attr('src', '/images/' + pimage)
+
+        $('#receiveModal').modal('show')
+    })
+
+ $(document).on('click', '#receive-package', function (e) {
         e.preventDefault()
         try {
 
-            
-            var barcode_id = $('#code-text').val()
-            var pid = $('#package-id').val()
-            var closed_description = $('#description-closed').val()
-            
+           var pid = $('#pid').val()
+           var barcode_id = $('#bcid').val()
+           var closed_description = $('#receive-description').val()
+            //var pid = $('#input-pid').val();
 
-            if (validateDescription(closed_description, 'Close Package description') && validateBarcodes(barcode_id)) {
+            if (validateBarcodes(barcode_id)) {
 
-                if (confirm('Are you sure you Receive the package ?')) {
+                if (confirm('Are you sure you want to receive this package ?')) {
 
-                    $('#loading-receive').attr('class', 'loading-show')
-                    $('#receive-package').attr('disabled', true)
+                    $('#loading').attr('class', 'loading-show')
 
-                   
 
                     $.ajax({
                         url: '/receive-package',
                         method: 'POST',
                         data: {
-                            barcode_id, closed_description, pid
+                            barcode_id, pid, closed_description
                         }
                     })
                         .then((response) => {
 
-                            $('#loading-receive').attr('class', 'loading-hiden')
-                            $('#receive-package').removeAttr('disabled')
+                            $('#loading').attr('class', 'loading-hiden')
 
-                            if (response.status == 'good') {
+                            if (response.status == "good") {
+                                document.getElementById('package_' + pid).remove()
                                 alert(response.msg)
-                                window.location.reload();
+                                $('#bcid').val('')
+                                $('#description').val('')
+                                $('#receiveModal').modal('hide')
+                                
                             } else {
                                 alert(response.msg)
                             }
@@ -477,8 +678,6 @@
             });
 
     })
-
-    
 
 $(document).on('click', '#redirect-package', function (e) {
         e.preventDefault()
@@ -537,6 +736,121 @@ $(document).on('click', '#redirect-package', function (e) {
     })
 
 
+    ///////messages function/////////////////////////////////////////////////////////
+        $(document).on('click', '#send_sms', function () {
+        var phone_list = $('#phone_list').val();
+        var message = $('#message_field').val();
+
+        if(validateNames(phone_list, 'Phone Number or List, separated by comma') && validateMessage(message, 'Message')){
+if (confirm('Are you sure you want to send SMS ?')) {
+           $('#loading-send-sms').attr('class', 'loading-show  d-flex justify-content-center')
+           $('#send_sms').attr('disabled', true)
+           $('#clear_chat').attr('disabled', true)
+
+           $.ajax({
+            url: '/send-multi-sms',
+            method: 'POST',
+            data: {
+                phone_list, message
+            }
+        })
+            .then((response) => {
+                $('#loading-send-sms').attr('class', 'loading-hiden')
+                 $('#send_sms').removeAttr('disabled')
+                 $('#clear_chat').removeAttr('disabled')
+
+                if(response.status == 'good'){
+                    alert(response.msg)
+                    $('#phone_list').val("");
+                    $('#message_field').val("");
+                    $('#message_phone').attr('class', 'loading-hiden')
+                }else{
+                    alert(response.msg)
+                }
+            })
+            .catch((error) => {
+                $('#loading-send-sms').attr('class', 'loading-hiden')
+                console.log(error)
+            });
+        }
+        }
+
+       
+        //$('#phone_list').text("");
+        //$('#message_field').text("");
+        //$('#message_phone').attr('class', 'loading-hiden')
+    })
+    $(document).on('click', '#clear_chat', function () {
+        $('#phone_list').val("");
+        $('#message_field').val("");
+        $('#message_phone').attr('class', 'loading-hiden')
+    })
+
+    $(document).on('click', '.add_phone', function () {
+
+        $('#message_phone').attr('class', 'loading-show')
+        var phone = $(this).attr('phone');
+
+        var str_phone = $('#phone_list').val();
+
+        if (str_phone == "" || str_phone == undefined) {
+            $('#phone_list').text(phone + ",");
+
+        } else {
+            var arry_phone = str_phone.split(',')
+            //alert(arry_phone.length)
+            if (checkInArray(arry_phone, phone)) {
+                if (confirm(phone+' aleady exist, do you want to remove it?')) {
+                    const index = arry_phone.indexOf(phone);
+                    if (index > -1) { 
+                    arry_phone.splice(index, 1);
+                    $('#phone_list').text(arry_phone.toString());
+                    }
+                    
+                }
+            } else {
+                $('#phone_list').text(str_phone + phone + ",");
+            }
+        }
+
+    })
+
+
+    $(document).on('click', '#sms_btn', function () {
+        
+         var branch_id = $('#branch_select').val();
+        var staff_id = 0
+
+        $('#message_phone').attr('class', 'loading-show')
+        //var tag_id = $('#tag_select').val();
+
+        //alert(branch_id+", "+staff_id)
+
+        $('#loading').attr('class', 'loading-show  d-flex justify-content-center')
+        $.ajax({
+            url: '/filter-receiver-phones',
+            method: 'POST',
+            data: {
+                branch_id, staff_id, type:'incomming'
+            }
+        })
+            .then((response) => {
+                $('#loading').attr('class', 'loading-hiden')
+                if(response.status == 'good'){
+                    $('#phone_list').text(response.phone_list);
+                    $('#message_field').val("");
+                    $('#message_phone').attr('class', 'loading-show')
+                }else{
+                    alert(response.msg)
+                }
+            })
+            .catch((error) => {
+                $('#loading').attr('class', 'loading-hiden')
+                console.log(error)
+            });
+    })
+    
+/*
      document.addEventListener('keypress', e => {
         //usually scanners throw an 'Enter' key at the end of read
         //e.preventDefault()
@@ -764,5 +1078,5 @@ $(document).on('click', '#redirect-package', function (e) {
         }
     });
 
-
+*/
 </script>

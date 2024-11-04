@@ -119,7 +119,6 @@ exports.adminPage = (req, res) => {
 
     var date_start30 = yy30 + '-' + mm30 + '-' + dd30 + ' 00:00:00'
 
-
     /////////////////////end 30day/////////////////////////
 
     //console.log(date_start+", "+date_end)
